@@ -1,0 +1,29 @@
+singlecellexperiment package
+============================
+
+Submodules
+----------
+
+singlecellexperiment.SingleCellExperiment module
+------------------------------------------------
+
+.. automodule:: singlecellexperiment.SingleCellExperiment
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+singlecellexperiment.interface module
+-------------------------------------
+
+.. automodule:: singlecellexperiment.interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: singlecellexperiment
+   :members:
+   :undoc-members:
+   :show-inheritance:

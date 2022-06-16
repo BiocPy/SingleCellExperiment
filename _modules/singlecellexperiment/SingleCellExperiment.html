@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>singlecellexperiment.SingleCellExperiment &mdash; SingleCellExperiment 0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> SingleCellExperiment
+          </a>
+              <div class="version">
+                0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">SingleCellExperiment</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>singlecellexperiment.SingleCellExperiment</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for singlecellexperiment.SingleCellExperiment</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">asyncore</span> <span class="kn">import</span> <span class="n">close_all</span>
+<span class="kn">from</span> <span class="nn">summarizedexperiment.SummarizedExperiment</span> <span class="kn">import</span> <span class="n">SummarizedExperiment</span>
+<span class="kn">from</span> <span class="nn">summarizedexperiment.RangeSummarizedExperiment</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">genomicranges</span> <span class="kn">import</span> <span class="n">GenomicRanges</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> <span class="k">as</span> <span class="n">sp</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">anndata</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+
+<div class="viewcode-block" id="SingleCellExperiment"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment">[docs]</a><span class="k">class</span> <span class="nc">SingleCellExperiment</span><span class="p">(</span><span class="n">SummarizedExperiment</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Container class for single-cell experiments. Extends `SummarizedExperiment`</span>
+<span class="sd">    to provide slots for lower dimensionality embeddings and alternative experiments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">assays</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]],</span>
+        <span class="n">rows</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cols</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">reducedDims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">main_exp_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">alter_exps</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">Union</span><span class="p">[</span>
+                <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">,</span>
+                <span class="n">SummarizedExperiment</span><span class="p">,</span>
+                <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">rowpairs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">colpairs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a single-cell experiment class</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            assays (Dict[str, Union[np.ndarray, sp.spmatrix]]): assays/experiment data</span>
+<span class="sd">            rows (pd.DataFrame, optional): feature information. Defaults to None.</span>
+<span class="sd">            cols (pd.DataFrame, optional): sample metadata. Defaults to None.</span>
+<span class="sd">            metadata (Any, optional): experiment metadata. Defaults to None.</span>
+<span class="sd">            reducedDims (Dict[str,Union[np.ndarray, sp.spmatrix]], optional): lower dimensionality embeddings. Defaults to None.</span>
+<span class="sd">            main_exp_name (str, optional): main experiment name. Defaults to None.</span>
+<span class="sd">            alter_exps (Union[&amp;quot;SingleCellExperiment&amp;quot;, SummarizedExperiment, RangeSummarizedExperiment], optional): alternative experiments. Defaults to None.</span>
+<span class="sd">            rowpairs (Union[np.ndarray, sp.spmatrix], optional): row pairings/relationships between features. Defaults to None.</span>
+<span class="sd">            colpairs (Union[np.ndarray, sp.spmatrix], optional): col pairings/relationships between cells.  Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">assays</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="o">=</span> <span class="n">reducedDims</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_exp_name</span> <span class="o">=</span> <span class="n">main_exp_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span> <span class="o">=</span> <span class="n">alter_exps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span> <span class="o">=</span> <span class="n">rowpairs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span> <span class="o">=</span> <span class="n">colpairs</span>
+
+<div class="viewcode-block" id="SingleCellExperiment.reducedDims"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reducedDims">[docs]</a>    <span class="k">def</span> <span class="nf">reducedDims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Access lower dimensionality embeddings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Union[np.ndarray, sp.spmatrix]]: all embeddings in the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.reducedDimNames"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reducedDimNames">[docs]</a>    <span class="k">def</span> <span class="nf">reducedDimNames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access names of lower dimensionality embeddings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: all names of embeddings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.reducedDim"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reducedDim">[docs]</a>    <span class="k">def</span> <span class="nf">reducedDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access an embedding by name</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): name of the embedding</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: if embedding name does not exist</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[np.ndarray, sp.spmatrix]: access the underlying numpy or scipy matrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.altExps"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.altExps">[docs]</a>    <span class="k">def</span> <span class="nf">altExps</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span>
+        <span class="nb">str</span><span class="p">,</span>
+        <span class="n">Union</span><span class="p">[</span>
+            <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">,</span>
+            <span class="n">SummarizedExperiment</span><span class="p">,</span>
+            <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access alternative experiments from SCE</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, Union[</span>
+<span class="sd">            &quot;SingleCellExperiment&quot;,</span>
+<span class="sd">            SummarizedExperiment,</span>
+<span class="sd">            RangeSummarizedExperiment,</span>
+<span class="sd">        ]]: alternative experiments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.altExp"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.altExp">[docs]</a>    <span class="k">def</span> <span class="nf">altExp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
+        <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">,</span>
+        <span class="n">SummarizedExperiment</span><span class="p">,</span>
+        <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
+    <span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access alternative experiments from SCE</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): name of the alternative experiment</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[</span>
+<span class="sd">            &quot;SingleCellExperiment&quot;,</span>
+<span class="sd">            SummarizedExperiment,</span>
+<span class="sd">            RangeSummarizedExperiment,</span>
+<span class="sd">        ]: alternative experiment by name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alt Experiment </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alt Experiment </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.rowPairs"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.rowPairs">[docs]</a>    <span class="k">def</span> <span class="nf">rowPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access row pairings/relationships between features.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[np.ndarray, sp.spmatrix]: access rowpairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span></div>
+
+<div class="viewcode-block" id="SingleCellExperiment.colPairs"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.colPairs">[docs]</a>    <span class="k">def</span> <span class="nf">colPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Access col pairings/relationships between cells.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Union[np.ndarray, sp.spmatrix]: access colpairs</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Subset a SingleCellExperiment</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            args (tuple): indices to slice. tuple can</span>
+<span class="sd">                contains slices along dimensions</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Exception: Too many slices</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            SingleCellExperiment: new SingleCellExperiment object containing the subset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rowIndices</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">colIndices</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">colIndices</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;too many slices, args length must be 2 but provided </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;contains too many slices&quot;</span><span class="p">)</span>
+
+        <span class="n">new_rows</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_cols</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_assays</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_rowpairs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_colpairs</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_reducedDims</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">new_alt_exps</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">rowIndices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">GenomicRanges</span><span class="p">):</span>
+                <span class="n">new_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">[</span><span class="n">rowIndices</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+                <span class="n">new_rows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">rowIndices</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">new_rowpairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span><span class="p">[</span><span class="n">rowIndices</span><span class="p">,</span> <span class="n">rowIndices</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">colIndices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_cols</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">colIndices</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">new_colpairs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span><span class="p">[</span><span class="n">colIndices</span><span class="p">,</span> <span class="n">colIndices</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_reducedDims</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">rd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">new_reducedDims</span><span class="p">[</span><span class="n">rd</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">[</span><span class="n">rd</span><span class="p">][</span>
+                    <span class="n">colIndices</span><span class="p">,</span>
+                <span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_alt_exps</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">ae</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">new_alt_exps</span><span class="p">[</span><span class="n">ae</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alter_exps</span><span class="p">[</span><span class="n">ae</span><span class="p">][</span><span class="n">rowIndices</span><span class="p">,</span> <span class="n">colIndices</span><span class="p">]</span>
+
+        <span class="n">new_assays</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subsetAssays</span><span class="p">(</span>
+            <span class="n">rowIndices</span><span class="o">=</span><span class="n">rowIndices</span><span class="p">,</span> <span class="n">colIndices</span><span class="o">=</span><span class="n">colIndices</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+            <span class="n">new_assays</span><span class="p">,</span>
+            <span class="n">new_rows</span><span class="p">,</span>
+            <span class="n">new_cols</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">new_reducedDims</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">main_exp_name</span><span class="p">,</span>
+            <span class="n">new_alt_exps</span><span class="p">,</span>
+            <span class="n">new_rowpairs</span><span class="p">,</span>
+            <span class="n">new_colpairs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="SingleCellExperiment.toAnnData"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.toAnnData">[docs]</a>    <span class="k">def</span> <span class="nf">toAnnData</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">anndata</span><span class="o">.</span><span class="n">AnnData</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Transform SCE to AnnData; currently ignores alternative experiments</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            anndata.AnnData: return an AnnData representation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">anndata</span><span class="o">.</span><span class="n">AnnData</span><span class="p">(</span>
+            <span class="n">obs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cols</span><span class="p">,</span>
+            <span class="n">var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="p">,</span>
+            <span class="n">uns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+            <span class="n">obsm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">,</span>
+            <span class="n">layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_assays</span><span class="p">,</span>
+            <span class="n">varp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rowpairs</span><span class="p">,</span>
+            <span class="n">obsp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colpairs</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, jkanche.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

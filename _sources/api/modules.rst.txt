@@ -1,0 +1,7 @@
+singlecellexperiment
+====================
+
+.. toctree::
+   :maxdepth: 4
+
+   singlecellexperiment
