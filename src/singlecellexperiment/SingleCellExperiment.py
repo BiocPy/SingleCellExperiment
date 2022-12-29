@@ -27,7 +27,7 @@ class SingleCellExperiment(SummarizedExperiment):
         colData: Optional[Union[pd.DataFrame, BiocFrame]] = None,
         metadata: Optional[MutableMapping] = None,
         reducedDims: Optional[
-            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]
+            MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]
         ] = None,
         mainExperimentName: Optional[str] = None,
         altExps: Optional[
@@ -53,7 +53,7 @@ class SingleCellExperiment(SummarizedExperiment):
             rowData (Union[pd.DataFrame, BiocFrame], optional): features, must be the same length as rows of the matrices in assays. Defaults to None.
             colData (Union[pd.DataFrame, BiocFrame], optional): cell data, must be the same length as the columns of the matrices in assays. Defaults to None.
             metadata (MutableMapping, optional): experiment metadata describing the methods. Defaults to None.
-            reducedDims (MutableMapping[str, np.ndarray], optional): lower dimensionality embeddings. Defaults to None.
+            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]], optional): lower dimensionality embeddings. Defaults to None.
             mainExperimentName (str, optional): main experiment name. Defaults to None.
             alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional): alternative experiments. Defaults to None.
             rowpairs (Union[np.ndarray, sp.spmatrix], optional): row pairings/relationships between features. Defaults to None.
@@ -82,8 +82,14 @@ class SingleCellExperiment(SummarizedExperiment):
         # check reducedDims
         if self._reducedDims is not None:
             for rdname, mat in self._reducedDims.items():
-                if not isinstance(mat, np.ndarray):
-                    raise TypeError(f"dimension: {rdname} is not a numpy ndarray")
+                if not (
+                    isinstance(mat, np.ndarray)
+                    or isinstance(mat, sp.spmatrix)
+                    or isinstance(mat, pd.DataFrame)
+                ):
+                    raise TypeError(
+                        f"dimension: {rdname} must be either a numpy ndarray, scipy matrix or a pandas DataFrame"
+                    )
 
                 if base_dims[1] != mat.shape[0]:
                     raise ValueError(
@@ -91,20 +97,25 @@ class SingleCellExperiment(SummarizedExperiment):
                     )
 
     @property
-    def reducedDims(self) -> MutableMapping[str, np.ndarray]:
+    def reducedDims(
+        self,
+    ) -> MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]:
         """Access lower dimensionality embeddings
 
         Returns:
-            MutableMapping[str, np.ndarray]: all embeddings in the object
+            MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]: all embeddings in the object
         """
         return self._reducedDims
 
     @reducedDims.setter
-    def reducedDims(self, reducedDims: MutableMapping[str, np.ndarray]):
+    def reducedDims(
+        self,
+        reducedDims: MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]],
+    ):
         """Set lower dimensionality embeddings
 
         Args:
-            reducedDims (MutableMapping[str, np.ndarray]): new embeddings
+            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]): new embeddings
 
         Raises:
             TypeError: reducedDims is not a dictionary
@@ -319,8 +330,14 @@ class SingleCellExperiment(SummarizedExperiment):
 
         if self._reducedDims is not None:
             new_reducedDims = OrderedDict()
-            for rd in self._reducedDims.keys():
-                new_reducedDims[rd] = self._reducedDims[rd][colIndices, :]
+            for rdname, embeds in self._reducedDims.items():
+                sliced_embeds = None
+                if isinstance(embeds, pd.DataFrame):
+                    sliced_embeds =  embeds.iloc[colIndices]
+                else:
+                    sliced_embeds = embeds[colIndices, :]
+
+                new_reducedDims[rdname] = sliced_embeds
 
         if self._altExps is not None:
             new_altExps = OrderedDict()
@@ -359,20 +376,24 @@ class SingleCellExperiment(SummarizedExperiment):
 
     def toAnnData(self) -> anndata.AnnData:
         """Transform `SingleCellExperiment` objects to `AnnData`, 
-            Note: ignores Alternative experiments
+            Note: ignores alternative experiments.
 
         Returns:
-            anndata.AnnData: return an AnnData representation
+            anndata.AnnData: returns an AnnData representation
         """
 
         # adatas = OrderedDict()
+
+        layers = OrderedDict()
+        for asy, mat in self.assays.items():
+            layers[asy] = mat.transpose()
 
         obj = anndata.AnnData(
             obs=self.colData,
             var=self.rowData,
             uns=self.metadata,
             obsm=self.reducedDims,
-            layers=self.assays,
+            layers=layers,
             varp=self.rowPairs,
             obsp=self.colPairs,
         )

@@ -1,5 +1,5 @@
 import anndata
-
+from collections import OrderedDict
 from ..SingleCellExperiment import SingleCellExperiment
 
 __author__ = "jkanche"
@@ -17,10 +17,14 @@ def fromAnnData(adata: anndata.AnnData) -> SingleCellExperiment:
         SingleCellExperiment: single-cell experiment object
     """
 
+    layers = OrderedDict()
+    for asy, mat in adata.layers.items():
+        layers[asy] = mat.transpose()
+
     return SingleCellExperiment(
-        assays=adata.layers,
-        rows=adata.var,
-        cols=adata.obs,
+        assays=layers,
+        rowData=adata.var,
+        colData=adata.obs,
         metadata=adata.uns,
         reducedDims=adata.obsm,
         rowpairs=adata.varp,
