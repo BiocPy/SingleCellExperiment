@@ -1,5 +1,3 @@
-import pytest
-
 from singlecellexperiment import SingleCellExperiment
 import numpy as np
 from random import random
@@ -68,7 +66,7 @@ def test_SCE_creation_with_alts():
         assays={"counts": counts},
         rowData=df_gr,
         colData=colData,
-        alterExps={"alt": tse},
+        altExps={"alt": tse},
     )
 
     assert tse is not None
