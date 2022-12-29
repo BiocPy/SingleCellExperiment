@@ -5,9 +5,7 @@ import numpy as np
 from random import random
 import pandas as pd
 from genomicranges import GenomicRanges
-from singlecellexperiment.SingleCellExperiment import (
-    SingleCellExperiment as sce,
-)
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 from summarizedexperiment import SummarizedExperiment
 
 __author__ = "jkanche"
@@ -43,11 +41,7 @@ df_gr = pd.DataFrame(
 
 gr = GenomicRanges.fromPandas(df_gr)
 
-colData = pd.DataFrame(
-    {
-        "treatment": ["ChIP", "Input"] * 3,
-    }
-)
+colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
 
 
 def test_SCE_slice():
@@ -67,9 +61,7 @@ def test_SCE_slice():
 
 def test_SCE_creation_with_alts_slice():
     trse = SummarizedExperiment(
-        assays={"counts": counts.copy()},
-        rowData=df_gr.copy(),
-        colData=colData.copy(),
+        assays={"counts": counts.copy()}, rowData=df_gr.copy(), colData=colData.copy(),
     )
 
     tsce = SingleCellExperiment(
@@ -88,7 +80,5 @@ def test_SCE_creation_with_alts_slice():
     assert len(tsce_slice.colData) == 3
 
     assert tsce_slice.assay("counts").shape == (10, 3)
-
     alt_exp = tsce_slice.altExps["alt"]
-
     assert alt_exp.shape == (10, 3)

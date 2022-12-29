@@ -43,7 +43,8 @@ class SingleCellExperiment(SummarizedExperiment):
         rowpairs: Optional[Union[np.ndarray, sp.spmatrix]] = None,
         colpairs: Optional[Union[np.ndarray, sp.spmatrix]] = None,
     ) -> None:
-        """Initialize a single-cell experiment class
+        """Initialize a single-cell experiment class.
+            Note: Validation checks do not apply to rowpairs, colpairs.
 
         Args:
             assays (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): dictionary of matrices,
@@ -52,47 +53,67 @@ class SingleCellExperiment(SummarizedExperiment):
             rowData (Union[pd.DataFrame, BiocFrame], optional): features, must be the same length as rows of the matrices in assays. Defaults to None.
             colData (Union[pd.DataFrame, BiocFrame], optional): cell data, must be the same length as the columns of the matrices in assays. Defaults to None.
             metadata (MutableMapping, optional): experiment metadata describing the methods. Defaults to None.
-            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]], optional): lower dimensionality embeddings. Defaults to None.
+            reducedDims (MutableMapping[str, np.ndarray], optional): lower dimensionality embeddings. Defaults to None.
             mainExperimentName (str, optional): main experiment name. Defaults to None.
             alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional): alternative experiments. Defaults to None.
             rowpairs (Union[np.ndarray, sp.spmatrix], optional): row pairings/relationships between features. Defaults to None.
             colpairs (Union[np.ndarray, sp.spmatrix], optional): col pairings/relationships between cells.  Defaults to None.
         """
-        super().__init__(
-            assays=assays, rowData=rowData, colData=colData, metadata=metadata
-        )
-
         self._reducedDims = reducedDims
         self._mainExperimentName = mainExperimentName
         self._altExps = altExps
         self._rowpairs = rowpairs
         self._colpairs = colpairs
 
+        super().__init__(
+            assays=assays, rowData=rowData, colData=colData, metadata=metadata
+        )
+
+    def _validate(self):
+        """Internal method to validate the object
+
+        Raises:
+            ValueError: when provided object does not contain columns of same length
+        """
+        super()._validate()
+
+        base_dims = self._shape
+
+        # check reducedDims
+        if self._reducedDims is not None:
+            for rdname, mat in self._reducedDims.items():
+                if not isinstance(mat, np.ndarray):
+                    raise TypeError(f"dimension: {rdname} is not a numpy ndarray")
+
+                if base_dims[1] != mat.shape[0]:
+                    raise ValueError(
+                        f"dimension: {rdname} does not contain embeddings for all cells. should be {base_dims[1]}, but provided {mat.shape[0]}"
+                    )
+
     @property
-    def reducedDims(self) -> MutableMapping[str, Union[np.ndarray, sp.spmatrix]]:
+    def reducedDims(self) -> MutableMapping[str, np.ndarray]:
         """Access lower dimensionality embeddings
 
         Returns:
-            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: all embeddings in the object
+            MutableMapping[str, np.ndarray]: all embeddings in the object
         """
         return self._reducedDims
 
     @reducedDims.setter
-    def reducedDims(
-        self, reducedDims: MutableMapping[str, Union[np.ndarray, sp.spmatrix]]
-    ):
+    def reducedDims(self, reducedDims: MutableMapping[str, np.ndarray]):
         """Set lower dimensionality embeddings
 
         Args:
-            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): new embeddings
+            reducedDims (MutableMapping[str, np.ndarray]): new embeddings
 
         Raises:
             TypeError: reducedDims is not a dictionary
         """
         if not isinstance(reducedDims, dict):
-            TypeError("reducedDims is not a dictionary like object")
+            raise TypeError("reducedDims is not a dictionary like object")
 
         self._reducedDims = reducedDims
+        self._validate()
 
     @property
     def mainExperimentName(self) -> Optional[str]:
@@ -125,7 +146,7 @@ class SingleCellExperiment(SummarizedExperiment):
 
         return None
 
-    def reducedDim(self, name: str) -> Union[np.ndarray, sp.spmatrix]:
+    def reducedDim(self, name: str) -> np.ndarray:
         """Access an embedding by name
 
         Args:
@@ -135,7 +156,7 @@ class SingleCellExperiment(SummarizedExperiment):
             ValueError: if embedding name does not exist
 
         Returns:
-            Union[np.ndarray, sp.spmatrix]: access the underlying numpy or scipy matrix
+            np.ndarray: access the underlying numpy or scipy matrix
         """
         if name not in self._reducedDims:
             raise ValueError(f"Embedding: {name} does not exist")
@@ -176,7 +197,7 @@ class SingleCellExperiment(SummarizedExperiment):
             Optional[MutableMapping[str, Union["SingleCellExperiment", SummarizedExperiment, RangeSummarizedExperiment,]]]: alternative experiments
         """
         if not isinstance(altExps, dict):
-            TypeError("altExps is not a dictionary like object")
+            raise TypeError("altExps is not a dictionary like object")
 
         self._altExps = altExps
 
@@ -219,7 +240,7 @@ class SingleCellExperiment(SummarizedExperiment):
         """
 
         if not isinstance(pairs, dict):
-            TypeError("rowpairs is not a dictionary like object")
+            raise TypeError("rowpairs is not a dictionary like object")
 
         self._rowpairs = pairs
 
@@ -240,7 +261,7 @@ class SingleCellExperiment(SummarizedExperiment):
             MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: new col pairs
         """
         if not isinstance(pairs, dict):
-            TypeError("colpairs is not a dictionary like object")
+            raise TypeError("colpairs is not a dictionary like object")
 
         self._colpairs = pairs
 
