@@ -1,10 +1,22 @@
 # Tutorial
 
-`SingleCellExperiment` is a container class to represent data from single-cell experiments. Methods are available to convert between AnnData and SCE, slots for lower dimentionality embeddings, feature and cell pairings etc. For more detailed description checkout the [Bioc SingleCellExperiment R package](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html))
+Container class to represent single-cell experiments; follows Bioconductor's [SingleCellExperiment](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html).
 
-## Mock data 
+# Import as `SingleCellExperiment`
 
-we first create a mock dataset of 200 rows and 6 columns, also adding a cell annotations.
+Readers are available to parse AnnData, H5AD or 10x (MTX, H5) V3 formats as `SingleCellExperiment` objects.
+
+```python
+import singlecellexperiment
+
+sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+```
+
+Similarly `read10xH5`, `read10xMTX` and `fromAnnData` methods are  available to read various formats.
+
+# Construct a `SingleCellExperiment` object
+
+Similar to `SummarizedExperiment`, In addition to assays, row data and column data, a SingleCellExperiment object can contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.
 
 ```python
 import pandas as pd
@@ -46,7 +58,7 @@ colData = pd.DataFrame(
 )
 ```
 
-### `SingleCellExperiment`
+Finally construct the object,
 
 ```python
 from singlecellexperiment import SingleCellExperiment
@@ -56,23 +68,23 @@ tse = SingleCellExperiment(
 )
 ```
 
-### Accessors
+# Accessors
 
 Multiple methods are available to access various slots of a `SingleCellExperiment` object
 
 ```python
-tse.assays()
-tse.rowData()
-tse.colData()
-tse.ReducedDims()
-tse.altExps()
-tse.rowPairs()
-tse.colPairs()
+tse.assays
+tse.rowData
+tse.colData
+tse.ReducedDims
+tse.altExps
+tse.rowPairs
+tse.colPairs
 ```
 
 ### Access specific sets
 
-For reduced dimension and alternative experiment slots, one can also access specific keys
+For reduced dimension and alternative experiment slots, one can also access specific objects
 
 ```python
 tse.reducedDim("tSNE")
@@ -80,28 +92,18 @@ tse.reducedDim("tSNE")
 tse.altExp("crop-seq")
 ```
 
-## Subset experiment
+# Subset experiment
 
-Currently, the package provides methods to subset by indices
+Similar to `SummarizedExperiment`, you can subset by index
 
 ```python
 # subset the first 10 rows and the first 3 samples
 subset_tse = tse[0:10, 0:3]
 ```
 
-## Export and import AnnData objects
+# Export as AnnData objects
 
-Methods are available to also transform `AnnData` objects to `SCE`
-
-To import
-
-```python
-from singlecellexperiment import fromAnnData
-
-tse = fromAnnData(<AnnData object>)
-```
-
-To export
+Methods are available to convert `SingleCellExperiment` objects as `AnnData`
 
 ```python
 adata = tse.toAnnData()

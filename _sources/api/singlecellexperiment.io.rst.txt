@@ -1,0 +1,29 @@
+singlecellexperiment.io package
+===============================
+
+Submodules
+----------
+
+singlecellexperiment.io.anndata module
+--------------------------------------
+
+.. automodule:: singlecellexperiment.io.anndata
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+singlecellexperiment.io.tenx module
+-----------------------------------
+
+.. automodule:: singlecellexperiment.io.tenx
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: singlecellexperiment.io
+   :members:
+   :undoc-members:
+   :show-inheritance:

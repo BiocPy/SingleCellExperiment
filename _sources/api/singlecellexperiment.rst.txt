@@ -1,6 +1,14 @@
 singlecellexperiment package
 ============================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   singlecellexperiment.io
+
 Submodules
 ----------
 
@@ -8,14 +16,6 @@ singlecellexperiment.SingleCellExperiment module
 ------------------------------------------------
 
 .. automodule:: singlecellexperiment.SingleCellExperiment
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-singlecellexperiment.interface module
--------------------------------------
-
-.. automodule:: singlecellexperiment.interface
    :members:
    :undoc-members:
    :show-inheritance:
