@@ -21,4 +21,5 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from .interface import SingleCellExperiment
+from .io.anndata import fromAnnData, fromH5AD
+from .SingleCellExperiment import SingleCellExperiment
