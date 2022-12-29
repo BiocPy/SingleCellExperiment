@@ -56,6 +56,7 @@ def test_SCE_toAnnData():
     assert adata is not None
     assert isinstance(adata, anndata.AnnData)
 
+
 def test_SCE_fromH5AD():
     tse = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
 
@@ -66,7 +67,7 @@ def test_SCE_fromH5AD():
     assert tse.rowData is not None
     assert tse.colData is not None
 
-    #slice
+    # slice
     sliced = tse[0:10, 1:5]
 
     assert sliced is not None
@@ -78,6 +79,7 @@ def test_SCE_fromH5AD():
 
     assert sliced.shape == (10, 4)
 
+
 def test_SCE_from10xH5():
     tse = singlecellexperiment.read10xH5("tests/data/tenx.sub.h5")
 
@@ -88,7 +90,7 @@ def test_SCE_from10xH5():
     assert tse.rowData is not None
     assert tse.colData is None
 
-    #slice
+    # slice
     sliced = tse[0:10, 1:5]
 
     assert sliced is not None
