@@ -92,7 +92,7 @@ tse.reducedDim("tSNE")
 tse.altExp("crop-seq")
 ```
 
-## Subset experiment
+# Subset experiment
 
 Similar to `SummarizedExperiment`, you can subset by index
 
@@ -101,7 +101,7 @@ Similar to `SummarizedExperiment`, you can subset by index
 subset_tse = tse[0:10, 0:3]
 ```
 
-## Export as AnnData objects
+# Export as AnnData objects
 
 Methods are available to convert `SingleCellExperiment` objects as `AnnData`
 
