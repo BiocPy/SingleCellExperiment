@@ -32,7 +32,7 @@ def fromAnnData(adata: anndata.AnnData) -> SingleCellExperiment:
     )
 
 
-def fromH5AD(path: str) -> SingleCellExperiment:
+def readH5AD(path: str) -> SingleCellExperiment:
     """Convert H5AD file to SingleCellExperiment
 
     Args:

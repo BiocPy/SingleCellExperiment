@@ -4,7 +4,6 @@ from random import random
 import pandas as pd
 from genomicranges import GenomicRanges
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
-from summarizedexperiment import SummarizedExperiment
 
 import anndata
 import pytest
@@ -58,7 +57,7 @@ def test_SCE_toAnnData():
     assert isinstance(adata, anndata.AnnData)
 
 def test_SCE_fromH5AD():
-    tse = singlecellexperiment.fromH5AD("tests/data/adata.h5ad")
+    tse = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
@@ -76,5 +75,27 @@ def test_SCE_fromH5AD():
     assert sliced.assays is not None
     assert sliced.rowData is not None
     assert sliced.colData is not None
+
+    assert sliced.shape == (10, 4)
+
+def test_SCE_from10xH5():
+    tse = singlecellexperiment.read10xH5("tests/data/tenx.sub.h5")
+
+    assert tse is not None
+    assert isinstance(tse, SingleCellExperiment)
+
+    assert tse.assays is not None
+    assert tse.rowData is not None
+    assert tse.colData is None
+
+    #slice
+    sliced = tse[0:10, 1:5]
+
+    assert sliced is not None
+    assert isinstance(sliced, SingleCellExperiment)
+
+    assert sliced.assays is not None
+    assert sliced.rowData is not None
+    assert sliced.colData is None
 
     assert sliced.shape == (10, 4)
