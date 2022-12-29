@@ -5,9 +5,7 @@ import numpy as np
 from random import random
 import pandas as pd
 from genomicranges import GenomicRanges
-from singlecellexperiment.SingleCellExperiment import (
-    SingleCellExperiment as sce,
-)
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 from summarizedexperiment import SummarizedExperiment
 
 __author__ = "jkanche"
@@ -43,11 +41,7 @@ df_gr = pd.DataFrame(
 
 gr = GenomicRanges.fromPandas(df_gr)
 
-colData = pd.DataFrame(
-    {
-        "treatment": ["ChIP", "Input"] * 3,
-    }
-)
+colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
 
 
 def test_SCE_slice():
@@ -59,24 +53,22 @@ def test_SCE_slice():
     assert tse_slice is not None
     assert isinstance(tse_slice, sce)
 
-    assert len(tse_slice.rowData()) == 10
-    assert len(tse_slice.colData()) == 3
+    assert len(tse_slice.rowData) == 10
+    assert len(tse_slice.colData) == 3
 
-    assert tse_slice.assays()["counts"].shape == (10, 3)
+    assert tse_slice.assay("counts").shape == (10, 3)
 
 
 def test_SCE_creation_with_alts_slice():
     trse = SummarizedExperiment(
-        assays={"counts": counts.copy()},
-        rowData=df_gr.copy(),
-        colData=colData.copy(),
+        assays={"counts": counts.copy()}, rowData=df_gr.copy(), colData=colData.copy(),
     )
 
     tsce = SingleCellExperiment(
         assays={"counts": counts},
         rowData=df_gr,
         colData=colData,
-        alterExps={"alt": trse},
+        altExps={"alt": trse},
     )
 
     tsce_slice = tsce[0:10, 0:3]
@@ -84,14 +76,9 @@ def test_SCE_creation_with_alts_slice():
     assert tsce_slice is not None
     assert isinstance(tsce_slice, sce)
 
-    assert len(tsce_slice.rowData()) == 10
-    assert len(tsce_slice.colData()) == 3
+    assert len(tsce_slice.rowData) == 10
+    assert len(tsce_slice.colData) == 3
 
-    assert tsce_slice.assays()["counts"].shape == (10, 3)
-
-    alt_exp = tsce_slice.altExps()["alt"]
-
-    print(alt_exp)
-    print("alt_assays", alt_exp.assays())
-
+    assert tsce_slice.assay("counts").shape == (10, 3)
+    alt_exp = tsce_slice.altExps["alt"]
     assert alt_exp.shape == (10, 3)
