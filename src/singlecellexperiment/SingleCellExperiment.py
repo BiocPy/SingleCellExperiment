@@ -276,6 +276,27 @@ class SingleCellExperiment(SummarizedExperiment):
 
         self._colpairs = pairs
 
+    def __str__(self) -> str:
+        pattern = """
+        Class SingleCellExperiment with {} features and {} cells
+          mainExperimentName: {}
+          assays: {}
+          features: {}
+          cell metadata: {}
+          reduced dimensions: {}
+          alternative experiments: {}
+        """
+        return pattern.format(
+            self.shape[0],
+            self.shape[1],
+            self._mainExperimentName if self._mainExperimentName is not None else None,
+            list(self._assays.keys()),
+            self._rows.columns if self._rows is not None else None,
+            self._cols.columns if self._cols is not None else None,
+            self.reducedDimNames if self._reducedDims is not None else None,
+            list(self._altExps.keys()) if self._altExps is not None else None,
+        )
+
     def _slice(
         self,
         args: Tuple[Union[Sequence[int], slice], Optional[Union[Sequence[int], slice]]],
@@ -333,7 +354,7 @@ class SingleCellExperiment(SummarizedExperiment):
             for rdname, embeds in self._reducedDims.items():
                 sliced_embeds = None
                 if isinstance(embeds, pd.DataFrame):
-                    sliced_embeds =  embeds.iloc[colIndices]
+                    sliced_embeds = embeds.iloc[colIndices]
                 else:
                     sliced_embeds = embeds[colIndices, :]
 

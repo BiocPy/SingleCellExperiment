@@ -21,6 +21,9 @@ def fromAnnData(adata: anndata.AnnData) -> SingleCellExperiment:
     for asy, mat in adata.layers.items():
         layers[asy] = mat.transpose()
 
+    if adata.X is not None:
+        layers["X"] = adata.X.transpose()
+
     return SingleCellExperiment(
         assays=layers,
         rowData=adata.var,

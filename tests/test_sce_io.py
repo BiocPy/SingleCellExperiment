@@ -101,3 +101,22 @@ def test_SCE_from10xH5():
     assert sliced.colData is None
 
     assert sliced.shape == (10, 4)
+
+
+def test_SCE_randomAnnData():
+    np.random.seed(1)
+
+    n, d, k = 1000, 100, 10
+
+    z = np.random.normal(loc=np.arange(k), scale=np.arange(k) * 2, size=(n, k))
+    w = np.random.normal(size=(d, k))
+    y = np.dot(z, w.T)
+
+    adata = anndata.AnnData(y)
+    adata.obs_names = [f"obs_{i+1}" for i in range(n)]
+    adata.var_names = [f"var_{j+1}" for j in range(d)]
+
+    tse = singlecellexperiment.fromAnnData(adata)
+
+    assert tse is not None
+    assert isinstance(tse, SingleCellExperiment)
