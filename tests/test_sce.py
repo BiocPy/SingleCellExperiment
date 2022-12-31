@@ -2,7 +2,7 @@ from singlecellexperiment import SingleCellExperiment
 import numpy as np
 from random import random
 import pandas as pd
-from genomicranges import GenomicRanges
+import genomicranges
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 from summarizedexperiment import SummarizedExperiment
 
@@ -37,7 +37,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = GenomicRanges.fromPandas(df_gr)
+gr = genomicranges.fromPandas(df_gr)
 
 colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
 
