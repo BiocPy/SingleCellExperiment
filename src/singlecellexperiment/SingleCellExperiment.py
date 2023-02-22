@@ -96,6 +96,14 @@ class SingleCellExperiment(SummarizedExperiment):
                         f"dimension: {rdname} does not contain embeddings for all cells. should be {base_dims[1]}, but provided {mat.shape[0]}"
                     )
 
+        # check altExps dimensions, they must contain the same number of cells
+        if self._altExps is not None:
+            for altName, altExp in self._altExps.items():
+                if base_dims[1] != altExp.shape[1]:
+                    raise ValueError(
+                        f"dimension: {altName} does not contain same number of cells. should be {base_dims[1]}, but provided {altExp.shape[1]}"
+                    )
+
     @property
     def reducedDims(
         self,
@@ -211,6 +219,7 @@ class SingleCellExperiment(SummarizedExperiment):
             raise TypeError("altExps is not a dictionary like object")
 
         self._altExps = altExps
+        self._validate()
 
     def altExp(
         self, name: str
