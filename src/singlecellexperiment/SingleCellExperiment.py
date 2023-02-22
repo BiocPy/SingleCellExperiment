@@ -1,5 +1,6 @@
 from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 from summarizedexperiment.RangeSummarizedExperiment import RangeSummarizedExperiment
+from genomicranges.GenomicRanges import GenomicRanges
 from biocframe import BiocFrame
 
 from typing import Union, MutableMapping, Optional, Sequence, Tuple
@@ -404,12 +405,18 @@ class SingleCellExperiment(SummarizedExperiment):
             self._colpairs,
         )
 
-    def toAnnData(self) -> anndata.AnnData:
+    def toAnnData(
+        self, alts: bool = False
+    ) -> Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]:
         """Transform `SingleCellExperiment` objects to `AnnData`, 
             Note: ignores alternative experiments.
 
+        Args:
+            alts (bool, optional): Also convert 
+
         Returns:
-            anndata.AnnData: returns an AnnData representation
+            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]: returns an AnnData representation, 
+                if alts is true, a dictionary of anndata objects with their alternative experiment names
         """
 
         # adatas = OrderedDict()
@@ -418,9 +425,13 @@ class SingleCellExperiment(SummarizedExperiment):
         for asy, mat in self.assays.items():
             layers[asy] = mat.transpose()
 
+        trows = self.rowData
+        if isinstance(self.rowData, GenomicRanges):
+            trows = self.rowData.toPandas()
+
         obj = anndata.AnnData(
             obs=self.colData,
-            var=self.rowData,
+            var=trows,
             uns=self.metadata,
             obsm=self.reducedDims,
             layers=layers,
@@ -433,9 +444,11 @@ class SingleCellExperiment(SummarizedExperiment):
         #     name = self.mainExperimentName
 
         # adatas[name] = obj
+        if alts is True and self._altExps is not None:
+            adatas = {}
+            for altName, altExp in self._altExps.items():
+                adatas[altName] = altExp.toAnnData()
 
-        # if self._altExps is not None:
-        #     for ae in self._altExps.keys():
-        #         adatas[ae] = self._altExps[ae].toAnnData()
+            return obj, adatas
 
         return obj
