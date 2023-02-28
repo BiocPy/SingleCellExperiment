@@ -6,6 +6,7 @@ import genomicranges
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import anndata
+from mudata import MuData
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -119,3 +120,16 @@ def test_SCE_randomAnnData():
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
+
+
+def test_SCE_toMuData():
+    tse = SingleCellExperiment(
+        assays={"counts": counts}, rowData=df_gr, colData=colData
+    )
+
+    assert tse is not None
+    assert isinstance(tse, SingleCellExperiment)
+
+    result = tse.toMuData()
+    assert result is not None
+    assert isinstance(result, MuData)

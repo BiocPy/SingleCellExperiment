@@ -11,6 +11,8 @@ import pandas as pd
 import anndata
 from collections import OrderedDict
 
+from mudata import MuData
+
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
@@ -408,18 +410,15 @@ class SingleCellExperiment(SummarizedExperiment):
     def toAnnData(
         self, alts: bool = False
     ) -> Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]:
-        """Transform `SingleCellExperiment` objects to `AnnData`, 
-            Note: ignores alternative experiments.
+        """Transform `SingleCellExperiment` object to `AnnData`.
 
         Args:
-            alts (bool, optional): Also convert 
+            alts (bool, optional): Also convert alternative experiments
 
         Returns:
             Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]: returns an AnnData representation, 
                 if alts is true, a dictionary of anndata objects with their alternative experiment names
         """
-
-        # adatas = OrderedDict()
 
         layers = OrderedDict()
         for asy, mat in self.assays.items():
@@ -439,16 +438,39 @@ class SingleCellExperiment(SummarizedExperiment):
             obsp=self.colPairs,
         )
 
-        # name = "main_experiment"
-        # if self.mainExperimentName is not None:
-        #     name = self.mainExperimentName
-
-        # adatas[name] = obj
-        if alts is True and self._altExps is not None:
-            adatas = {}
-            for altName, altExp in self._altExps.items():
-                adatas[altName] = altExp.toAnnData()
+        if alts is True:
+            adatas = None
+            if self._altExps is not None:
+                adatas = {}
+                for altName, altExp in self._altExps.items():
+                    adatas[altName] = altExp.toAnnData()
 
             return obj, adatas
 
         return obj
+
+    def toMuData(self) -> MuData:
+        """Transform `SingleCellExperiment` object to `MuData`.
+
+        Returns:
+            MuData: MuData representation
+        """
+        mainData, altData = self.toAnnData(alts=True)
+
+        print(mainData, altData)
+
+        expts = OrderedDict()
+
+        mainName = self.mainExperimentName
+        if self.mainExperimentName is None:
+            mainName = "Unknown Modality"
+
+        expts[mainName] = mainData
+
+        if altData is not None:
+            for exptName, expt in altData.items():
+                expts[exptName] = expt
+
+        print("mudata expts", expts)
+
+        return MuData(expts)
