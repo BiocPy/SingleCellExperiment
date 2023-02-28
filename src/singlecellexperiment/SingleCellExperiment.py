@@ -457,10 +457,7 @@ class SingleCellExperiment(SummarizedExperiment):
         """
         mainData, altData = self.toAnnData(alts=True)
 
-        print(mainData, altData)
-
         expts = OrderedDict()
-
         mainName = self.mainExperimentName
         if self.mainExperimentName is None:
             mainName = "Unknown Modality"
@@ -470,7 +467,5 @@ class SingleCellExperiment(SummarizedExperiment):
         if altData is not None:
             for exptName, expt in altData.items():
                 expts[exptName] = expt
-
-        print("mudata expts", expts)
 
         return MuData(expts)
