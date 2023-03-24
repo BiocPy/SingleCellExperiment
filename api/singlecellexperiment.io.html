@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="singlecellexperiment package" href="singlecellexperiment.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>singlecellexperiment.io package - SingleCellExperiment 0.2.4 documentation</title>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.23 -->
+        <title>singlecellexperiment.io package - SingleCellExperiment 0.2.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.2.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.2.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.2.4 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.2.5 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -216,13 +216,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="singlecellexperiment.io.anndata.fromAnnData">
 <span class="sig-prename descclassname"><span class="pre">singlecellexperiment.io.anndata.</span></span><span class="sig-name descname"><span class="pre">fromAnnData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AnnData</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/io/anndata.html#fromAnnData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.io.anndata.fromAnnData" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert AnnData object to SingleCellExperiment</p>
+<dd><p>Convert <cite>AnnData</cite> object to <cite>SingleCellExperiment</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>adata</strong> (<em>AnnData</em>) – AnnData object</p>
+<dd class="field-odd"><p><strong>adata</strong> (<em>AnnData</em>) – <cite>AnnData</cite> object.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>single-cell experiment object</p>
+<dd class="field-even"><p>single-cell experiment object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment">SingleCellExperiment</a></p>
@@ -233,19 +233,24 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="singlecellexperiment.io.anndata.readH5AD">
 <span class="sig-prename descclassname"><span class="pre">singlecellexperiment.io.anndata.</span></span><span class="sig-name descname"><span class="pre">readH5AD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/io/anndata.html#readH5AD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.io.anndata.readH5AD" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert H5AD file to SingleCellExperiment</p>
+<dd><p>Convert H5AD file to <cite>SingleCellExperiment</cite>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to a H5AD file</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to a H5AD file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>single-cell experiment object</p>
+<dd class="field-even"><p>single-cell experiment object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment">SingleCellExperiment</a></p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="singlecellexperiment.io.anndata.toNormalDict">
+<span class="sig-prename descclassname"><span class="pre">singlecellexperiment.io.anndata.</span></span><span class="sig-name descname"><span class="pre">toNormalDict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/io/anndata.html#toNormalDict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.io.anndata.toNormalDict" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-singlecellexperiment.io.tenx">
@@ -256,10 +261,10 @@
 <dd><p>Read 10x H5 file. Must be V3 format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to 10x H5 file directory</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to 10x H5 file directory.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <cite>SingleCellExperiment</cite> object</p>
+<dd class="field-even"><p>A <cite>SingleCellExperiment</cite> object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment">SingleCellExperiment</a></p>
@@ -273,10 +278,10 @@
 <dd><p>Read 10x Matrix market directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to 10x mtx directory</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – path to 10x mtx directory.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <cite>SingleCellExperiment</cite> object</p>
+<dd class="field-even"><p>A <cite>SingleCellExperiment</cite> object.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment">SingleCellExperiment</a></p>
@@ -342,6 +347,7 @@
 <li><a class="reference internal" href="#module-singlecellexperiment.io.anndata">singlecellexperiment.io.anndata module</a><ul>
 <li><a class="reference internal" href="#singlecellexperiment.io.anndata.fromAnnData"><code class="docutils literal notranslate"><span class="pre">fromAnnData()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.io.anndata.readH5AD"><code class="docutils literal notranslate"><span class="pre">readH5AD()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.io.anndata.toNormalDict"><code class="docutils literal notranslate"><span class="pre">toNormalDict()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-singlecellexperiment.io.tenx">singlecellexperiment.io.tenx module</a><ul>

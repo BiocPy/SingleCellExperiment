@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.2.4 documentation</title>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.23 -->
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.2.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.2.4 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.2.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.2.4 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.2.5 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -227,7 +227,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment">[docs]</a><span class="k">class</span> <span class="nc">SingleCellExperiment</span><span class="p">(</span><span class="n">SummarizedExperiment</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Container class for single-cell experiments. Extends `SummarizedExperiment`</span>
-<span class="sd">    to provide slots for lower dimensionality embeddings and alternative experiments.</span>
+<span class="sd">    to provide slots for embeddings and alternative experiments.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -252,122 +252,231 @@
         <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">rowpairs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">colpairs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">typeCheckAlts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a single-cell experiment class.</span>
-<span class="sd">            Note: Validation checks do not apply to rowpairs, colpairs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a single-cell experiment.</span>
+
+<span class="sd">        This extends `SummarizedExperiment` and provides additional slots to</span>
+<span class="sd">        store embeddings, alternative experiments, rowpairs and colpairs.</span>
+
+<span class="sd">        Unlike R, numpy or scipy matrices do not have a notion of rownames</span>
+<span class="sd">        and colnames. Hence, these matrices cannot be directly used as values either in</span>
+<span class="sd">        assays or alternative experiments. Currently we strictily enforce type check in</span>
+<span class="sd">        these cases. To relax these restrictions for alternative experiments, set </span>
+<span class="sd">        `typeCheckAlts` to `False`.</span>
+
+<span class="sd">        One generally expects the same cells across all assays and alternative</span>
+<span class="sd">         experiments.</span>
+
+<span class="sd">        Note: Validation checks do not apply to rowpairs, colpairs.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            assays (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): dictionary of matrices,</span>
-<span class="sd">                with assay names as keys and matrices represented as dense (numpy) or sparse (scipy) matrices.</span>
-<span class="sd">                All matrices across assays must have the same dimensions (number of rows, number of columns).</span>
-<span class="sd">            rowData (Union[pd.DataFrame, BiocFrame], optional): features, must be the same length as rows of the matrices in assays. Defaults to None.</span>
-<span class="sd">            colData (Union[pd.DataFrame, BiocFrame], optional): cell data, must be the same length as the columns of the matrices in assays. Defaults to None.</span>
-<span class="sd">            metadata (MutableMapping, optional): experiment metadata describing the methods. Defaults to None.</span>
-<span class="sd">            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]], optional): lower dimensionality embeddings. Defaults to None.</span>
+<span class="sd">            assays (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): dictionary </span>
+<span class="sd">                of matrices, with assay names as keys and matrices represented as dense </span>
+<span class="sd">                (numpy) or sparse (scipy) matrices. All matrices across assays must </span>
+<span class="sd">                have the same dimensions (number of rows, number of columns).</span>
+<span class="sd">            rowData (GenomicRanges, optional): features, must be the same length as </span>
+<span class="sd">                rows of the matrices in assays. Defaults to None.</span>
+<span class="sd">            colData (Union[pd.DataFrame, BiocFrame], optional): sample data, must be </span>
+<span class="sd">                the same length as rows of the matrices in assays. Defaults to None.</span>
+<span class="sd">            metadata (MutableMapping, optional): experiment metadata describing the </span>
+<span class="sd">                methods. Defaults to None.</span>
+<span class="sd">            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]], optional): </span>
+<span class="sd">                lower dimensionality embeddings. Defaults to None.</span>
 <span class="sd">            mainExperimentName (str, optional): main experiment name. Defaults to None.</span>
-<span class="sd">            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional): alternative experiments. Defaults to None.</span>
-<span class="sd">            rowpairs (Union[np.ndarray, sp.spmatrix], optional): row pairings/relationships between features. Defaults to None.</span>
-<span class="sd">            colpairs (Union[np.ndarray, sp.spmatrix], optional): col pairings/relationships between cells.  Defaults to None.</span>
+<span class="sd">            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional): </span>
+<span class="sd">                similar to assays, dictionary of alternative experiments with names as </span>
+<span class="sd">                keys. You would usually use this for multi-modal experiments performed </span>
+<span class="sd">                on the same sample (so all these experiments contain the same cells). Defaults to None.</span>
+<span class="sd">            rowpairs (Union[np.ndarray, sp.spmatrix], optional): row </span>
+<span class="sd">                pairings/relationships between features. Defaults to None.</span>
+<span class="sd">            colpairs (Union[np.ndarray, sp.spmatrix], optional): col </span>
+<span class="sd">                pairings/relationships between cells.  Defaults to None.</span>
+<span class="sd">            typeCheckAlts (bool): strict type checking for alternative experiments. All </span>
+<span class="sd">                alternative experiments must be a derivative of `SummarizedExperiment`.</span>
+<span class="sd">                Defaults to True.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="o">=</span> <span class="n">reducedDims</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span> <span class="o">=</span> <span class="n">mainExperimentName</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span> <span class="o">=</span> <span class="n">altExps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rowpairs</span> <span class="o">=</span> <span class="n">rowpairs</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_colpairs</span> <span class="o">=</span> <span class="n">colpairs</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">assays</span><span class="o">=</span><span class="n">assays</span><span class="p">,</span> <span class="n">rowData</span><span class="o">=</span><span class="n">rowData</span><span class="p">,</span> <span class="n">colData</span><span class="o">=</span><span class="n">colData</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to validate the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_reducedDims</span><span class="p">(</span><span class="n">reducedDims</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="o">=</span> <span class="n">reducedDims</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span> <span class="o">=</span> <span class="n">mainExperimentName</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_altExpts</span><span class="p">(</span><span class="n">altExps</span><span class="p">,</span> <span class="n">typeCheckAlts</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_typeCheckAlts</span> <span class="o">=</span> <span class="n">typeCheckAlts</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span> <span class="o">=</span> <span class="n">altExps</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">rowpairs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rowpairs</span> <span class="o">=</span> <span class="n">rowpairs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">colpairs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_colpairs</span> <span class="o">=</span> <span class="n">colpairs</span>
+
+    <span class="k">def</span> <span class="nf">_validate_reducedDims</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">reducedDims</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate reduced dimensions. all dimensions must contain embeddings for </span>
+<span class="sd">        all cells.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): </span>
+<span class="sd">                embeddings to validate.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: when provided object does not contain columns of same length</span>
+<span class="sd">            TypeError: If embeddings are not a matrix (numpy, scipy) or pandas </span>
+<span class="sd">                Dataframe.</span>
+<span class="sd">            TypeError: If reducedDims is not a dictionary like object.</span>
+<span class="sd">            ValueError: length of dimensions do not match the number of cells.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reducedDims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reducedDims</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;reducedDims is not a dictionary like object&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">rdname</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">reducedDims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">))):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2"> must be either a numpy ndarray, scipy &quot;</span>
+                        <span class="s2">&quot;matrix or a pandas DataFrame&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2"> does not contain embeddings for all cells&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;. should be </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, but provided </span><span class="si">{</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_validate_altExpts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">altExps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">MutableMapping</span><span class="p">[</span>
+                <span class="nb">str</span><span class="p">,</span>
+                <span class="n">Union</span><span class="p">[</span>
+                    <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">,</span>
+                    <span class="n">SummarizedExperiment</span><span class="p">,</span>
+                    <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
+                <span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">],</span>
+        <span class="n">typeCheckAlts</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate alternative experiments and optionally their types.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            altExps (MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]], optional): </span>
+<span class="sd">                similar to assays, dictionary of alternative experiments with names as </span>
+<span class="sd">                keys.</span>
+<span class="sd">            typeCheckAlts (bool): strict type checking for alternative experiments.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: if alternative experiments do not contain the same number of</span>
+<span class="sd">                cells.</span>
+<span class="sd">            TypeError: if alternative experiments is not a derivative of </span>
+<span class="sd">                `SummarizedExperiment`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">altExps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">altExps</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;altExps is not a dictionary like object&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">altName</span><span class="p">,</span> <span class="n">altExp</span> <span class="ow">in</span> <span class="n">altExps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">altExp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">altName</span><span class="si">}</span><span class="s2"> does not contain same number of cells.&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; should be </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, but provided </span><span class="si">{</span><span class="n">altExp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">typeCheckAlts</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">altExp</span><span class="p">,</span> <span class="n">SummarizedExperiment</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;alternative experiment </span><span class="si">{</span><span class="n">altName</span><span class="si">}</span><span class="s2"> is not a derivative of &quot;</span>
+                            <span class="s2">&quot;`SummarizedExperiment`&quot;</span>
+                        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_validate_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate row and column pairs.</span>
+
+<span class="sd">        Currently only checks if they are dictionary like objects.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pairs (Optional[Union[np.ndarray, sp.spmatrix]]): pair to validate.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            TypeError: if pairs is not a dictionary like object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;pair is not a dictionary like object&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to validate the object.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: when provided object does not contain columns of same length.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
 
-        <span class="n">base_dims</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>
-
-        <span class="c1"># check reducedDims</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">rdname</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
-                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
-                <span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2"> must be either a numpy ndarray, scipy matrix or a pandas DataFrame&quot;</span>
-                    <span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">base_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2"> does not contain embeddings for all cells. should be </span><span class="si">{</span><span class="n">base_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, but provided </span><span class="si">{</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
-
-        <span class="c1"># check altExps dimensions, they must contain the same number of cells</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">altName</span><span class="p">,</span> <span class="n">altExp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">base_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">altExp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;dimension: </span><span class="si">{</span><span class="n">altName</span><span class="si">}</span><span class="s2"> does not contain same number of cells. should be </span><span class="si">{</span><span class="n">base_dims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, but provided </span><span class="si">{</span><span class="n">altExp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
-                    <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_reducedDims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_altExpts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_typeCheckAlts</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reducedDims</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access lower dimensionality embeddings</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access dimensionality embeddings.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]: all embeddings in the object</span>
+<span class="sd">            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]]: </span>
+<span class="sd">            all embeddings in the object. None if not available.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span>
 
     <span class="nd">@reducedDims</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">reducedDims</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">reducedDims</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]],</span>
+        <span class="n">reducedDims</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]]</span>
+        <span class="p">],</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set lower dimensionality embeddings</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set dimensionality embeddings.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]): new embeddings</span>
+<span class="sd">            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]], optional): </span>
+<span class="sd">                new embeddings to set. Can be None.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: reducedDims is not a dictionary</span>
+<span class="sd">            TypeError: reducedDims is not a dictionary.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reducedDims</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;reducedDims is not a dictionary like object&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_reducedDims</span><span class="p">(</span><span class="n">reducedDims</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="o">=</span> <span class="n">reducedDims</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">mainExperimentName</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access main experiment name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access main experiment name.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[str]: name if available</span>
+<span class="sd">            Optional[str]: name if available.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span>
 
     <span class="nd">@mainExperimentName</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">mainExperimentName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set main experiment name</span>
+    <span class="k">def</span> <span class="nf">mainExperimentName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set main experiment name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): experiment name</span>
+<span class="sd">            name (Optional[str]): experiment name.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reducedDimNames</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access names of lower dimensionality embeddings</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access names of dimensionality embeddings.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[Sequence[str]]: all embeddings names</span>
+<span class="sd">            Optional[Sequence[str]]: all embeddings names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -375,17 +484,18 @@
 
         <span class="k">return</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="SingleCellExperiment.reducedDim"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reducedDim">[docs]</a>    <span class="k">def</span> <span class="nf">reducedDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access an embedding by name</span>
+<div class="viewcode-block" id="SingleCellExperiment.reducedDim"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reducedDim">[docs]</a>    <span class="k">def</span> <span class="nf">reducedDim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access an embedding by name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): name of the embedding</span>
+<span class="sd">            name (str): name of the embedding.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: if embedding name does not exist</span>
+<span class="sd">            ValueError: if embedding name does not exist.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            np.ndarray: access the underlying numpy or scipy matrix</span>
+<span class="sd">            Union[np.ndarray, sp.spmatrix, pd.DataFrame]: access the underlying </span>
+<span class="sd">            numpy or scipy matrix.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
@@ -403,10 +513,11 @@
             <span class="p">],</span>
         <span class="p">]</span>
     <span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiments</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiments.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[MutableMapping[str, Union[&quot;SingleCellExperiment&quot;, SummarizedExperiment, RangeSummarizedExperiment,]]]: alternative experiments</span>
+<span class="sd">            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]: </span>
+<span class="sd">            alternative experiments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span>
 
@@ -420,32 +531,31 @@
             <span class="p">],</span>
         <span class="p">],</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set alternative experiments</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set alternative experiments.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[MutableMapping[str, Union[&quot;SingleCellExperiment&quot;, SummarizedExperiment, RangeSummarizedExperiment,]]]: alternative experiments</span>
+<span class="sd">            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]: </span>
+<span class="sd">            alternative experiments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">altExps</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;altExps is not a dictionary like object&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_altExpts</span><span class="p">(</span><span class="n">altExps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_typeCheckAlts</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span> <span class="o">=</span> <span class="n">altExps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate</span><span class="p">()</span>
 
 <div class="viewcode-block" id="SingleCellExperiment.altExp"><a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.altExp">[docs]</a>    <span class="k">def</span> <span class="nf">altExp</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span>
         <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">,</span> <span class="n">SummarizedExperiment</span><span class="p">,</span> <span class="n">RangeSummarizedExperiment</span><span class="p">,</span>
     <span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment by name</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment by name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            name (str): name of the alternative experiment</span>
+<span class="sd">            name (str): name of the alternative experiment.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: name does not exist</span>
+<span class="sd">            ValueError: name does not exist.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Union[&quot;SingleCellExperiment&quot;, SummarizedExperiment, RangeSummarizedExperiment]: alternative experiment</span>
+<span class="sd">            Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]:</span>
+<span class="sd">             alternative experiment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alt. Experiment </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
@@ -457,64 +567,51 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access row pairings/relationships between features.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access rowpairs</span>
+<span class="sd">            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access rowpairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rowpairs</span>
 
     <span class="nd">@rowPairs</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">rowPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set row pairings/relationships between features.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set row pairs/relationships between features.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: new row pairs</span>
+<span class="sd">            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: new row pairs to set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;rowpairs is not a dictionary like object&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rowpairs</span> <span class="o">=</span> <span class="n">pairs</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">colPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access column pairings/relationships between cells.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Access column pairs/relationships between cells.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access colpairs</span>
+<span class="sd">            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access </span>
+<span class="sd">            colpairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_colpairs</span>
 
     <span class="nd">@colPairs</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">colPairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set column pairings/relationships between features.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set column pairs/relationships between features.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: new col pairs</span>
+<span class="sd">            MutableMapping[str, Union[np.ndarray, sp.spmatrix]]: new col pairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;colpairs is not a dictionary like object&quot;</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_colpairs</span> <span class="o">=</span> <span class="n">pairs</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">pattern</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        Class SingleCellExperiment with </span><span class="si">{}</span><span class="s2"> features and </span><span class="si">{}</span><span class="s2"> cells</span>
-<span class="s2">          mainExperimentName: </span><span class="si">{}</span>
-<span class="s2">          assays: </span><span class="si">{}</span>
-<span class="s2">          features: </span><span class="si">{}</span>
-<span class="s2">          cell metadata: </span><span class="si">{}</span>
-<span class="s2">          reduced dimensions: </span><span class="si">{}</span>
-<span class="s2">          alternative experiments: </span><span class="si">{}</span>
-<span class="s2">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">pattern</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assays</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rows</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cols</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">reducedDimNames</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Class SingleCellExperiment with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> features and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> cells </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  mainExperimentName: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_mainExperimentName</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  assays: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assays</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  features: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  cell annotations: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_cols</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_cols</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  reduced dimensions: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reducedDimNames</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_reducedDims</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  alternative experiments: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_altExps</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
+        <span class="k">return</span> <span class="n">pattern</span>
 
     <span class="k">def</span> <span class="nf">_slice</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -524,17 +621,18 @@
         <span class="n">Union</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">BiocFrame</span><span class="p">],</span>
         <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sp</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">]],</span>
     <span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to slice `SCE` by index</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to slice `SCE` by index.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            args (Tuple[Union[Sequence[int], slice], Optional[Union[Sequence[int], slice]]]): indices to slice. tuple can</span>
-<span class="sd">                contains slices along dimensions</span>
+<span class="sd">            args (Tuple[Union[Sequence[int], slice], Optional[Union[Sequence[int], slice]]]): </span>
+<span class="sd">            indices to slice. tuple can contains slices along dimensions.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            ValueError: Too many slices</span>
+<span class="sd">            ValueError: Too many or few slices.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">             Tuple[Union[pd.DataFrame, BiocFrame], Union[pd.DataFrame, BiocFrame], MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: sliced row, cols and assays.</span>
+<span class="sd">             Tuple[Union[pd.DataFrame, BiocFrame], Union[pd.DataFrame, BiocFrame], MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: </span>
+<span class="sd">             sliced row, cols and assays, embeddings and alternative experiments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -587,18 +685,19 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">new_rows</span><span class="p">,</span> <span class="n">new_cols</span><span class="p">,</span> <span class="n">new_assays</span><span class="p">,</span> <span class="n">new_reducedDims</span><span class="p">,</span> <span class="n">new_altExps</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subset a SingleCellExperiment </span>
-<span class="sd">            Note: does not slice rowpairs and colpairs</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Subset a `SingleCellExperiment`.</span>
+<span class="sd">        </span>
+<span class="sd">        Note: does not slice rowpairs and colpairs.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            args (tuple): indices to slice. tuple can</span>
-<span class="sd">                contains slices along dimensions</span>
+<span class="sd">                contains slices along dimensions.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            Exception: Too many slices</span>
+<span class="sd">            Exception: Too many ot few slices.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            SingleCellExperiment: new SingleCellExperiment object</span>
+<span class="sd">            SingleCellExperiment: new sliced `SingleCellExperiment` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_rows</span><span class="p">,</span> <span class="n">new_cols</span><span class="p">,</span> <span class="n">new_assays</span><span class="p">,</span> <span class="n">new_reducedDims</span><span class="p">,</span> <span class="n">new_altExps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_slice</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
 
@@ -620,11 +719,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform `SingleCellExperiment` object to `AnnData`.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            alts (bool, optional): Also convert alternative experiments</span>
+<span class="sd">            alts (bool, optional): Also convert alternative experiments.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]: returns an AnnData representation, </span>
-<span class="sd">                if alts is true, a dictionary of anndata objects with their alternative experiment names</span>
+<span class="sd">            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]: </span>
+<span class="sd">            returns an AnnData representation, if alts is true, a dictionary </span>
+<span class="sd">            of anndata objects with their alternative experiment names.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">layers</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -660,14 +760,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform `SingleCellExperiment` object to `MuData`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            MuData: MuData representation</span>
+<span class="sd">            MuData: MuData representation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mainData</span><span class="p">,</span> <span class="n">altData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toAnnData</span><span class="p">(</span><span class="n">alts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">mainData</span><span class="p">,</span> <span class="n">altData</span><span class="p">)</span>
-
         <span class="n">expts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-
         <span class="n">mainName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainExperimentName</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainExperimentName</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mainName</span> <span class="o">=</span> <span class="s2">&quot;Unknown Modality&quot;</span>
@@ -677,8 +774,6 @@
         <span class="k">if</span> <span class="n">altData</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">exptName</span><span class="p">,</span> <span class="n">expt</span> <span class="ow">in</span> <span class="n">altData</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">expts</span><span class="p">[</span><span class="n">exptName</span><span class="p">]</span> <span class="o">=</span> <span class="n">expt</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mudata expts&quot;</span><span class="p">,</span> <span class="n">expts</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">MuData</span><span class="p">(</span><span class="n">expts</span><span class="p">)</span></div></div>
 </pre></div>
