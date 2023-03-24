@@ -88,7 +88,7 @@ def test_SCE_from10xH5():
 
     assert tse.assays is not None
     assert tse.rowData is not None
-    assert tse.colData is None
+    assert tse.colData is not None
 
     # slice
     sliced = tse[0:10, 1:5]
@@ -98,7 +98,7 @@ def test_SCE_from10xH5():
 
     assert sliced.assays is not None
     assert sliced.rowData is not None
-    assert sliced.colData is None
+    assert sliced.colData is not None
 
     assert sliced.shape == (10, 4)
 

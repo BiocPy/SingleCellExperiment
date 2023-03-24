@@ -14,10 +14,10 @@ def read10xMTX(path: str) -> SingleCellExperiment:
     """Read 10x Matrix market directory.
 
     Args:
-        path (str): path to 10x mtx directory
+        path (str): path to 10x mtx directory.
 
     Returns:
-        SingleCellExperiment: A `SingleCellExperiment` object
+        SingleCellExperiment: A `SingleCellExperiment` object.
     """
     mat = mmread(f"{path}/matrix.mtx")
     mat = csr_matrix(mat)
@@ -35,10 +35,10 @@ def read10xH5(path: str) -> SingleCellExperiment:
     """Read 10x H5 file. Must be V3 format.
 
     Args:
-        path (str): path to 10x H5 file directory
+        path (str): path to 10x H5 file directory.
 
     Returns:
-        SingleCellExperiment: A `SingleCellExperiment` object
+        SingleCellExperiment: A `SingleCellExperiment` object.
     """
     h5 = h5py.File(path, mode="r")
 
@@ -53,10 +53,7 @@ def read10xH5(path: str) -> SingleCellExperiment:
     indptr = h5["matrix"]["indptr"][:]
     shape = tuple(h5["matrix"]["shape"][:])
 
-    print(shape)
-    print(len(data), len(indices), len(indptr))
     counts = None
-
     if len(indptr) == shape[1] + 1:
         counts = csc_matrix((data, indices, indptr), shape=shape)
     else:
