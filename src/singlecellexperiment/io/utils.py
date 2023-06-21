@@ -70,11 +70,6 @@ def concat(
         lambda left, right: left.combine_first(right), colDatas
     ).sort_index()
 
-    new_altExps = {}
-    for sce in sces:
-        if sce.altExps:
-            new_altExps.update(sce.altExps)
-
     return SingleCellExperiment(
         assays=new_assays,
         rowData=new_rowData,
@@ -82,7 +77,7 @@ def concat(
         metadata=metadata,
         reducedDims=None,
         mainExperimentName=mainExperimentName,
-        altExps=new_altExps,
+        altExps=None,
         rowpairs=None,
         colpairs=None,
     )
