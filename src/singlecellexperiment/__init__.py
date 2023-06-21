@@ -23,4 +23,5 @@ finally:
 
 from .io.anndata import fromAnnData, readH5AD
 from .io.tenx import read10xH5, read10xMTX
+from .io.utils import concat
 from .SingleCellExperiment import SingleCellExperiment
