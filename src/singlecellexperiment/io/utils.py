@@ -26,6 +26,11 @@ def concat(
         Name of the new SingleCellExperiment.
     metadata: str
         Metadata of the new SingleCellExperiment.
+
+    Returns
+    -------
+    concat_sce: SingleCellExperiment
+        The concatenated SingleCellExperiment.
     """
 
     # we assume that sces have the same assay structure (same number of rows and cols)
