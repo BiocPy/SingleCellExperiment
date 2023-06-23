@@ -1,17 +1,15 @@
-from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
-from summarizedexperiment.RangeSummarizedExperiment import RangeSummarizedExperiment
-from genomicranges.GenomicRanges import GenomicRanges
-from biocframe import BiocFrame
-
-from typing import Union, MutableMapping, Optional, Sequence, Tuple
-
-import numpy as np
-from scipy import sparse as sp
-import pandas as pd
-import anndata
 from collections import OrderedDict
+from typing import MutableMapping, Optional, Sequence, Tuple, Union
 
+import anndata
+import numpy as np
+import pandas as pd
+from biocframe import BiocFrame
+from genomicranges.GenomicRanges import GenomicRanges
 from mudata import MuData
+from scipy import sparse as sp
+from summarizedexperiment.RangeSummarizedExperiment import RangeSummarizedExperiment
+from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -55,7 +53,7 @@ class SingleCellExperiment(SummarizedExperiment):
         Unlike R, numpy or scipy matrices do not have a notion of rownames
         and colnames. Hence, these matrices cannot be directly used as values either in
         assays or alternative experiments. Currently we strictily enforce type check in
-        these cases. To relax these restrictions for alternative experiments, set 
+        these cases. To relax these restrictions for alternative experiments, set
         `typeCheckAlts` to `False`.
 
         One generally expects the same cells across all assays and alternative
@@ -64,28 +62,28 @@ class SingleCellExperiment(SummarizedExperiment):
         Note: Validation checks do not apply to rowpairs, colpairs.
 
         Args:
-            assays (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): dictionary 
-                of matrices, with assay names as keys and matrices represented as dense 
-                (numpy) or sparse (scipy) matrices. All matrices across assays must 
+            assays (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): dictionary
+                of matrices, with assay names as keys and matrices represented as dense
+                (numpy) or sparse (scipy) matrices. All matrices across assays must
                 have the same dimensions (number of rows, number of columns).
-            rowData (GenomicRanges, optional): features, must be the same length as 
+            rowData (GenomicRanges, optional): features, must be the same length as
                 rows of the matrices in assays. Defaults to None.
-            colData (Union[pd.DataFrame, BiocFrame], optional): sample data, must be 
+            colData (Union[pd.DataFrame, BiocFrame], optional): sample data, must be
                 the same length as rows of the matrices in assays. Defaults to None.
-            metadata (MutableMapping, optional): experiment metadata describing the 
+            metadata (MutableMapping, optional): experiment metadata describing the
                 methods. Defaults to None.
-            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]], optional): 
+            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]], optional):
                 lower dimensionality embeddings. Defaults to None.
             mainExperimentName (str, optional): main experiment name. Defaults to None.
-            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional): 
-                similar to assays, dictionary of alternative experiments with names as 
-                keys. You would usually use this for multi-modal experiments performed 
+            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional):
+                similar to assays, dictionary of alternative experiments with names as
+                keys. You would usually use this for multi-modal experiments performed
                 on the same sample (so all these experiments contain the same cells). Defaults to None.
-            rowpairs (Union[np.ndarray, sp.spmatrix], optional): row 
+            rowpairs (Union[np.ndarray, sp.spmatrix], optional): row
                 pairings/relationships between features. Defaults to None.
-            colpairs (Union[np.ndarray, sp.spmatrix], optional): col 
+            colpairs (Union[np.ndarray, sp.spmatrix], optional): col
                 pairings/relationships between cells.  Defaults to None.
-            typeCheckAlts (bool): strict type checking for alternative experiments. All 
+            typeCheckAlts (bool): strict type checking for alternative experiments. All
                 alternative experiments must be a derivative of `SummarizedExperiment`.
                 Defaults to True.
         """
@@ -111,21 +109,20 @@ class SingleCellExperiment(SummarizedExperiment):
     def _validate_reducedDims(
         self, reducedDims: MutableMapping[str, Union[np.ndarray, sp.spmatrix]]
     ):
-        """Validate reduced dimensions. all dimensions must contain embeddings for 
+        """Validate reduced dimensions. all dimensions must contain embeddings for
         all cells.
 
         Args:
-            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]): 
+            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix]]):
                 embeddings to validate.
 
         Raises:
-            TypeError: If embeddings are not a matrix (numpy, scipy) or pandas 
+            TypeError: If embeddings are not a matrix (numpy, scipy) or pandas
                 Dataframe.
             TypeError: If reducedDims is not a dictionary like object.
             ValueError: length of dimensions do not match the number of cells.
         """
         if reducedDims is not None:
-
             if not isinstance(reducedDims, dict):
                 raise TypeError("reducedDims is not a dictionary like object")
 
@@ -159,19 +156,18 @@ class SingleCellExperiment(SummarizedExperiment):
         """Validate alternative experiments and optionally their types.
 
         Args:
-            altExps (MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]], optional): 
-                similar to assays, dictionary of alternative experiments with names as 
+            altExps (MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]], optional):
+                similar to assays, dictionary of alternative experiments with names as
                 keys.
             typeCheckAlts (bool): strict type checking for alternative experiments.
 
         Raises:
             ValueError: if alternative experiments do not contain the same number of
                 cells.
-            TypeError: if alternative experiments is not a derivative of 
+            TypeError: if alternative experiments is not a derivative of
                 `SummarizedExperiment`.
         """
         if altExps is not None:
-
             if not isinstance(altExps, dict):
                 raise TypeError("altExps is not a dictionary like object")
 
@@ -222,7 +218,7 @@ class SingleCellExperiment(SummarizedExperiment):
         """Access dimensionality embeddings.
 
         Returns:
-            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]]: 
+            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]]]:
             all embeddings in the object. None if not available.
         """
         return self._reducedDims
@@ -237,7 +233,7 @@ class SingleCellExperiment(SummarizedExperiment):
         """Set dimensionality embeddings.
 
         Args:
-            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]], optional): 
+            reducedDims (MutableMapping[str, Union[np.ndarray, sp.spmatrix, pd.DataFrame]], optional):
                 new embeddings to set. Can be None.
 
         Raises:
@@ -287,7 +283,7 @@ class SingleCellExperiment(SummarizedExperiment):
             ValueError: if embedding name does not exist.
 
         Returns:
-            Union[np.ndarray, sp.spmatrix, pd.DataFrame]: access the underlying 
+            Union[np.ndarray, sp.spmatrix, pd.DataFrame]: access the underlying
             numpy or scipy matrix.
         """
         if name not in self._reducedDims:
@@ -302,14 +298,16 @@ class SingleCellExperiment(SummarizedExperiment):
         MutableMapping[
             str,
             Union[
-                "SingleCellExperiment", SummarizedExperiment, RangeSummarizedExperiment,
+                "SingleCellExperiment",
+                SummarizedExperiment,
+                RangeSummarizedExperiment,
             ],
         ]
     ]:
         """Access alternative experiments.
 
         Returns:
-            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]: 
+            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]:
             alternative experiments.
         """
         return self._altExps
@@ -320,14 +318,16 @@ class SingleCellExperiment(SummarizedExperiment):
         altExps: MutableMapping[
             str,
             Union[
-                "SingleCellExperiment", SummarizedExperiment, RangeSummarizedExperiment,
+                "SingleCellExperiment",
+                SummarizedExperiment,
+                RangeSummarizedExperiment,
             ],
         ],
     ):
         """Set alternative experiments.
 
         Returns:
-            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]: 
+            Optional[MutableMapping[str, Union[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment]]]:
             alternative experiments.
         """
         self._validate_altExpts(altExps, self._typeCheckAlts)
@@ -336,7 +336,9 @@ class SingleCellExperiment(SummarizedExperiment):
     def altExp(
         self, name: str
     ) -> Union[
-        "SingleCellExperiment", SummarizedExperiment, RangeSummarizedExperiment,
+        "SingleCellExperiment",
+        SummarizedExperiment,
+        RangeSummarizedExperiment,
     ]:
         """Access alternative experiment by name.
 
@@ -379,7 +381,7 @@ class SingleCellExperiment(SummarizedExperiment):
         """Access column pairs/relationships between cells.
 
         Returns:
-            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access 
+            Optional[MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: access
             colpairs.
         """
         return self._colpairs
@@ -417,14 +419,14 @@ class SingleCellExperiment(SummarizedExperiment):
         """Internal method to slice `SCE` by index.
 
         Args:
-            args (Tuple[Union[Sequence[int], slice], Optional[Union[Sequence[int], slice]]]): 
+            args (Tuple[Union[Sequence[int], slice], Optional[Union[Sequence[int], slice]]]):
             indices to slice. tuple can contains slices along dimensions.
 
         Raises:
             ValueError: Too many or few slices.
 
         Returns:
-             Tuple[Union[pd.DataFrame, BiocFrame], Union[pd.DataFrame, BiocFrame], MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]: 
+             Tuple[Union[pd.DataFrame, BiocFrame], Union[pd.DataFrame, BiocFrame], MutableMapping[str, Union[np.ndarray, sp.spmatrix]]]:
              sliced row, cols and assays, embeddings and alternative experiments.
         """
 
@@ -479,7 +481,7 @@ class SingleCellExperiment(SummarizedExperiment):
 
     def __getitem__(self, args: tuple) -> "SingleCellExperiment":
         """Subset a `SingleCellExperiment`.
-        
+
         Note: does not slice rowpairs and colpairs.
 
         Args:
@@ -515,8 +517,8 @@ class SingleCellExperiment(SummarizedExperiment):
             alts (bool, optional): Also convert alternative experiments.
 
         Returns:
-            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]: 
-            returns an AnnData representation, if alts is true, a dictionary 
+            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]:
+            returns an AnnData representation, if alts is true, a dictionary
             of anndata objects with their alternative experiment names.
         """
 

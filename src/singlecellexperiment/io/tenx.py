@@ -1,7 +1,7 @@
 import h5py
 import pandas as pd
 from scipy.io import mmread
-from scipy.sparse import csr_matrix, csc_matrix
+from scipy.sparse import csc_matrix, csr_matrix
 
 from ..SingleCellExperiment import SingleCellExperiment
 

@@ -7,6 +7,7 @@ from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import anndata
 from mudata import MuData
+import h5py
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"

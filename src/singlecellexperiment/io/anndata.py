@@ -1,5 +1,7 @@
-import anndata
 from collections import OrderedDict
+
+import anndata
+
 from ..SingleCellExperiment import SingleCellExperiment
 
 __author__ = "jkanche"
