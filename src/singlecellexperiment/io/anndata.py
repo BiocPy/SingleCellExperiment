@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import anndata
+from anndata import AnnData
 
 from ..SingleCellExperiment import SingleCellExperiment
 
@@ -9,26 +10,27 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def toNormalDict(obj):
-    normObj = obj
-    if len(normObj.keys()) == 0:
-        normObj = None
+def _to_normal_dict(obj):
+    norm_obj = obj
+    if len(norm_obj.keys()) == 0:
+        norm_obj = None
     else:
-        normObj = OrderedDict()
-        for okey, oval in normObj.items():
-            normObj[okey] = oval
+        norm_obj = OrderedDict()
+        for okey, oval in norm_obj.items():
+            norm_obj[okey] = oval
 
-    return normObj
+    return norm_obj
 
 
-def fromAnnData(adata: anndata.AnnData) -> SingleCellExperiment:
-    """Convert `AnnData` object to `SingleCellExperiment`.
+def from_anndata(adata: AnnData) -> SingleCellExperiment:
+    """Read an :py:class:`~anndata.AnnData` into
+    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
-        adata (AnnData): `AnnData` object.
+        adata (AnnData): Input data.
 
     Returns:
-        SingleCellExperiment: single-cell experiment object.
+        SingleCellExperiment: A single-cell experiment object.
     """
 
     layers = OrderedDict()
@@ -38,30 +40,31 @@ def fromAnnData(adata: anndata.AnnData) -> SingleCellExperiment:
     if adata.X is not None:
         layers["X"] = adata.X.transpose()
 
-    obsm = toNormalDict(adata.obsm)
-    varp = toNormalDict(adata.varp)
-    obsp = toNormalDict(adata.obsp)
+    obsm = _to_normal_dict(adata.obsm)
+    varp = _to_normal_dict(adata.varp)
+    obsp = _to_normal_dict(adata.obsp)
 
     return SingleCellExperiment(
         assays=layers,
-        rowData=adata.var,
-        colData=adata.obs,
+        row_data=adata.var,
+        col_data=adata.obs,
         metadata=adata.uns,
-        reducedDims=obsm,
-        rowpairs=varp,
-        colpairs=obsp,
+        reduced_dims=obsm,
+        row_pairs=varp,
+        col_pairs=obsp,
     )
 
 
-def readH5AD(path: str) -> SingleCellExperiment:
-    """Convert H5AD file to `SingleCellExperiment`.
+def read_h5ad(path: str) -> SingleCellExperiment:
+    """Read a H5ad file as
+    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
-        path (str): path to a H5AD file.
+        path (str): Path to a H5AD file.
 
     Returns:
-        SingleCellExperiment: single-cell experiment object.
+        SingleCellExperiment: A single-cell experiment object.
     """
 
     adata = anndata.read_h5ad(path)
-    return fromAnnData(adata)
+    return from_anndata(adata)

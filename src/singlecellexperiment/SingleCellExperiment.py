@@ -1,13 +1,13 @@
 from collections import OrderedDict
-from typing import MutableMapping, Optional, Sequence, Union
+from typing import Dict, List, MutableMapping, Optional, Union
 
-import anndata
-import numpy as np
-import pandas as pd
-from mudata import MuData
-from scipy import sparse as sp
+from anndata import AnnData
+from biocframe import BiocFrame
 from genomicranges import GenomicRanges
-from summarizedexperiment.BaseSE import BaseSE
+from mudata import MuData
+from numpy import ndarray
+from pandas import DataFrame
+from scipy import sparse as sp
 from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 from summarizedexperiment.types import BiocOrPandasFrame, MatrixTypes, SlicerArgTypes
 
@@ -19,162 +19,211 @@ __license__ = "MIT"
 
 
 class SingleCellExperiment(SummarizedExperiment):
-    """Container class for single-cell experiments. Extends `SummarizedExperiment`
-    to provide slots for embeddings and alternative experiments.
+    """Container class for single-cell experiments. Extends
+    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`
+    to provide slots for embeddings and alternative experiments that share the same cells.
+
+    Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.
+    Hence, these matrices cannot be directly used as values either in assays or alternative
+    experiments. We strictly enforce type check in these cases.
+    To relax these restrictions for alternative experiments, set
+    :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.type_check_alternative_experiments`
+    to `False`.
+
+    If you are using alternative experiment slot, the number of cells must match with the parent.
+    If not these cells so not share the same sample or annotations and cannot be set in alternative
+    experiments!
+
+    **Note: Validation checks do not apply to row_pairs, col_pairs.**
+
+    Attributes:
+        assays (MutableMapping[str, MatrixTypes]): Dictionary
+            of matrices, with assay names as keys and 2-dimensional matrices represented as
+            :py:class:`~numpy.ndarray` or :py:class:`~scipy.sparse.spmatrix` matrices.
+
+            Alternatively, you may use any 2-dimensional matrix that contains the property ``shape``
+            and implements the slice operation using the ``__getitem__`` dunder method.
+
+            All matrices in ``assays`` must be 2-dimensional and have the same
+            shape (number of rows, number of columns).
+
+        row_data (BiocOrPandasFrame, optional): Features, must be the same length as
+            rows of the matrices in assays.
+
+            Features may be either a :py:class:`~pandas.DataFrame` or
+            :py:class:`~biocframe.BiocFrame.BiocFrame`.
+
+            Defaults to None.
+
+        col_data (BiocOrPandasFrame, optional): Sample data, must be
+            the same length as columns of the matrices in assays.
+
+            Sample Information may be either a :py:class:`~pandas.DataFrame` or
+            :py:class:`~biocframe.BiocFrame.BiocFrame`.
+
+            Defaults to None.
+
+        metadata (MutableMapping, optional): Additional experimental metadata describing the
+            methods. Defaults to None.
+
+        reduced_dims (MutableMapping[str, MatrixTypesWithFrame], optional):
+            Slot for lower dimensionality embeddings.
+
+            Usually a dictionary with the embedding method as keys, e.g.: t-SNE, UMAP etc
+            and the dimensions as values.
+
+            Embeddings may be represented as a matrix or a data frame.
+
+            :py:class:`~numpy.ndarray`, :py:class:`~scipy.sparse.spmatrix`,
+            :py:class:`~pandas.DataFrame` and :py:class:`~biocframe.BiocFrame.BiocFrame` are
+            supported types to represent embeddings.
+
+            Defaults to None.
+
+        main_experiment_name (str, optional): Main experiment name. Defaults to None.
+
+        alternative_experiments (MutableMapping[str, SummarizedExperiment], optional):
+            Alternative experiments is used to manage multi-modal experiments performed on
+            the same sample/cells. Hence alternative experiments must contain the same cells (rows)
+            as the primary experiment in the object (columns).
+
+            ``alternative_experiments`` is a dictionary with keys as name of the alternative
+            experiment, e.g.: sc-atac, crispr and the value is a subclass of
+            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+            It might include `SingleCellExperiment`,
+            :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`
+            and classes derived from
+            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+
+            Defaults to None.
+
+        row_pairs (MatrixTypesWithFrame, optional): Row pairings/relationships between features.
+            Defaults to None.
+        col_pairs (MatrixTypesWithFrame, optional): Column pairings/relationships between cells.
+            Defaults to None.
+        type_check_alternative_experiments (bool): Whether to strictly type check
+            alternative experiments. All alternative experiments must be a subclass of
+            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+            Defaults to True.
     """
 
     def __init__(
         self,
         assays: MutableMapping[str, MatrixTypes],
-        rowData: Optional[BiocOrPandasFrame] = None,
-        colData: Optional[BiocOrPandasFrame] = None,
+        row_data: Optional[BiocOrPandasFrame] = None,
+        col_data: Optional[BiocOrPandasFrame] = None,
         metadata: Optional[MutableMapping] = None,
-        reducedDims: Optional[MutableMapping[str, MatrixTypesWithFrame]] = None,
-        mainExperimentName: Optional[str] = None,
-        altExps: Optional[
+        reduced_dims: Optional[MutableMapping[str, MatrixTypesWithFrame]] = None,
+        main_experiment_name: Optional[str] = None,
+        alternative_experiments: Optional[
             MutableMapping[
                 str,
-                BaseSE,
+                SummarizedExperiment,
             ]
         ] = None,
-        rowpairs: Optional[MatrixTypesWithFrame] = None,
-        colpairs: Optional[MatrixTypesWithFrame] = None,
-        typeCheckAlts: bool = True,
+        row_pairs: Optional[MatrixTypesWithFrame] = None,
+        col_pairs: Optional[MatrixTypesWithFrame] = None,
+        type_check_alternative_experiments: bool = True,
     ) -> None:
-        """Initialize a single-cell experiment.
-
-        This extends `SummarizedExperiment` and provides additional slots to
-        store embeddings, alternative experiments, rowpairs and colpairs.
-
-        Unlike R, numpy or scipy matrices do not have a notion of rownames
-        and colnames. Hence, these matrices cannot be directly used as values either in
-        assays or alternative experiments. Currently we strictly enforce type check in
-        these cases. To relax these restrictions for alternative experiments, set
-        `typeCheckAlts` to `False`.
-
-        If you are using alternative experiment slot, the number of cells should match
-        with the parent. If not the cells are not shared so they don't belong in alternative experiments!
-
-        Note: Validation checks do not apply to rowpairs, colpairs.
-
-        Args:
-            assays (MutableMapping[str, MatrixTypes]): dictionary
-                of matrices, with assay names as keys and matrices represented as dense
-                (numpy) or sparse (scipy) matrices. All matrices across assays must
-                have the same dimensions (number of rows, number of columns).
-            rowData (BiocOrPandasFrame, optional): features, must be the same length as
-                rows of the matrices in assays. Defaults to None.
-            colData (BiocOrPandasFrame, optional): sample data, must be
-                the same length as rows of the matrices in assays. Defaults to None.
-            metadata (MutableMapping, optional): experiment metadata describing the
-                methods. Defaults to None.
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame], optional):
-                lower dimensionality embeddings. Defaults to None.
-            mainExperimentName (str, optional): main experiment name. Defaults to None.
-            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional):
-                similar to assays, dictionary of alternative experiments with names as
-                keys. You would usually use this for multi-modal experiments performed
-                on the same sample (so all these experiments contain the same cells). Defaults to None.
-            rowpairs (MatrixTypesWithFrame, optional): row
-                pairings/relationships between features. Defaults to None.
-            colpairs (MatrixTypesWithFrame, optional): col
-                pairings/relationships between cells.  Defaults to None.
-            typeCheckAlts (bool): strict type checking for alternative experiments. All
-                alternative experiments must be a derivative of `SummarizedExperiment`.
-                Defaults to True.
-        """
+        """Initialize a single-cell experiment."""
         super().__init__(
-            assays=assays, rowData=rowData, colData=colData, metadata=metadata
+            assays=assays, row_data=row_data, col_data=col_data, metadata=metadata
         )
 
-        self._validate_reducedDims(reducedDims)
-        self._reducedDims = reducedDims
+        self._validate_reduced_dims(reduced_dims)
+        self._reduced_dims = reduced_dims
 
-        self._mainExperimentName = mainExperimentName
+        self._main_experiment_name = main_experiment_name
 
-        self._validate_altExpts(altExps, typeCheckAlts)
-        self._typeCheckAlts = typeCheckAlts
-        self._altExps = altExps
+        self._validate_alternative_experiments(
+            alternative_experiments, type_check_alternative_experiments
+        )
+        self._type_check_alternative_experiments = type_check_alternative_experiments
+        self._alternative_experiments = alternative_experiments
 
-        self._validate_pairs(rowpairs)
-        self._rowpairs = rowpairs
+        self._validate_pairs(row_pairs)
+        self._row_pairs = row_pairs
 
-        self._validate_pairs(colpairs)
-        self._colpairs = colpairs
+        self._validate_pairs(col_pairs)
+        self._col_pairs = col_pairs
 
-    def _validate_reducedDims(
-        self, reducedDims: MutableMapping[str, MatrixTypesWithFrame]
+    def _validate_reduced_dims(
+        self, reduced_dims: MutableMapping[str, MatrixTypesWithFrame]
     ):
-        """Validate reduced dimensions. all dimensions must contain embeddings for
-        all cells.
+        """Internal method to validate reduced dimensions. All dimensions must contain embeddings
+        for all cells.
 
         Args:
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame]):
-                embeddings to validate.
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame]):
+                Embeddings to validate.
 
         Raises:
             TypeError: If embeddings are not a matrix (numpy, scipy) or pandas
                 Dataframe.
-            TypeError: If reducedDims is not a dictionary like object.
+            TypeError: If reduced_dims is not a dictionary like object.
             ValueError: length of dimensions do not match the number of cells.
         """
-        if reducedDims is not None:
-            if not isinstance(reducedDims, dict):
-                raise TypeError("reducedDims is not a dictionary like object")
+        if reduced_dims is not None:
+            if not isinstance(reduced_dims, dict):
+                raise TypeError("`reduced_dims` is not a dictionary.")
 
-            for rdname, mat in reducedDims.items():
-                if not (isinstance(mat, (np.ndarray, sp.spmatrix, pd.DataFrame))):
+            for rdname, mat in reduced_dims.items():
+                if not (isinstance(mat, (ndarray, sp.spmatrix, DataFrame, BiocFrame))):
                     raise TypeError(
-                        f"dimension: {rdname} must be either a numpy ndarray, scipy "
-                        "matrix or a pandas DataFrame"
+                        f"Reduced dimension: '{rdname}' must be either a numpy ndarray, scipy "
+                        "matrix, a pandas DataFrame or BiocFrame object."
                     )
 
                 if self._shape[1] != mat.shape[0]:
                     raise ValueError(
-                        f"dimension: {rdname} does not contain embeddings for all cells"
-                        f". should be {self._shape[1]}, but provided {mat.shape[0]}"
+                        f"Reduced dimension: '{rdname}' does not contain embeddings for all cells."
                     )
 
-    def _validate_altExpts(
+    def _validate_alternative_experiments(
         self,
-        altExps: Optional[
+        alternative_experiments: Optional[
             MutableMapping[
                 str,
-                BaseSE,
+                SummarizedExperiment,
             ]
         ],
-        typeCheckAlts: bool,
+        type_check_alternative_experiments: bool,
     ):
-        """Validate alternative experiments and optionally their types.
+        """Internal method to validate alternative experiments and optionally their types.
 
         Args:
-            altExps (MutableMapping[str, BaseSE], optional):
-                similar to assays, dictionary of alternative experiments with names as
-                keys.
-            typeCheckAlts (bool): strict type checking for alternative experiments.
+            alternative_experiments (MutableMapping[str, SummarizedExperiment], optional):
+                A dictionary of alternative experiments with names as
+                keys and values is a subclass of
+                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+
+                Note: The rows represent cells in the embeddings.
+
+            type_check_alternative_experiments (bool): Whether to strictly type check alternative
+                experiments.
 
         Raises:
-            ValueError: if alternative experiments do not contain the same number of
-                cells.
-            TypeError: if alternative experiments is not a derivative of
-                `SummarizedExperiment`.
+            ValueError: If alternative experiments do not contain the same number of cells.
+            TypeError: If alternative experiments is not a subclass of `SummarizedExperiment`.
         """
-        if altExps is not None:
-            if not isinstance(altExps, dict):
-                raise TypeError("altExps is not a dictionary like object")
+        if alternative_experiments is not None:
+            if not isinstance(alternative_experiments, dict):
+                raise TypeError("`alternative_experiments` is not a dictionary.")
 
-            for altName, altExp in altExps.items():
-                if self._shape[1] != altExp.shape[1]:
+            for alt_name, alternative_experiment in alternative_experiments.items():
+                if self._shape[1] != alternative_experiment.shape[1]:
                     raise ValueError(
-                        f"dimension: {altName} does not contain same number of cells."
-                        f" should be {self._shape[1]}, but provided {altExp.shape[1]}"
+                        f"Alternative experiment: '{alt_name}' does not contain same number of"
+                        " cells."
                     )
 
-                if typeCheckAlts is True:
-                    if not isinstance(altExp, BaseSE):
+                if type_check_alternative_experiments is True:
+                    if not issubclass(
+                        type(alternative_experiment), SummarizedExperiment
+                    ):
                         raise TypeError(
-                            f"alternative experiment {altName} is not a derivative of "
-                            "`SummarizedExperiment`"
+                            f"Alternative experiment: '{alt_name}' is not a subclass of"
+                            " `SummarizedExperiment`"
                         )
 
     def _validate_pairs(self, pairs: Optional[MatrixTypesWithFrame]):
@@ -183,299 +232,318 @@ class SingleCellExperiment(SummarizedExperiment):
         Currently only checks if they are dictionary like objects.
 
         Args:
-            pairs (Optional[MatrixTypesWithFrame]): pair to validate.
+            pairs (Optional[MatrixTypesWithFrame]): Pair to validate.
 
         Raises:
-            TypeError: if pairs is not a dictionary like object.
+            TypeError: If pairs is not a dictionary like object.
         """
         if pairs is not None:
             if not isinstance(pairs, dict):
-                raise TypeError("pair is not a dictionary like object")
+                raise TypeError("Pair is not a dictionary.")
 
     def _validate(self):
-        """Internal method to validate the object.
-
-        Raises:
-            ValueError: when provided object does not contain columns of same length.
-        """
+        """Internal method to validate the object."""
         super()._validate()
 
-        self._validate_reducedDims(self._reducedDims)
-        self._validate_altExpts(self._altExps, self._typeCheckAlts)
+        self._validate_reduced_dims(self._reduced_dims)
+        self._validate_alternative_experiments(
+            self._alternative_experiments, self._type_check_alternative_experiments
+        )
 
     @property
-    def reducedDims(
+    def reduced_dims(
         self,
-    ) -> Optional[MutableMapping[str, MatrixTypesWithFrame]]:
+    ) -> Optional[Dict[str, MatrixTypesWithFrame]]:
         """Access dimensionality embeddings.
 
         Returns:
-            (MutableMapping[str, MatrixTypesWithFrame], optional):
-            all embeddings in the object. None if not available.
-        """
-        return self._reducedDims
+            (Dict[str, MatrixTypesWithFrame], optional):
+            A dictionary of all embeddings, the embedding method as keys
+            and values is an embedding.
 
-    @reducedDims.setter
-    def reducedDims(
+            None if not available.
+        """
+        return self._reduced_dims
+
+    @reduced_dims.setter
+    def reduced_dims(
         self,
-        reducedDims: Optional[MutableMapping[str, MatrixTypesWithFrame]],
+        reduced_dims: Optional[MutableMapping[str, MatrixTypesWithFrame]],
     ):
         """Set dimensionality embeddings.
 
         Args:
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame], optional):
-                new embeddings to set. Can be None.
-
-        Raises:
-            TypeError: reducedDims is not a dictionary.
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame], optional):
+                New embeddings to set.
+                Can be None, to delete the current embeddings.
         """
-        self._validate_reducedDims(reducedDims)
-        self._reducedDims = reducedDims
+        self._validate_reduced_dims(reduced_dims)
+        self._reduced_dims = reduced_dims
 
     @property
-    def mainExperimentName(self) -> Optional[str]:
+    def main_experiment_name(self) -> Optional[str]:
         """Access main experiment name.
 
         Returns:
-            (str, optional): name if available.
+            (str, optional): Name, if available.
         """
-        return self._mainExperimentName
+        return self._main_experiment_name
 
-    @mainExperimentName.setter
-    def mainExperimentName(self, name: Optional[str]):
+    @main_experiment_name.setter
+    def main_experiment_name(self, name: Optional[str]):
         """Set main experiment name.
 
         Args:
-            name (str, optional): experiment name to set.
+            name (str, optional): Experiment name to set.
+                May be None to remove the current name.
         """
-        self._mainExperimentName = name
+        self._main_experiment_name = name
 
     @property
-    def reducedDimNames(self) -> Optional[Sequence[str]]:
+    def reduced_dim_names(self) -> Optional[List[str]]:
         """Access names of dimensionality embeddings.
 
         Returns:
-            (Sequence[str], optional): all embeddings names if available.
+            (List[str], optional): List of all embeddings names if available.
         """
 
-        if self._reducedDims is not None:
-            return list(self._reducedDims.keys())
+        if self.reduced_dims is not None:
+            return list(self.reduced_dims.keys())
 
         return None
 
-    def reducedDim(self, name: str) -> MatrixTypesWithFrame:
+    def reduced_dim(self, name: str) -> MatrixTypesWithFrame:
         """Access an embedding by name.
 
         Args:
-            name (str): name of the embedding.
+            name (str): Name of the embedding.
 
         Raises:
-            ValueError: if embedding name does not exist.
+            ValueError: If embedding ``name`` does not exist.
 
         Returns:
-            MatrixTypesWithFrame: access the underlying
-            numpy or scipy matrix.
+            MatrixTypesWithFrame: The embedding represented as
+            numpy, scipy matrix or a data frame from pandas or biocframe.
         """
-        if name not in self._reducedDims:
+        if name not in self._reduced_dims:
             raise ValueError(f"Embedding: {name} does not exist")
 
-        return self._reducedDims[name]
+        return self._reduced_dims[name]
 
     @property
-    def altExps(
+    def alternative_experiments(
         self,
-    ) -> Optional[MutableMapping[str, BaseSE,]]:
+    ) -> Optional[Dict[str, SummarizedExperiment,]]:
         """Access alternative experiments.
 
         Returns:
-            (MutableMapping[str, BaseSE], optional):
-            alternative experiments if available.
+            (Dict[str, SummarizedExperiment], optional):
+            A dictionary of alternative experiments with the name of
+            the experiments as keys and value is a subclass of `SummarizedExperiment`.
         """
-        return self._altExps
+        return self._alternative_experiments
 
-    @altExps.setter
-    def altExps(
+    @alternative_experiments.setter
+    def alternative_experiments(
         self,
-        altExps: MutableMapping[str, BaseSE],
+        alternative_experiments: MutableMapping[str, SummarizedExperiment],
     ):
         """Set alternative experiments.
 
-        Returns:
-            Optional[MutableMapping[str, BaseSE]:
-            alternative experiments.
+        Args:
+            Optional[MutableMapping[str, SummarizedExperiment]:
+            New alternative experiments to set.
         """
-        self._validate_altExpts(altExps, self._typeCheckAlts)
-        self._altExps = altExps
+        self._validate_alternative_experiments(
+            alternative_experiments, self._type_check_alternative_experiments
+        )
+        self._alternative_experiments = alternative_experiments
 
-    def altExp(self, name: str) -> BaseSE:
+    def alternative_experiment(self, name: str) -> SummarizedExperiment:
         """Access alternative experiment by name.
 
         Args:
-            name (str): name of the alternative experiment.
+            name (str): Name of the alternative experiment.
 
         Raises:
-            ValueError: name does not exist.
+            ValueError: If alternative experiment ``name`` does not exist.
 
         Returns:
-            BaseSE: alternative experiment.
+            SummarizedExperiment: A `SummarizedExperiment`-like representation of the alternative
+            experiment.
         """
-        if name not in self._altExps:
+        if name not in self._alternative_experiments:
             raise ValueError(f"Alt. Experiment {name} does not exist")
 
-        return self._altExps[name]
+        return self._alternative_experiments[name]
 
     @property
-    def rowPairs(self) -> Optional[MutableMapping[str, MatrixTypesWithFrame]]:
+    def row_pairs(self) -> Optional[Dict[str, MatrixTypesWithFrame]]:
         """Access row pairings/relationships between features.
 
         Returns:
-            Optional[MutableMapping[str, MatrixTypesWithFrame]]: access rowpairs.
+            Optional[Dict[str, MatrixTypesWithFrame]]: Access row pairs.
         """
-        return self._rowpairs
+        return self._row_pairs
 
-    @rowPairs.setter
-    def rowPairs(self, pairs: MutableMapping[str, MatrixTypesWithFrame]):
+    @row_pairs.setter
+    def row_pairs(self, pairs: MutableMapping[str, MatrixTypesWithFrame]):
         """Set row pairs/relationships between features.
 
         Args:
-            MutableMapping[str, MatrixTypesWithFrame]: new row pairs to set.
+            MutableMapping[str, MatrixTypesWithFrame]: New row pairs to set.
         """
         self._validate_pairs(pairs)
-        self._rowpairs = pairs
+        self._row_pairs = pairs
 
     @property
-    def colPairs(self) -> Optional[MutableMapping[str, MatrixTypesWithFrame]]:
+    def col_pairs(self) -> Optional[Dict[str, MatrixTypesWithFrame]]:
         """Access column pairs/relationships between cells.
 
         Returns:
-            Optional[MutableMapping[str, MatrixTypesWithFrame]]: access
-            colpairs.
+            Optional[Dict[str, MatrixTypesWithFrame]]: Access column pairs.
         """
-        return self._colpairs
+        return self._col_pairs
 
-    @colPairs.setter
-    def colPairs(self, pairs: MutableMapping[str, MatrixTypesWithFrame]):
-        """Set column pairs/relationships between features.
+    @col_pairs.setter
+    def col_pairs(self, pairs: MutableMapping[str, MatrixTypesWithFrame]):
+        """Set column pairs/relationships between cells.
 
         Args:
-            MutableMapping[str, MatrixTypesWithFrame]: new col pairs.
+            MutableMapping[str, MatrixTypesWithFrame]: New column pairs.
         """
         self._validate_pairs(pairs)
-        self._colpairs = pairs
+        self._col_pairs = pairs
 
     def __str__(self) -> str:
         pattern = (
             f"Class SingleCellExperiment with {self.shape[0]} features and {self.shape[1]} cells \n"
-            f"  mainExperimentName: {self.mainExperimentName if self.mainExperimentName is not None else None} \n"
+            f"  main_experiment_name: {self.main_experiment_name if self.main_experiment_name is not None else None} \n"
             f"  assays: {list(self.assays.keys())} \n"
-            f"  features: {self.rowData.columns if self.rowData is not None else None} \n"
-            f"  cell annotations: {self.colData.columns if self.colData is not None else None} \n"
-            f"  reduced dimensions: {self.reducedDimNames if self.reducedDims is not None else None} \n"
-            f"  alternative experiments: {list(self.altExps.keys()) if self.altExps is not None else None}"
+            f"  features: {self.row_data.columns if self.row_data is not None else None} \n"
+            f"  cell annotations: {self.col_data.columns if self.col_data is not None else None} \n"
+            f"  reduced dimensions: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
+            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"
         )
         return pattern
 
     def __getitem__(self, args: SlicerArgTypes) -> "SingleCellExperiment":
-        """Subset a `SingleCellExperiment`.
+        """Subset experiment.
 
-        Note: does not slice rowpairs and colpairs.
+        Note: Does not currently support slicing of
+        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.row_pairs`
+        and
+        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.col_pairs`.
 
         Args:
-            args (SlicerArgTypes): indices to slice. tuple can
-                contains slices along dimensions.
+            args (SlicerArgTypes): Indices or names to slice. Tuple contains
+                slices along dimensions (rows, cols).
+
+                Each element in the tuple, may be either a integer vector (index positions),
+                boolean vector or :py:class:`~slice` object. Defaults to None.
 
         Raises:
             Exception: Too many or too few slices.
 
         Returns:
-            SingleCellExperiment: new sliced `SingleCellExperiment` object.
+            SingleCellExperiment: Sliced `SingleCellExperiment` object.
         """
         sliced_objs = self._slice(args)
 
-        new_reducedDims = None
-        if self.reducedDims is not None:
-            new_reducedDims = OrderedDict()
-            for rdname, embeds in self.reducedDims.items():
+        new_reduced_dims = None
+        if self.reduced_dims is not None:
+            new_reduced_dims = OrderedDict()
+            for rdname, embeds in self.reduced_dims.items():
                 sliced_embeds = None
-                if isinstance(embeds, pd.DataFrame):
-                    sliced_embeds = embeds.iloc[sliced_objs.colIndices]
+                if isinstance(embeds, DataFrame):
+                    sliced_embeds = embeds.iloc[sliced_objs.col_indices]
                 else:
-                    sliced_embeds = embeds[sliced_objs.colIndices, :]
+                    sliced_embeds = embeds[sliced_objs.col_indices, :]
 
-                new_reducedDims[rdname] = sliced_embeds
+                new_reduced_dims[rdname] = sliced_embeds
 
-        new_altExps = None
-        if self._altExps is not None:
-            new_altExps = OrderedDict()
-            for ae in self._altExps.keys():
-                new_altExps[ae] = self._altExps[ae][
-                    sliced_objs.rowIndices, sliced_objs.colIndices
+        new_alternative_experiments = None
+        if self._alternative_experiments is not None:
+            new_alternative_experiments = OrderedDict()
+            for ae in self._alternative_experiments.keys():
+                new_alternative_experiments[ae] = self._alternative_experiments[ae][
+                    sliced_objs.row_indices, sliced_objs.col_indices
                 ]
 
         return SingleCellExperiment(
             sliced_objs.assays,
-            sliced_objs.rowData,
-            sliced_objs.colData,
+            sliced_objs.row_data,
+            sliced_objs.col_data,
             self.metadata,
-            new_reducedDims,
-            self.mainExperimentName,
-            new_altExps,
+            new_reduced_dims,
+            self.main_experiment_name,
+            new_alternative_experiments,
         )
 
-    def toAnnData(
+    def to_anndata(
         self, alts: bool = False
-    ) -> Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]:
-        """Transform `SingleCellExperiment` object to `AnnData`.
+    ) -> Union[AnnData, MutableMapping[str, AnnData]]:
+        """Transform `SingleCellExperiment` object to :py:class:`~anndata.AnnData`.
 
         Args:
-            alts (bool, optional): Also convert alternative experiments.
+            alts (bool, optional): Whether to include alternative experiments
+                int the result. Defaults to False.
 
         Returns:
-            Union[anndata.AnnData, MutableMapping[str, anndata.AnnData]]:
-            returns an AnnData representation, if alts is true, a dictionary
-            of anndata objects with their alternative experiment names.
+            Union[AnnData, MutableMapping[str, AnnData]]: A tuple with
+            the main `AnnData` object and Optionally, If ``alts`` is true, a dictionary with
+            alternative experiment names as keys and the value is the corresponding
+            `AnnData` object.
         """
 
         layers = OrderedDict()
         for asy, mat in self.assays.items():
             layers[asy] = mat.transpose()
 
-        trows = self.rowData
-        if isinstance(self.rowData, GenomicRanges):
-            trows = self.rowData.toPandas()
+        trows = self.row_data
+        if isinstance(self.row_data, GenomicRanges):
+            trows = self.row_data.toPandas()
 
-        obj = anndata.AnnData(
-            obs=self.colData,
+        obj = AnnData(
+            obs=self.col_data,
             var=trows,
             uns=self.metadata,
-            obsm=self.reducedDims,
+            obsm=self.reduced_dims,
             layers=layers,
-            varp=self.rowPairs,
-            obsp=self.colPairs,
+            varp=self.row_pairs,
+            obsp=self.col_pairs,
         )
 
         if alts is True:
             adatas = None
-            if self.altExps is not None:
+            if self.alternative_experiments is not None:
                 adatas = {}
-                for altName, altExp in self.altExps.items():
-                    adatas[altName] = altExp.toAnnData()
+                for (
+                    alt_name,
+                    alternative_experiment,
+                ) in self.alternative_experiments.items():
+                    adatas[alt_name] = alternative_experiment.to_anndata()
 
             return obj, adatas
 
         return obj
 
-    def toMuData(self) -> MuData:
-        """Transform `SingleCellExperiment` object to `MuData`.
+    def to_mudata(self) -> MuData:
+        """Transform `SingleCellExperiment` object to :py:class:`~mudata.MuData`.
+
+        If
+        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.main_experiment_name`
+        is None, this experiment is called **Unknown Modality** in the :py:class:`~mudata.MuData`
+        object.
 
         Returns:
-            MuData: MuData representation.
+            MuData: A MuData object.
         """
-        mainData, altData = self.toAnnData(alts=True)
+        mainData, altData = self.to_anndata(alts=True)
 
         expts = OrderedDict()
-        mainName = self.mainExperimentName
-        if self.mainExperimentName is None:
+        mainName = self.main_experiment_name
+        if self.main_experiment_name is None:
             mainName = "Unknown Modality"
 
         expts[mainName] = mainData

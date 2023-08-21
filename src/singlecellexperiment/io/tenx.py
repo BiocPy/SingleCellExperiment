@@ -10,14 +10,18 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def read10xMTX(path: str) -> SingleCellExperiment:
-    """Read 10x Matrix market directory.
+def read_tenx_mtx(path: str) -> SingleCellExperiment:
+    """Read 10X Matrix market directory as
+    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
-        path (str): path to 10x mtx directory.
+        path (str): Path to 10X MTX directory.
+            Directory must contain `matrix.mtx`, and optionally
+            a `genes.tsv` to represent featires and `barcodes.tsv` for cell
+            annotations.
 
     Returns:
-        SingleCellExperiment: A `SingleCellExperiment` object.
+        SingleCellExperiment: A single-cell experiment object.
     """
     mat = mmread(f"{path}/matrix.mtx")
     mat = csr_matrix(mat)
@@ -28,22 +32,25 @@ def read10xMTX(path: str) -> SingleCellExperiment:
     cells = pd.read_csv(path + "/barcodes.tsv", header=None, sep="\t")
     cells.columns = ["barcode"]
 
-    return SingleCellExperiment(assays={"counts": mat}, rowData=genes, colData=cells)
+    return SingleCellExperiment(assays={"counts": mat}, row_data=genes, col_data=cells)
 
 
-def read10xH5(path: str) -> SingleCellExperiment:
-    """Read 10x H5 file. Must be V3 format.
+def read_tenx_h5(path: str) -> SingleCellExperiment:
+    """Read 10X H5 file as
+    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
+
+    Note: Currently only supports version 3 of the 10X H5 format.
 
     Args:
-        path (str): path to 10x H5 file directory.
+        path (str): Path to 10x H5 file.
 
     Returns:
-        SingleCellExperiment: A `SingleCellExperiment` object.
+        SingleCellExperiment: A single-cell experiment object.
     """
     h5 = h5py.File(path, mode="r")
 
     if "matrix" not in h5.keys():
-        raise ValueError(f"H5 file ({path}) is not a 10X v3 format.")
+        raise ValueError(f"H5 file ({path}) is not a 10X V3 format.")
 
     groups = h5["matrix"].keys()
 
@@ -72,5 +79,5 @@ def read10xH5(path: str) -> SingleCellExperiment:
         barcodes["barcodes"] = h5["matrix"]["barcodes"][:]
 
     return SingleCellExperiment(
-        assays={"counts": counts}, rowData=features, colData=barcodes
+        assays={"counts": counts}, row_data=features, col_data=barcodes
     )

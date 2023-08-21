@@ -1,13 +1,13 @@
-import singlecellexperiment
-import numpy as np
 from random import random
-import pandas as pd
-import genomicranges
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import anndata
+import genomicranges
+import numpy as np
+import pandas as pd
 from mudata import MuData
-import h5py
+
+import singlecellexperiment
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -40,33 +40,37 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
-colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
-def test_SCE_toAnnData():
+def test_SCE_to_anndata():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
-    adata = tse.toAnnData()
+    adata = tse.to_anndata()
     assert adata is not None
     assert isinstance(adata, anndata.AnnData)
 
 
 def test_SCE_fromH5AD():
-    tse = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+    tse = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
     # slice
     sliced = tse[0:10, 1:5]
@@ -75,21 +79,21 @@ def test_SCE_fromH5AD():
     assert isinstance(sliced, SingleCellExperiment)
 
     assert sliced.assays is not None
-    assert sliced.rowData is not None
-    assert sliced.colData is not None
+    assert sliced.row_data is not None
+    assert sliced.col_data is not None
 
     assert sliced.shape == (10, 4)
 
 
 def test_SCE_from10xH5():
-    tse = singlecellexperiment.read10xH5("tests/data/tenx.sub.h5")
+    tse = singlecellexperiment.read_tenx_h5("tests/data/tenx.sub.h5")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
     # slice
     sliced = tse[0:10, 1:5]
@@ -98,8 +102,8 @@ def test_SCE_from10xH5():
     assert isinstance(sliced, SingleCellExperiment)
 
     assert sliced.assays is not None
-    assert sliced.rowData is not None
-    assert sliced.colData is not None
+    assert sliced.row_data is not None
+    assert sliced.col_data is not None
 
     assert sliced.shape == (10, 4)
 
@@ -117,20 +121,20 @@ def test_SCE_randomAnnData():
     adata.obs_names = [f"obs_{i+1}" for i in range(n)]
     adata.var_names = [f"var_{j+1}" for j in range(d)]
 
-    tse = singlecellexperiment.fromAnnData(adata)
+    tse = singlecellexperiment.from_anndata(adata)
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
 
-def test_SCE_toMuData():
+def test_SCE_to_mudata():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
-    result = tse.toMuData()
+    result = tse.to_mudata()
     assert result is not None
     assert isinstance(result, MuData)

@@ -1,11 +1,13 @@
-from singlecellexperiment import SingleCellExperiment
-import numpy as np
 from random import random
-import pandas as pd
+
 import genomicranges
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
-from summarizedexperiment import SummarizedExperiment
+import numpy as np
+import pandas as pd
 import pytest
+from summarizedexperiment import SummarizedExperiment
+
+from singlecellexperiment import SingleCellExperiment
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -38,48 +40,52 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
-colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
 def test_SCE_props():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
     assert isinstance(tse, sce)
 
-    assert tse.altExps is None
+    assert tse.alternative_experiments is None
     alt = SummarizedExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
-    tse.altExps = {"alt": alt}
-    assert tse.altExps is not None
+    tse.alternative_experiments = {"alt": alt}
+    assert tse.alternative_experiments is not None
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
-    assert tse.colPairs is None
-    tse.colPairs = {"random": colData}
-    assert tse.colPairs is not None
+    assert tse.col_pairs is None
+    tse.col_pairs = {"random": col_data}
+    assert tse.col_pairs is not None
 
     with pytest.raises(Exception):
-        tse.rowPairs = counts
+        tse.row_pairs = counts
 
-    assert tse.rowPairs is None
+    assert tse.row_pairs is None
 
-    assert tse.mainExperimentName is None
-    tse.mainExperimentName = "scrna-seq"
-    assert tse.mainExperimentName is not None
+    assert tse.main_experiment_name is None
+    tse.main_experiment_name = "scrna-seq"
+    assert tse.main_experiment_name is not None
 
-    assert tse.reducedDims is None
-    tse.reducedDims = {"tsnooch": np.random.rand(ncols, 4)}
+    assert tse.reduced_dims is None
+    tse.reduced_dims = {"tsnooch": np.random.rand(ncols, 4)}
     with pytest.raises(Exception):
-        tse.reducedDims = {"tsnooch": np.random.rand(ncols - 1, 4)}
-    assert tse.reducedDims is not None
+        tse.reduced_dims = {"tsnooch": np.random.rand(ncols - 1, 4)}
+    assert tse.reduced_dims is not None
 
-    assert tse.reducedDimNames is not None
-    assert len(tse.reducedDimNames) == 1
+    assert tse.reduced_dim_names is not None
+    assert len(tse.reduced_dim_names) == 1

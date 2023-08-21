@@ -1,12 +1,13 @@
-from singlecellexperiment import SingleCellExperiment
-import numpy as np
 from random import random
-import pandas as pd
+
 import genomicranges
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
+import numpy as np
+import pandas as pd
+import pytest
 from summarizedexperiment import SummarizedExperiment
 
-import pytest
+from singlecellexperiment import SingleCellExperiment
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -39,14 +40,18 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
-colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
 def test_SCE_creation():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
@@ -55,11 +60,14 @@ def test_SCE_creation():
 
 def test_SCE_creation_with_alts():
     tse = SummarizedExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData, altExps={"alt": tse},
+        assays={"counts": counts},
+        row_data=df_gr,
+        col_data=col_data,
+        alternative_experiments={"alt": tse},
     )
 
     assert tse is not None
@@ -67,7 +75,6 @@ def test_SCE_creation_with_alts():
 
 
 def test_SCE_creation_with_alts_should_fail():
-
     anrows = 200
     ancols = 2
     acounts = np.random.rand(anrows, ancols)
@@ -93,16 +100,20 @@ def test_SCE_creation_with_alts_should_fail():
             "GC": [random() for _ in range(10)] * 20,
         }
     )
-    acolData = pd.DataFrame({"treatment": ["ChIP", "Input"],})
+    acol_data = pd.DataFrame(
+        {
+            "treatment": ["ChIP", "Input"],
+        }
+    )
 
     tse = SummarizedExperiment(
-        assays={"counts": acounts}, rowData=adf_gr, colData=acolData
+        assays={"counts": acounts}, row_data=adf_gr, col_data=acol_data
     )
 
     with pytest.raises(Exception):
         tse = SingleCellExperiment(
             assays={"counts": counts},
-            rowData=df_gr,
-            colData=colData,
-            altExps={"alt": tse},
+            row_data=df_gr,
+            col_data=col_data,
+            alternative_experiments={"alt": tse},
         )

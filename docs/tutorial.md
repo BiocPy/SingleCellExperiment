@@ -4,19 +4,20 @@ Container class to represent single-cell experiments; follows Bioconductor's [Si
 
 # Import as `SingleCellExperiment`
 
-Readers are available to parse AnnData, H5AD or 10x (MTX, H5) V3 formats as `SingleCellExperiment` objects.
+Readers are available to read `AnnData`, `H5AD` or `10x (MTX, H5) V3` formats as `SingleCellExperiment` objects.
 
 ```python
 import singlecellexperiment
 
-sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 ```
 
-Similarly `read10xH5`, `read10xMTX` and `fromAnnData` methods are  available to read various formats.
+Similarly `read_tenx_h5`, `read_tenx_mtx` and `from_anndata` methods are  available to read various formats.
 
 # Construct a `SingleCellExperiment` object
 
-Similar to `SummarizedExperiment`, In addition to assays, row data and column data, a SingleCellExperiment object can contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.
+`SingleCellExperiment` extends `SummarizedExperiment`, so it must contain `assays`, `row_data` and `column_data` objects. Additionally
+`SingleCellExperiment` objects may contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.
 
 ```python
 import pandas as pd
@@ -49,9 +50,9 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = GenomicRanges.fromPandas(df_gr)
+gr = GenomicRanges.from_pandas(df_gr)
 
-colData = pd.DataFrame(
+col_data = pd.DataFrame(
     {
         "celltype": ["cluster1", "cluster2"] * 3,
     }
@@ -64,7 +65,7 @@ Finally construct the object,
 from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
-    assays={"counts": counts}, rowData=df_gr, colData=colData
+    assays={"counts": counts}, row_data=df_gr, col_data=col_data
 )
 ```
 
@@ -74,12 +75,12 @@ Multiple methods are available to access various slots of a `SingleCellExperimen
 
 ```python
 tse.assays
-tse.rowData
-tse.colData
-tse.ReducedDims
-tse.altExps
-tse.rowPairs
-tse.colPairs
+tse.row_data
+tse.col_data
+tse.reduced_dims
+tse.alternative_experiments
+tse.row_pairs
+tse.col_pairs
 ```
 
 ### Access specific sets
@@ -87,9 +88,9 @@ tse.colPairs
 For reduced dimension and alternative experiment slots, one can also access specific objects
 
 ```python
-tse.reducedDim("tSNE")
+tse.reduced_dim("tSNE")
 
-tse.altExp("crop-seq")
+tse.alternative_experiment("crop-seq")
 ```
 
 # Subset experiment
@@ -106,5 +107,11 @@ subset_tse = tse[0:10, 0:3]
 Methods are available to convert `SingleCellExperiment` objects as `AnnData`
 
 ```python
-adata = tse.toAnnData()
+adata = tse.to_anndata()
+```
+
+or an `MuData`
+
+```python
+mdata = tse.to_mudata()
 ```
