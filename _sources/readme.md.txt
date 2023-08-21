@@ -18,7 +18,7 @@ Readers are available to read AnnData, H5AD or 10x (MTX, H5) V3 formats as `Sing
 ```python
 import singlecellexperiment
 
-sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 ```
 
 ***OR construct one from scratch***
@@ -27,16 +27,16 @@ sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
 from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
-    assays={"counts": counts}, rowData=df_gr, colData=colData,
-    reducedDims={"tsne": ..., "umap": ...}, altExps={"atac": ...}
+    assays={"counts": counts}, row_data=df_gr, col_data=col_data,
+    reduced_dims={"tsne": ..., "umap": ...}, alternative_experiments={"atac": ...}
 )
 ```
 
-`SingleCellExperiment` extends `SummarizedExperiment`, so most methods from there are applicable here. checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/).
+Since `SingleCellExperiment` extends `SummarizedExperiment`, most methods especially slicing and accessors are applicable here. Checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/) for more info.
 
 <!-- pyscaffold-notes -->
 
 ## Note
 
-This project has been set up using PyScaffold 4.1.1. For details and usage
+This project has been set up using PyScaffold 4.5. For details and usage
 information on PyScaffold see https://pyscaffold.org/.

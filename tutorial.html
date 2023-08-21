@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="License" href="license.html" /><link rel="prev" title="SingleCellExperiment" href="readme.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="singlecellexperiment" href="api/modules.html" /><link rel="prev" title="SingleCellExperiment" href="readme.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
-        <title>Tutorial - SingleCellExperiment 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
+        <title>Tutorial - SingleCellExperiment 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.2.6 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -162,9 +162,6 @@
 <li class="toctree-l1"><a class="reference internal" href="#accessors">Accessors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#subset-experiment">Subset experiment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#export-as-anndata-objects">Export as AnnData objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/singlecellexperiment.html">singlecellexperiment package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of singlecellexperiment package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/singlecellexperiment.io.html">singlecellexperiment.io package</a></li>
@@ -172,6 +169,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributions &amp; Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -206,23 +207,24 @@
           </label>
         </div>
         <article role="main">
-          <section id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">#</a></h1>
+          <section class="tex2jax_ignore mathjax_ignore" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">#</a></h1>
 <p>Container class to represent single-cell experiments; follows Bioconductor’s <a class="reference external" href="https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html">SingleCellExperiment</a>.</p>
 </section>
-<section id="import-as-singlecellexperiment">
-<h1>Import as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code><a class="headerlink" href="#import-as-singlecellexperiment" title="Permalink to this heading">#</a></h1>
-<p>Readers are available to parse AnnData, H5AD or 10x (MTX, H5) V3 formats as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects.</p>
+<section class="tex2jax_ignore mathjax_ignore" id="import-as-singlecellexperiment">
+<h1>Import as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code><a class="headerlink" href="#import-as-singlecellexperiment" title="Link to this heading">#</a></h1>
+<p>Readers are available to read <code class="docutils literal notranslate"><span class="pre">AnnData</span></code>, <code class="docutils literal notranslate"><span class="pre">H5AD</span></code> or <code class="docutils literal notranslate"><span class="pre">10x</span> <span class="pre">(MTX,</span> <span class="pre">H5)</span> <span class="pre">V3</span></code> formats as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">singlecellexperiment</span>
 
-<span class="n">sce</span> <span class="o">=</span> <span class="n">singlecellexperiment</span><span class="o">.</span><span class="n">readH5AD</span><span class="p">(</span><span class="s2">&quot;tests/data/adata.h5ad&quot;</span><span class="p">)</span>
+<span class="n">sce</span> <span class="o">=</span> <span class="n">singlecellexperiment</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s2">&quot;tests/data/adata.h5ad&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Similarly <code class="docutils literal notranslate"><span class="pre">read10xH5</span></code>, <code class="docutils literal notranslate"><span class="pre">read10xMTX</span></code> and <code class="docutils literal notranslate"><span class="pre">fromAnnData</span></code> methods are  available to read various formats.</p>
+<p>Similarly <code class="docutils literal notranslate"><span class="pre">read_tenx_h5</span></code>, <code class="docutils literal notranslate"><span class="pre">read_tenx_mtx</span></code> and <code class="docutils literal notranslate"><span class="pre">from_anndata</span></code> methods are  available to read various formats.</p>
 </section>
-<section id="construct-a-singlecellexperiment-object">
-<h1>Construct a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object<a class="headerlink" href="#construct-a-singlecellexperiment-object" title="Permalink to this heading">#</a></h1>
-<p>Similar to <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code>, In addition to assays, row data and column data, a SingleCellExperiment object can contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.</p>
+<section class="tex2jax_ignore mathjax_ignore" id="construct-a-singlecellexperiment-object">
+<h1>Construct a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object<a class="headerlink" href="#construct-a-singlecellexperiment-object" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code>, so it must contain <code class="docutils literal notranslate"><span class="pre">assays</span></code>, <code class="docutils literal notranslate"><span class="pre">row_data</span></code> and <code class="docutils literal notranslate"><span class="pre">column_data</span></code> objects. Additionally
+<code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects may contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">genomicranges</span> <span class="kn">import</span> <span class="n">GenomicRanges</span>
@@ -253,9 +255,9 @@
     <span class="p">}</span>
 <span class="p">)</span>
 
-<span class="n">gr</span> <span class="o">=</span> <span class="n">GenomicRanges</span><span class="o">.</span><span class="n">fromPandas</span><span class="p">(</span><span class="n">df_gr</span><span class="p">)</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GenomicRanges</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df_gr</span><span class="p">)</span>
 
-<span class="n">colData</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+<span class="n">col_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;celltype&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cluster1&quot;</span><span class="p">,</span> <span class="s2">&quot;cluster2&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span>
     <span class="p">}</span>
@@ -266,45 +268,49 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">singlecellexperiment</span> <span class="kn">import</span> <span class="n">SingleCellExperiment</span>
 
 <span class="n">tse</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
-    <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">rowData</span><span class="o">=</span><span class="n">df_gr</span><span class="p">,</span> <span class="n">colData</span><span class="o">=</span><span class="n">colData</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">df_gr</span><span class="p">,</span> <span class="n">col_data</span><span class="o">=</span><span class="n">col_data</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="accessors">
-<h1>Accessors<a class="headerlink" href="#accessors" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="accessors">
+<h1>Accessors<a class="headerlink" href="#accessors" title="Link to this heading">#</a></h1>
 <p>Multiple methods are available to access various slots of a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tse</span><span class="o">.</span><span class="n">assays</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">rowData</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">colData</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">ReducedDims</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">altExps</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">rowPairs</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">colPairs</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">row_data</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">col_data</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">reduced_dims</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">alternative_experiments</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">row_pairs</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">col_pairs</span>
 </pre></div>
 </div>
 <section id="access-specific-sets">
-<h2>Access specific sets<a class="headerlink" href="#access-specific-sets" title="Permalink to this heading">#</a></h2>
+<h2>Access specific sets<a class="headerlink" href="#access-specific-sets" title="Link to this heading">#</a></h2>
 <p>For reduced dimension and alternative experiment slots, one can also access specific objects</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tse</span><span class="o">.</span><span class="n">reducedDim</span><span class="p">(</span><span class="s2">&quot;tSNE&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tse</span><span class="o">.</span><span class="n">reduced_dim</span><span class="p">(</span><span class="s2">&quot;tSNE&quot;</span><span class="p">)</span>
 
-<span class="n">tse</span><span class="o">.</span><span class="n">altExp</span><span class="p">(</span><span class="s2">&quot;crop-seq&quot;</span><span class="p">)</span>
+<span class="n">tse</span><span class="o">.</span><span class="n">alternative_experiment</span><span class="p">(</span><span class="s2">&quot;crop-seq&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 </section>
-<section id="subset-experiment">
-<h1>Subset experiment<a class="headerlink" href="#subset-experiment" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="subset-experiment">
+<h1>Subset experiment<a class="headerlink" href="#subset-experiment" title="Link to this heading">#</a></h1>
 <p>Similar to <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code>, you can subset by index</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># subset the first 10 rows and the first 3 samples</span>
 <span class="n">subset_tse</span> <span class="o">=</span> <span class="n">tse</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 </pre></div>
 </div>
 </section>
-<section id="export-as-anndata-objects">
-<h1>Export as AnnData objects<a class="headerlink" href="#export-as-anndata-objects" title="Permalink to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="export-as-anndata-objects">
+<h1>Export as AnnData objects<a class="headerlink" href="#export-as-anndata-objects" title="Link to this heading">#</a></h1>
 <p>Methods are available to convert <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">tse</span><span class="o">.</span><span class="n">toAnnData</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">tse</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or an <code class="docutils literal notranslate"><span class="pre">MuData</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdata</span> <span class="o">=</span> <span class="n">tse</span><span class="o">.</span><span class="n">to_mudata</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
@@ -314,12 +320,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="license.html">
+          <a class="next-page" href="api/modules.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">License</div>
+                <div class="title">singlecellexperiment</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -338,7 +344,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, jkanche
+                Copyright &#169; 2023, jkanche
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -358,9 +364,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
-        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
+        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.2.6 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -161,9 +161,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#accessors">Accessors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#subset-experiment">Subset experiment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#export-as-anndata-objects">Export as AnnData objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/singlecellexperiment.html">singlecellexperiment package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of singlecellexperiment package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/singlecellexperiment.io.html">singlecellexperiment.io package</a></li>
@@ -171,6 +168,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributions &amp; Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -217,14 +218,20 @@
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="read10xMTX"><a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.tenx.read10xMTX">[docs]</a><span class="k">def</span> <span class="nf">read10xMTX</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read 10x Matrix market directory.</span>
+<div class="viewcode-block" id="read_tenx_mtx">
+<a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.tenx.read_tenx_mtx">[docs]</a>
+<span class="k">def</span> <span class="nf">read_tenx_mtx</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read 10X Matrix market directory as</span>
+<span class="sd">    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str): path to 10x mtx directory.</span>
+<span class="sd">        path (str): Path to 10X MTX directory.</span>
+<span class="sd">            Directory must contain `matrix.mtx`, and optionally</span>
+<span class="sd">            a `genes.tsv` to represent featires and `barcodes.tsv` for cell</span>
+<span class="sd">            annotations.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        SingleCellExperiment: A `SingleCellExperiment` object.</span>
+<span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mmread</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/matrix.mtx&quot;</span><span class="p">)</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
@@ -235,22 +242,28 @@
     <span class="n">cells</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/barcodes.tsv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">cells</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;barcode&quot;</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span><span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">mat</span><span class="p">},</span> <span class="n">rowData</span><span class="o">=</span><span class="n">genes</span><span class="p">,</span> <span class="n">colData</span><span class="o">=</span><span class="n">cells</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span><span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">mat</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">genes</span><span class="p">,</span> <span class="n">col_data</span><span class="o">=</span><span class="n">cells</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="read10xH5"><a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.tenx.read10xH5">[docs]</a><span class="k">def</span> <span class="nf">read10xH5</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read 10x H5 file. Must be V3 format.</span>
+
+<div class="viewcode-block" id="read_tenx_h5">
+<a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.tenx.read_tenx_h5">[docs]</a>
+<span class="k">def</span> <span class="nf">read_tenx_h5</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read 10X H5 file as</span>
+<span class="sd">    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.</span>
+
+<span class="sd">    Note: Currently only supports version 3 of the 10X H5 format.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str): path to 10x H5 file directory.</span>
+<span class="sd">        path (str): Path to 10x H5 file.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        SingleCellExperiment: A `SingleCellExperiment` object.</span>
+<span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">h5</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;matrix&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">h5</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;H5 file (</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">) is not a 10X v3 format.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;H5 file (</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">) is not a 10X V3 format.&quot;</span><span class="p">)</span>
 
     <span class="n">groups</span> <span class="o">=</span> <span class="n">h5</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 
@@ -279,8 +292,9 @@
         <span class="n">barcodes</span><span class="p">[</span><span class="s2">&quot;barcodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="s2">&quot;barcodes&quot;</span><span class="p">][:]</span>
 
     <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
-        <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">rowData</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">colData</span><span class="o">=</span><span class="n">barcodes</span>
+        <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">col_data</span><span class="o">=</span><span class="n">barcodes</span>
     <span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -293,7 +307,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, jkanche
+                Copyright &#169; 2023, jkanche
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -313,9 +327,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/scripts/furo.js"></script>
+</div><script src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

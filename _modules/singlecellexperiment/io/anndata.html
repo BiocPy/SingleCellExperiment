@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../../../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 6.2.1 and Furo 2023.05.20 -->
-        <title>singlecellexperiment.io.anndata - SingleCellExperiment 0.2.6 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
+        <title>singlecellexperiment.io.anndata - SingleCellExperiment 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.2.6 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.2.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -161,9 +161,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#accessors">Accessors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#subset-experiment">Subset experiment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html#export-as-anndata-objects">Export as AnnData objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/singlecellexperiment.html">singlecellexperiment package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of singlecellexperiment package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/singlecellexperiment.io.html">singlecellexperiment.io package</a></li>
@@ -171,6 +168,10 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributions &amp; Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
 </ul>
 
 </div>
@@ -208,6 +209,7 @@
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">import</span> <span class="nn">anndata</span>
+<span class="kn">from</span> <span class="nn">anndata</span> <span class="kn">import</span> <span class="n">AnnData</span>
 
 <span class="kn">from</span> <span class="nn">..SingleCellExperiment</span> <span class="kn">import</span> <span class="n">SingleCellExperiment</span>
 
@@ -216,26 +218,29 @@
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="toNormalDict"><a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.anndata.toNormalDict">[docs]</a><span class="k">def</span> <span class="nf">toNormalDict</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
-    <span class="n">normObj</span> <span class="o">=</span> <span class="n">obj</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">normObj</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">normObj</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span> <span class="nf">_to_normal_dict</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="n">norm_obj</span> <span class="o">=</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">norm_obj</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">norm_obj</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">normObj</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">okey</span><span class="p">,</span> <span class="n">oval</span> <span class="ow">in</span> <span class="n">normObj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">normObj</span><span class="p">[</span><span class="n">okey</span><span class="p">]</span> <span class="o">=</span> <span class="n">oval</span>
+        <span class="n">norm_obj</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">okey</span><span class="p">,</span> <span class="n">oval</span> <span class="ow">in</span> <span class="n">norm_obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">norm_obj</span><span class="p">[</span><span class="n">okey</span><span class="p">]</span> <span class="o">=</span> <span class="n">oval</span>
 
-    <span class="k">return</span> <span class="n">normObj</span></div>
+    <span class="k">return</span> <span class="n">norm_obj</span>
 
 
-<div class="viewcode-block" id="fromAnnData"><a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.anndata.fromAnnData">[docs]</a><span class="k">def</span> <span class="nf">fromAnnData</span><span class="p">(</span><span class="n">adata</span><span class="p">:</span> <span class="n">anndata</span><span class="o">.</span><span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert `AnnData` object to `SingleCellExperiment`.</span>
+<div class="viewcode-block" id="from_anndata">
+<a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.anndata.from_anndata">[docs]</a>
+<span class="k">def</span> <span class="nf">from_anndata</span><span class="p">(</span><span class="n">adata</span><span class="p">:</span> <span class="n">AnnData</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an :py:class:`~anndata.AnnData` into</span>
+<span class="sd">    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        adata (AnnData): `AnnData` object.</span>
+<span class="sd">        adata (AnnData): Input data.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        SingleCellExperiment: single-cell experiment object.</span>
+<span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">layers</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -245,33 +250,38 @@
     <span class="k">if</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">layers</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
 
-    <span class="n">obsm</span> <span class="o">=</span> <span class="n">toNormalDict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">)</span>
-    <span class="n">varp</span> <span class="o">=</span> <span class="n">toNormalDict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">varp</span><span class="p">)</span>
-    <span class="n">obsp</span> <span class="o">=</span> <span class="n">toNormalDict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="p">)</span>
+    <span class="n">obsm</span> <span class="o">=</span> <span class="n">_to_normal_dict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">)</span>
+    <span class="n">varp</span> <span class="o">=</span> <span class="n">_to_normal_dict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">varp</span><span class="p">)</span>
+    <span class="n">obsp</span> <span class="o">=</span> <span class="n">_to_normal_dict</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
         <span class="n">assays</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
-        <span class="n">rowData</span><span class="o">=</span><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">,</span>
-        <span class="n">colData</span><span class="o">=</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">,</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">,</span>
+        <span class="n">col_data</span><span class="o">=</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">,</span>
         <span class="n">metadata</span><span class="o">=</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">,</span>
-        <span class="n">reducedDims</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
-        <span class="n">rowpairs</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
-        <span class="n">colpairs</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
+        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
+        <span class="n">row_pairs</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
+        <span class="n">col_pairs</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="readH5AD"><a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.anndata.readH5AD">[docs]</a><span class="k">def</span> <span class="nf">readH5AD</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert H5AD file to `SingleCellExperiment`.</span>
+
+<div class="viewcode-block" id="read_h5ad">
+<a class="viewcode-back" href="../../../api/singlecellexperiment.io.html#singlecellexperiment.io.anndata.read_h5ad">[docs]</a>
+<span class="k">def</span> <span class="nf">read_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a H5ad file as</span>
+<span class="sd">    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str): path to a H5AD file.</span>
+<span class="sd">        path (str): Path to a H5AD file.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        SingleCellExperiment: single-cell experiment object.</span>
+<span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">adata</span> <span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">fromAnnData</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">from_anndata</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -284,7 +294,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, jkanche
+                Copyright &#169; 2023, jkanche
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -304,9 +314,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
-    <script src="../../../_static/scripts/furo.js"></script>
+</div><script src="../../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
