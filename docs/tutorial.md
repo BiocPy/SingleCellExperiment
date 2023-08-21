@@ -9,10 +9,10 @@ Readers are available to parse AnnData, H5AD or 10x (MTX, H5) V3 formats as `Sin
 ```python
 import singlecellexperiment
 
-sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 ```
 
-Similarly `read10xH5`, `read10xMTX` and `fromAnnData` methods are  available to read various formats.
+Similarly `read_tenx_h5`, `read10xMTX` and `from_anndata` methods are  available to read various formats.
 
 # Construct a `SingleCellExperiment` object
 
@@ -49,7 +49,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = GenomicRanges.fromPandas(df_gr)
+gr = GenomicRanges.from_pandas(df_gr)
 
 col_data = pd.DataFrame(
     {
@@ -77,9 +77,9 @@ tse.assays
 tse.row_data
 tse.col_data
 tse.reduced_dims
-tse.altExps
-tse.rowPairs
-tse.colPairs
+tse.alternative_experiments
+tse.row_pairs
+tse.col_pairs
 ```
 
 ### Access specific sets
@@ -106,5 +106,5 @@ subset_tse = tse[0:10, 0:3]
 Methods are available to convert `SingleCellExperiment` objects as `AnnData`
 
 ```python
-adata = tse.toAnnData()
+adata = tse.to_anndata()
 ```

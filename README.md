@@ -18,7 +18,7 @@ Readers are available to read AnnData, H5AD or 10x (MTX, H5) V3 formats as `Sing
 ```python
 import singlecellexperiment
 
-sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 ```
 
 ***OR construct one from scratch***
@@ -28,7 +28,7 @@ from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
     assays={"counts": counts}, row_data=df_gr, col_data=col_data,
-    reduced_dims={"tsne": ..., "umap": ...}, altExps={"atac": ...}
+    reduced_dims={"tsne": ..., "umap": ...}, alternative_experiments={"atac": ...}
 )
 ```
 

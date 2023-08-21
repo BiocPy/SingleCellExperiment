@@ -40,7 +40,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
 col_data = pd.DataFrame(
     {
@@ -57,29 +57,29 @@ def test_SCE_props():
     assert tse is not None
     assert isinstance(tse, sce)
 
-    assert tse.altExps is None
+    assert tse.alternative_experiments is None
     alt = SummarizedExperiment(
         assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
-    tse.altExps = {"alt": alt}
-    assert tse.altExps is not None
+    tse.alternative_experiments = {"alt": alt}
+    assert tse.alternative_experiments is not None
 
     assert tse.assays is not None
     assert tse.row_data is not None
     assert tse.col_data is not None
 
-    assert tse.colPairs is None
-    tse.colPairs = {"random": col_data}
-    assert tse.colPairs is not None
+    assert tse.col_pairs is None
+    tse.col_pairs = {"random": col_data}
+    assert tse.col_pairs is not None
 
     with pytest.raises(Exception):
-        tse.rowPairs = counts
+        tse.row_pairs = counts
 
-    assert tse.rowPairs is None
+    assert tse.row_pairs is None
 
-    assert tse.mainExperimentName is None
-    tse.mainExperimentName = "scrna-seq"
-    assert tse.mainExperimentName is not None
+    assert tse.main_experiment_name is None
+    tse.main_experiment_name = "scrna-seq"
+    assert tse.main_experiment_name is not None
 
     assert tse.reduced_dims is None
     tse.reduced_dims = {"tsnooch": np.random.rand(ncols, 4)}
@@ -87,5 +87,5 @@ def test_SCE_props():
         tse.reduced_dims = {"tsnooch": np.random.rand(ncols - 1, 4)}
     assert tse.reduced_dims is not None
 
-    assert tse.reducedDimNames is not None
-    assert len(tse.reducedDimNames) == 1
+    assert tse.reduced_dim_names is not None
+    assert len(tse.reduced_dim_names) == 1

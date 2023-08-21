@@ -35,8 +35,8 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     return SingleCellExperiment(assays={"counts": mat}, row_data=genes, col_data=cells)
 
 
-def tead_tenx_h5(path: str) -> SingleCellExperiment:
-    """Read 10x H5 file as
+def read_tenx_h5(path: str) -> SingleCellExperiment:
+    """Read 10X H5 file as
     :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Note: Currently only supports version 3 of the 10X H5 format.

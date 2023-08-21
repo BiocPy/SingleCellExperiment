@@ -2,7 +2,6 @@ from random import random
 
 import anndata
 import genomicranges
-import h5py
 import numpy as np
 import pandas as pd
 from mudata import MuData
@@ -41,7 +40,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
 col_data = pd.DataFrame(
     {
@@ -50,7 +49,7 @@ col_data = pd.DataFrame(
 )
 
 
-def test_SCE_toAnnData():
+def test_SCE_to_anndata():
     tse = SingleCellExperiment(
         assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
@@ -58,13 +57,13 @@ def test_SCE_toAnnData():
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
-    adata = tse.toAnnData()
+    adata = tse.to_anndata()
     assert adata is not None
     assert isinstance(adata, anndata.AnnData)
 
 
 def test_SCE_fromH5AD():
-    tse = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
+    tse = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
@@ -87,7 +86,7 @@ def test_SCE_fromH5AD():
 
 
 def test_SCE_from10xH5():
-    tse = singlecellexperiment.read10xH5("tests/data/tenx.sub.h5")
+    tse = singlecellexperiment.read_tenx_h5("tests/data/tenx.sub.h5")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
@@ -122,13 +121,13 @@ def test_SCE_randomAnnData():
     adata.obs_names = [f"obs_{i+1}" for i in range(n)]
     adata.var_names = [f"var_{j+1}" for j in range(d)]
 
-    tse = singlecellexperiment.fromAnnData(adata)
+    tse = singlecellexperiment.from_anndata(adata)
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
 
-def test_SCE_toMuData():
+def test_SCE_to_mudata():
     tse = SingleCellExperiment(
         assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
@@ -136,6 +135,6 @@ def test_SCE_toMuData():
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
-    result = tse.toMuData()
+    result = tse.to_mudata()
     assert result is not None
     assert isinstance(result, MuData)

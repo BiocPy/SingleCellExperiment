@@ -15,6 +15,6 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from .io.anndata import fromAnnData, readH5AD
-from .io.tenx import read10xH5, read10xMTX
+from .io.anndata import from_anndata, read_h5ad
+from .io.tenx import read_tenx_mtx, read_tenx_h5
 from .SingleCellExperiment import SingleCellExperiment

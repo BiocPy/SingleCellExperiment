@@ -50,8 +50,8 @@ def from_anndata(adata: AnnData) -> SingleCellExperiment:
         col_data=adata.obs,
         metadata=adata.uns,
         reduced_dims=obsm,
-        rowpairs=varp,
-        colpairs=obsp,
+        row_pairs=varp,
+        col_pairs=obsp,
     )
 
 

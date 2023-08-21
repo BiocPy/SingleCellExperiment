@@ -40,7 +40,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.fromPandas(df_gr)
+gr = genomicranges.from_pandas(df_gr)
 
 col_data = pd.DataFrame(
     {
@@ -67,7 +67,7 @@ def test_SCE_creation_with_alts():
         assays={"counts": counts},
         row_data=df_gr,
         col_data=col_data,
-        altExps={"alt": tse},
+        alternative_experiments={"alt": tse},
     )
 
     assert tse is not None
@@ -115,5 +115,5 @@ def test_SCE_creation_with_alts_should_fail():
             assays={"counts": counts},
             row_data=df_gr,
             col_data=col_data,
-            altExps={"alt": tse},
+            alternative_experiments={"alt": tse},
         )
