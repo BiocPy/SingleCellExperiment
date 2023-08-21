@@ -51,7 +51,7 @@ df_gr = pd.DataFrame(
 
 gr = GenomicRanges.fromPandas(df_gr)
 
-colData = pd.DataFrame(
+col_data = pd.DataFrame(
     {
         "celltype": ["cluster1", "cluster2"] * 3,
     }
@@ -64,7 +64,7 @@ Finally construct the object,
 from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
-    assays={"counts": counts}, rowData=df_gr, colData=colData
+    assays={"counts": counts}, row_data=df_gr, col_data=col_data
 )
 ```
 
@@ -74,9 +74,9 @@ Multiple methods are available to access various slots of a `SingleCellExperimen
 
 ```python
 tse.assays
-tse.rowData
-tse.colData
-tse.ReducedDims
+tse.row_data
+tse.col_data
+tse.reduced_dims
 tse.altExps
 tse.rowPairs
 tse.colPairs

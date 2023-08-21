@@ -1,13 +1,14 @@
-import singlecellexperiment
-import numpy as np
 from random import random
-import pandas as pd
-import genomicranges
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import anndata
-from mudata import MuData
+import genomicranges
 import h5py
+import numpy as np
+import pandas as pd
+from mudata import MuData
+
+import singlecellexperiment
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -42,12 +43,16 @@ df_gr = pd.DataFrame(
 
 gr = genomicranges.fromPandas(df_gr)
 
-colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
 def test_SCE_toAnnData():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
@@ -65,8 +70,8 @@ def test_SCE_fromH5AD():
     assert isinstance(tse, SingleCellExperiment)
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
     # slice
     sliced = tse[0:10, 1:5]
@@ -75,8 +80,8 @@ def test_SCE_fromH5AD():
     assert isinstance(sliced, SingleCellExperiment)
 
     assert sliced.assays is not None
-    assert sliced.rowData is not None
-    assert sliced.colData is not None
+    assert sliced.row_data is not None
+    assert sliced.col_data is not None
 
     assert sliced.shape == (10, 4)
 
@@ -88,8 +93,8 @@ def test_SCE_from10xH5():
     assert isinstance(tse, SingleCellExperiment)
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
     # slice
     sliced = tse[0:10, 1:5]
@@ -98,8 +103,8 @@ def test_SCE_from10xH5():
     assert isinstance(sliced, SingleCellExperiment)
 
     assert sliced.assays is not None
-    assert sliced.rowData is not None
-    assert sliced.colData is not None
+    assert sliced.row_data is not None
+    assert sliced.col_data is not None
 
     assert sliced.shape == (10, 4)
 
@@ -125,7 +130,7 @@ def test_SCE_randomAnnData():
 
 def test_SCE_toMuData():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None

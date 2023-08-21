@@ -4,9 +4,9 @@ from typing import MutableMapping, Optional, Sequence, Union
 import anndata
 import numpy as np
 import pandas as pd
+from genomicranges import GenomicRanges
 from mudata import MuData
 from scipy import sparse as sp
-from genomicranges import GenomicRanges
 from summarizedexperiment.BaseSE import BaseSE
 from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 from summarizedexperiment.types import BiocOrPandasFrame, MatrixTypes, SlicerArgTypes
@@ -26,15 +26,15 @@ class SingleCellExperiment(SummarizedExperiment):
     def __init__(
         self,
         assays: MutableMapping[str, MatrixTypes],
-        rowData: Optional[BiocOrPandasFrame] = None,
-        colData: Optional[BiocOrPandasFrame] = None,
+        row_data: Optional[BiocOrPandasFrame] = None,
+        col_data: Optional[BiocOrPandasFrame] = None,
         metadata: Optional[MutableMapping] = None,
-        reducedDims: Optional[MutableMapping[str, MatrixTypesWithFrame]] = None,
+        reduced_dims: Optional[MutableMapping[str, MatrixTypesWithFrame]] = None,
         mainExperimentName: Optional[str] = None,
         altExps: Optional[
             MutableMapping[
                 str,
-                BaseSE,
+                SummarizedExperiment,
             ]
         ] = None,
         rowpairs: Optional[MatrixTypesWithFrame] = None,
@@ -53,7 +53,8 @@ class SingleCellExperiment(SummarizedExperiment):
         `typeCheckAlts` to `False`.
 
         If you are using alternative experiment slot, the number of cells should match
-        with the parent. If not the cells are not shared so they don't belong in alternative experiments!
+        with the parent. If not the cells are not shared so they don't belong in alternative 
+        experiments!
 
         Note: Validation checks do not apply to rowpairs, colpairs.
 
@@ -62,19 +63,20 @@ class SingleCellExperiment(SummarizedExperiment):
                 of matrices, with assay names as keys and matrices represented as dense
                 (numpy) or sparse (scipy) matrices. All matrices across assays must
                 have the same dimensions (number of rows, number of columns).
-            rowData (BiocOrPandasFrame, optional): features, must be the same length as
+            row_data (BiocOrPandasFrame, optional): features, must be the same length as
                 rows of the matrices in assays. Defaults to None.
-            colData (BiocOrPandasFrame, optional): sample data, must be
+            col_data (BiocOrPandasFrame, optional): sample data, must be
                 the same length as rows of the matrices in assays. Defaults to None.
             metadata (MutableMapping, optional): experiment metadata describing the
                 methods. Defaults to None.
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame], optional):
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame], optional):
                 lower dimensionality embeddings. Defaults to None.
             mainExperimentName (str, optional): main experiment name. Defaults to None.
-            alter_exps (MutableMapping[SingleCellExperiment, SummarizedExperiment, RangeSummarizedExperiment], optional):
+            alter_exps (MutableMapping[str, SummarizedExperiment], optional):
                 similar to assays, dictionary of alternative experiments with names as
                 keys. You would usually use this for multi-modal experiments performed
-                on the same sample (so all these experiments contain the same cells). Defaults to None.
+                on the same sample (so all these experiments contain the same cells). 
+                Defaults to None.
             rowpairs (MatrixTypesWithFrame, optional): row
                 pairings/relationships between features. Defaults to None.
             colpairs (MatrixTypesWithFrame, optional): col
@@ -84,11 +86,11 @@ class SingleCellExperiment(SummarizedExperiment):
                 Defaults to True.
         """
         super().__init__(
-            assays=assays, rowData=rowData, colData=colData, metadata=metadata
+            assays=assays, row_data=row_data, col_data=col_data, metadata=metadata
         )
 
-        self._validate_reducedDims(reducedDims)
-        self._reducedDims = reducedDims
+        self._validate_reduced_dims(reduced_dims)
+        self._reduced_dims = reduced_dims
 
         self._mainExperimentName = mainExperimentName
 
@@ -102,27 +104,27 @@ class SingleCellExperiment(SummarizedExperiment):
         self._validate_pairs(colpairs)
         self._colpairs = colpairs
 
-    def _validate_reducedDims(
-        self, reducedDims: MutableMapping[str, MatrixTypesWithFrame]
+    def _validate_reduced_dims(
+        self, reduced_dims: MutableMapping[str, MatrixTypesWithFrame]
     ):
         """Validate reduced dimensions. all dimensions must contain embeddings for
         all cells.
 
         Args:
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame]):
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame]):
                 embeddings to validate.
 
         Raises:
             TypeError: If embeddings are not a matrix (numpy, scipy) or pandas
                 Dataframe.
-            TypeError: If reducedDims is not a dictionary like object.
+            TypeError: If reduced_dims is not a dictionary like object.
             ValueError: length of dimensions do not match the number of cells.
         """
-        if reducedDims is not None:
-            if not isinstance(reducedDims, dict):
-                raise TypeError("reducedDims is not a dictionary like object")
+        if reduced_dims is not None:
+            if not isinstance(reduced_dims, dict):
+                raise TypeError("reduced_dims is not a dictionary like object")
 
-            for rdname, mat in reducedDims.items():
+            for rdname, mat in reduced_dims.items():
                 if not (isinstance(mat, (np.ndarray, sp.spmatrix, pd.DataFrame))):
                     raise TypeError(
                         f"dimension: {rdname} must be either a numpy ndarray, scipy "
@@ -200,11 +202,11 @@ class SingleCellExperiment(SummarizedExperiment):
         """
         super()._validate()
 
-        self._validate_reducedDims(self._reducedDims)
+        self._validate_reduced_dims(self._reduced_dims)
         self._validate_altExpts(self._altExps, self._typeCheckAlts)
 
     @property
-    def reducedDims(
+    def reduced_dims(
         self,
     ) -> Optional[MutableMapping[str, MatrixTypesWithFrame]]:
         """Access dimensionality embeddings.
@@ -213,24 +215,24 @@ class SingleCellExperiment(SummarizedExperiment):
             (MutableMapping[str, MatrixTypesWithFrame], optional):
             all embeddings in the object. None if not available.
         """
-        return self._reducedDims
+        return self._reduced_dims
 
-    @reducedDims.setter
-    def reducedDims(
+    @reduced_dims.setter
+    def reduced_dims(
         self,
-        reducedDims: Optional[MutableMapping[str, MatrixTypesWithFrame]],
+        reduced_dims: Optional[MutableMapping[str, MatrixTypesWithFrame]],
     ):
         """Set dimensionality embeddings.
 
         Args:
-            reducedDims (MutableMapping[str, MatrixTypesWithFrame], optional):
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame], optional):
                 new embeddings to set. Can be None.
 
         Raises:
-            TypeError: reducedDims is not a dictionary.
+            TypeError: reduced_dims is not a dictionary.
         """
-        self._validate_reducedDims(reducedDims)
-        self._reducedDims = reducedDims
+        self._validate_reduced_dims(reduced_dims)
+        self._reduced_dims = reduced_dims
 
     @property
     def mainExperimentName(self) -> Optional[str]:
@@ -258,8 +260,8 @@ class SingleCellExperiment(SummarizedExperiment):
             (Sequence[str], optional): all embeddings names if available.
         """
 
-        if self._reducedDims is not None:
-            return list(self._reducedDims.keys())
+        if self._reduced_dims is not None:
+            return list(self._reduced_dims.keys())
 
         return None
 
@@ -276,10 +278,10 @@ class SingleCellExperiment(SummarizedExperiment):
             MatrixTypesWithFrame: access the underlying
             numpy or scipy matrix.
         """
-        if name not in self._reducedDims:
+        if name not in self._reduced_dims:
             raise ValueError(f"Embedding: {name} does not exist")
 
-        return self._reducedDims[name]
+        return self._reduced_dims[name]
 
     @property
     def altExps(
@@ -368,9 +370,9 @@ class SingleCellExperiment(SummarizedExperiment):
             f"Class SingleCellExperiment with {self.shape[0]} features and {self.shape[1]} cells \n"
             f"  mainExperimentName: {self.mainExperimentName if self.mainExperimentName is not None else None} \n"
             f"  assays: {list(self.assays.keys())} \n"
-            f"  features: {self.rowData.columns if self.rowData is not None else None} \n"
-            f"  cell annotations: {self.colData.columns if self.colData is not None else None} \n"
-            f"  reduced dimensions: {self.reducedDimNames if self.reducedDims is not None else None} \n"
+            f"  features: {self.row_data.columns if self.row_data is not None else None} \n"
+            f"  cell annotations: {self.col_data.columns if self.col_data is not None else None} \n"
+            f"  reduced dimensions: {self.reducedDimNames if self.reduced_dims is not None else None} \n"
             f"  alternative experiments: {list(self.altExps.keys()) if self.altExps is not None else None}"
         )
         return pattern
@@ -392,17 +394,17 @@ class SingleCellExperiment(SummarizedExperiment):
         """
         sliced_objs = self._slice(args)
 
-        new_reducedDims = None
-        if self.reducedDims is not None:
-            new_reducedDims = OrderedDict()
-            for rdname, embeds in self.reducedDims.items():
+        new_reduced_dims = None
+        if self.reduced_dims is not None:
+            new_reduced_dims = OrderedDict()
+            for rdname, embeds in self.reduced_dims.items():
                 sliced_embeds = None
                 if isinstance(embeds, pd.DataFrame):
                     sliced_embeds = embeds.iloc[sliced_objs.colIndices]
                 else:
                     sliced_embeds = embeds[sliced_objs.colIndices, :]
 
-                new_reducedDims[rdname] = sliced_embeds
+                new_reduced_dims[rdname] = sliced_embeds
 
         new_altExps = None
         if self._altExps is not None:
@@ -414,10 +416,10 @@ class SingleCellExperiment(SummarizedExperiment):
 
         return SingleCellExperiment(
             sliced_objs.assays,
-            sliced_objs.rowData,
-            sliced_objs.colData,
+            sliced_objs.row_data,
+            sliced_objs.col_data,
             self.metadata,
-            new_reducedDims,
+            new_reduced_dims,
             self.mainExperimentName,
             new_altExps,
         )
@@ -440,15 +442,15 @@ class SingleCellExperiment(SummarizedExperiment):
         for asy, mat in self.assays.items():
             layers[asy] = mat.transpose()
 
-        trows = self.rowData
-        if isinstance(self.rowData, GenomicRanges):
-            trows = self.rowData.toPandas()
+        trows = self.row_data
+        if isinstance(self.row_data, GenomicRanges):
+            trows = self.row_data.toPandas()
 
         obj = anndata.AnnData(
-            obs=self.colData,
+            obs=self.col_data,
             var=trows,
             uns=self.metadata,
-            obsm=self.reducedDims,
+            obsm=self.reduced_dims,
             layers=layers,
             varp=self.rowPairs,
             obsp=self.colPairs,

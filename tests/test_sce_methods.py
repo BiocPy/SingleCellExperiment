@@ -1,11 +1,13 @@
-from singlecellexperiment import SingleCellExperiment
-import numpy as np
 from random import random
-import pandas as pd
+
 import genomicranges
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
-from summarizedexperiment import SummarizedExperiment
+import numpy as np
+import pandas as pd
 import pytest
+from summarizedexperiment import SummarizedExperiment
+
+from singlecellexperiment import SingleCellExperiment
+from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -40,12 +42,16 @@ df_gr = pd.DataFrame(
 
 gr = genomicranges.fromPandas(df_gr)
 
-colData = pd.DataFrame({"treatment": ["ChIP", "Input"] * 3,})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
 def test_SCE_props():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
 
     assert tse is not None
@@ -53,17 +59,17 @@ def test_SCE_props():
 
     assert tse.altExps is None
     alt = SummarizedExperiment(
-        assays={"counts": counts}, rowData=df_gr, colData=colData
+        assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
     tse.altExps = {"alt": alt}
     assert tse.altExps is not None
 
     assert tse.assays is not None
-    assert tse.rowData is not None
-    assert tse.colData is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
 
     assert tse.colPairs is None
-    tse.colPairs = {"random": colData}
+    tse.colPairs = {"random": col_data}
     assert tse.colPairs is not None
 
     with pytest.raises(Exception):
@@ -75,11 +81,11 @@ def test_SCE_props():
     tse.mainExperimentName = "scrna-seq"
     assert tse.mainExperimentName is not None
 
-    assert tse.reducedDims is None
-    tse.reducedDims = {"tsnooch": np.random.rand(ncols, 4)}
+    assert tse.reduced_dims is None
+    tse.reduced_dims = {"tsnooch": np.random.rand(ncols, 4)}
     with pytest.raises(Exception):
-        tse.reducedDims = {"tsnooch": np.random.rand(ncols - 1, 4)}
-    assert tse.reducedDims is not None
+        tse.reduced_dims = {"tsnooch": np.random.rand(ncols - 1, 4)}
+    assert tse.reduced_dims is not None
 
     assert tse.reducedDimNames is not None
     assert len(tse.reducedDimNames) == 1

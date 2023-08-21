@@ -1,2 +1,2 @@
-from .anndata import readH5AD, fromAnnData
-from .tenx import read10xH5, read10xMTX
+from .anndata import read_h5ad, from_anndata
+from .tenx import read_tenx_h5, read_tenx_mtx

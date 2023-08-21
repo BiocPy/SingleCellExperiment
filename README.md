@@ -27,8 +27,8 @@ sce = singlecellexperiment.readH5AD("tests/data/adata.h5ad")
 from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
-    assays={"counts": counts}, rowData=df_gr, colData=colData,
-    reducedDims={"tsne": ..., "umap": ...}, altExps={"atac": ...}
+    assays={"counts": counts}, row_data=df_gr, col_data=col_data,
+    reduced_dims={"tsne": ..., "umap": ...}, altExps={"atac": ...}
 )
 ```
 
