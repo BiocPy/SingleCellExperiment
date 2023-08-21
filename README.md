@@ -32,7 +32,7 @@ tse = SingleCellExperiment(
 )
 ```
 
-`SingleCellExperiment` extends `SummarizedExperiment`, so most methods from there are applicable here. checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/).
+Since `SingleCellExperiment` extends `SummarizedExperiment`, most methods especially slicing and accessors are applicable here. Checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/) for more info.
 
 <!-- pyscaffold-notes -->
 
