@@ -1,3 +1,7 @@
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+[![PyPI-Server](https://img.shields.io/pypi/v/SingleCellExperiment.svg)](https://pypi.org/project/SingleCellExperiment/)
+![Unit tests](https://github.com/BiocPy/SingleCellExperiment/actions/workflows/pypi-test.yml/badge.svg)
+
 # SingleCellExperiment
 
 Container class to represent single-cell experiments; follows Bioconductor's [SingleCellExperiment](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html).
