@@ -20,8 +20,8 @@ __license__ = "MIT"
 
 class SingleCellExperiment(SummarizedExperiment):
     """Container class for single-cell experiments. Extends
-    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`
-    to provide slots for embeddings and alternative experiments that share the same cells.
+    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment` to provide slots for embeddings and
+    alternative experiments that share the same cells.
 
     Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.
     Hence, these matrices cannot be directly used as values either in assays or alternative
@@ -150,8 +150,7 @@ class SingleCellExperiment(SummarizedExperiment):
     def _validate_reduced_dims(
         self, reduced_dims: MutableMapping[str, MatrixTypesWithFrame]
     ):
-        """Internal method to validate reduced dimensions. All dimensions must contain embeddings
-        for all cells.
+        """Internal method to validate reduced dimensions. All dimensions must contain embeddings for all cells.
 
         Args:
             reduced_dims (MutableMapping[str, MatrixTypesWithFrame]):
