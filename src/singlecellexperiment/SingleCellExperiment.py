@@ -422,7 +422,7 @@ class SingleCellExperiment(SummarizedExperiment):
             f"  features: {self.row_data.columns if self.row_data is not None else None} \n"
             f"  cell annotations: {self.col_data.columns if self.col_data is not None else None} \n"
             f"  reduced dimensions: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
-            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"
+            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"  # noqa: E501
         )
         return pattern
 
