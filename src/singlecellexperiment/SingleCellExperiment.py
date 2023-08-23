@@ -20,8 +20,8 @@ __license__ = "MIT"
 
 class SingleCellExperiment(SummarizedExperiment):
     """Container class for single-cell experiments. Extends
-    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`
-    to provide slots for embeddings and alternative experiments that share the same cells.
+    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment` to provide slots for embeddings and
+    alternative experiments that share the same cells.
 
     Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.
     Hence, these matrices cannot be directly used as values either in assays or alternative
@@ -150,8 +150,7 @@ class SingleCellExperiment(SummarizedExperiment):
     def _validate_reduced_dims(
         self, reduced_dims: MutableMapping[str, MatrixTypesWithFrame]
     ):
-        """Internal method to validate reduced dimensions. All dimensions must contain embeddings
-        for all cells.
+        """Internal method to validate reduced dimensions. All dimensions must contain embeddings for all cells.
 
         Args:
             reduced_dims (MutableMapping[str, MatrixTypesWithFrame]):
@@ -423,7 +422,7 @@ class SingleCellExperiment(SummarizedExperiment):
             f"  features: {self.row_data.columns if self.row_data is not None else None} \n"
             f"  cell annotations: {self.col_data.columns if self.col_data is not None else None} \n"
             f"  reduced dimensions: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
-            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"
+            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"  # noqa: E501
         )
         return pattern
 

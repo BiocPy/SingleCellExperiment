@@ -56,8 +56,7 @@ def from_anndata(adata: AnnData) -> SingleCellExperiment:
 
 
 def read_h5ad(path: str) -> SingleCellExperiment:
-    """Read a H5ad file as
-    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
+    """Read a H5ad file as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
         path (str): Path to a H5AD file.
