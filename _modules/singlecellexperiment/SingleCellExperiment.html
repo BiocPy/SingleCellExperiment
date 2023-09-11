@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.3.0 documentation</title>
+    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.3.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.3.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.3.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.3.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -230,8 +230,8 @@
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment">[docs]</a>
 <span class="k">class</span> <span class="nc">SingleCellExperiment</span><span class="p">(</span><span class="n">SummarizedExperiment</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Container class for single-cell experiments. Extends</span>
-<span class="sd">    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`</span>
-<span class="sd">    to provide slots for embeddings and alternative experiments that share the same cells.</span>
+<span class="sd">    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment` to provide slots for embeddings and</span>
+<span class="sd">    alternative experiments that share the same cells.</span>
 
 <span class="sd">    Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.</span>
 <span class="sd">    Hence, these matrices cannot be directly used as values either in assays or alternative</span>
@@ -360,8 +360,7 @@
     <span class="k">def</span> <span class="nf">_validate_reduced_dims</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MatrixTypesWithFrame</span><span class="p">]</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to validate reduced dimensions. All dimensions must contain embeddings</span>
-<span class="sd">        for all cells.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Internal method to validate reduced dimensions. All dimensions must contain embeddings for all cells.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            reduced_dims (MutableMapping[str, MatrixTypesWithFrame]):</span>
@@ -631,17 +630,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_col_pairs</span> <span class="o">=</span> <span class="n">pairs</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="SingleCellExperiment.__repr__">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__repr__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">pattern</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Class SingleCellExperiment with </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> features and </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> cells </span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;  main_experiment_name: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">main_experiment_name</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">main_experiment_name</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;  assays: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assays</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;  features: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;  cell annotations: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">col_data</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">col_data</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;  reduced dimensions: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;  alternative experiments: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiments</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiments</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  row_data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">row_data</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  col_data: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">col_data</span><span class="o">.</span><span class="n">columns</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">col_data</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  reduced_dims: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;  alternative_experiments: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiments</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiments</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="kc">None</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># noqa: E501</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">pattern</span>
+        <span class="k">return</span> <span class="n">pattern</span></div>
+
 
 <div class="viewcode-block" id="SingleCellExperiment.__getitem__">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__getitem__">[docs]</a>
@@ -811,7 +813,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=e259d695"></script>
+</div><script src="../../_static/documentation_options.js?v=4621528c"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
