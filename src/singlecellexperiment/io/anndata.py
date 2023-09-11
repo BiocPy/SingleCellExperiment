@@ -46,8 +46,8 @@ def from_anndata(adata: AnnData) -> SingleCellExperiment:
 
     return SingleCellExperiment(
         assays=layers,
-        row_data=adata.var,
-        col_data=adata.obs,
+        row_data=BiocFrame.from_pandas(adata.var),
+        col_data=BiocFrame.from_pandas(adata.obs),
         metadata=adata.uns,
         reduced_dims=obsm,
         row_pairs=varp,
