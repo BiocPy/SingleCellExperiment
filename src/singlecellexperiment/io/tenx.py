@@ -32,7 +32,9 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     cells = pd.read_csv(path + "/barcodes.tsv", header=None, sep="\t")
     cells.columns = ["barcode"]
 
-    return SingleCellExperiment(assays={"counts": mat}, row_data=BiocFrame(genes), col_data=BiocFrame(cells))
+    return SingleCellExperiment(
+        assays={"counts": mat}, row_data=BiocFrame(genes), col_data=BiocFrame(cells)
+    )
 
 
 def read_tenx_h5(path: str) -> SingleCellExperiment:
@@ -71,13 +73,13 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
         features = {}
         for key, val in h5["matrix"]["features"].items():
             features[key] = [x.decode("ascii") for x in val]
-        features = BiocFrame(features, number_of_rows = counts.shape[0])
+        features = BiocFrame(features, number_of_rows=counts.shape[0])
 
     barcodes = None
     if "barcodes" in groups:
         barcodes = {}
         barcodes["barcodes"] = [x.decode("ascii") for x in h5["matrix"]["barcodes"]]
-        barcodes = BiocFrame(barcodes, number_of_rows = counts.shape[1])
+        barcodes = BiocFrame(barcodes, number_of_rows=counts.shape[1])
 
     return SingleCellExperiment(
         assays={"counts": counts}, row_data=features, col_data=barcodes
