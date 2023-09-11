@@ -33,7 +33,9 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     cells.columns = ["barcode"]
 
     return SingleCellExperiment(
-        assays={"counts": mat}, row_data=BiocFrame.from_pandas(genes), col_data=BiocFrame.from_pandas(cells)
+        assays={"counts": mat},
+        row_data=BiocFrame.from_pandas(genes),
+        col_data=BiocFrame.from_pandas(cells),
     )
 
 
