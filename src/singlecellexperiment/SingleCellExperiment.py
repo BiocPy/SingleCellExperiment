@@ -414,15 +414,15 @@ class SingleCellExperiment(SummarizedExperiment):
         self._validate_pairs(pairs)
         self._col_pairs = pairs
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         pattern = (
             f"Class SingleCellExperiment with {self.shape[0]} features and {self.shape[1]} cells \n"
             f"  main_experiment_name: {self.main_experiment_name if self.main_experiment_name is not None else None} \n"
             f"  assays: {list(self.assays.keys())} \n"
-            f"  features: {self.row_data.columns if self.row_data is not None else None} \n"
-            f"  cell annotations: {self.col_data.columns if self.col_data is not None else None} \n"
-            f"  reduced dimensions: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
-            f"  alternative experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"  # noqa: E501
+            f"  row_data: {self.row_data.columns if self.row_data is not None else None} \n"
+            f"  col_data: {self.col_data.columns if self.col_data is not None else None} \n"
+            f"  reduced_dims: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
+            f"  alternative_experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"  # noqa: E501
         )
         return pattern
 

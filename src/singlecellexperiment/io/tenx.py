@@ -69,12 +69,12 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     if "features" in groups:
         features = pd.DataFrame()
         for key, val in h5["matrix"]["features"].items():
-            features[key] = val[:]
+            features[key] = [x.decode("ascii") for x in val[:]]
 
     barcodes = None
     if "barcodes" in groups:
         barcodes = pd.DataFrame()
-        barcodes["barcodes"] = h5["matrix"]["barcodes"][:]
+        barcodes["barcodes"] = [x.decode("ascii") for x in h5["matrix"]["barcodes"][:]]
 
     return SingleCellExperiment(
         assays={"counts": counts}, row_data=features, col_data=barcodes
