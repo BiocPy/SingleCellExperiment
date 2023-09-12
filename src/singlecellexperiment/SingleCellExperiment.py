@@ -8,6 +8,7 @@ from mudata import MuData
 from numpy import ndarray
 from pandas import DataFrame
 from scipy import sparse as sp
+from summarizedexperiment.RangedSummarizedExperiment import RangedSummarizedExperiment
 from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 from summarizedexperiment.types import BiocOrPandasFrame, MatrixTypes, SlicerArgTypes
 
@@ -18,9 +19,9 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-class SingleCellExperiment(SummarizedExperiment):
+class SingleCellExperiment(RangedSummarizedExperiment):
     """Container class for single-cell experiments. Extends
-    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment` to provide slots for embeddings and
+    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for embeddings and
     alternative experiments that share the same cells.
 
     Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.
@@ -82,18 +83,18 @@ class SingleCellExperiment(SummarizedExperiment):
 
         main_experiment_name (str, optional): Main experiment name. Defaults to None.
 
-        alternative_experiments (MutableMapping[str, SummarizedExperiment], optional):
+        alternative_experiments (MutableMapping[str, RangedSummarizedExperiment], optional):
             Alternative experiments is used to manage multi-modal experiments performed on
             the same sample/cells. Hence alternative experiments must contain the same cells (rows)
             as the primary experiment in the object (columns).
 
             ``alternative_experiments`` is a dictionary with keys as name of the alternative
             experiment, e.g.: sc-atac, crispr and the value is a subclass of
-            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+            :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
             It might include `SingleCellExperiment`,
             :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`
             and classes derived from
-            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+            :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
 
             Defaults to None.
 
@@ -103,13 +104,14 @@ class SingleCellExperiment(SummarizedExperiment):
             Defaults to None.
         type_check_alternative_experiments (bool): Whether to strictly type check
             alternative experiments. All alternative experiments must be a subclass of
-            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+            :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
             Defaults to True.
     """
 
     def __init__(
         self,
         assays: MutableMapping[str, MatrixTypes],
+        row_ranges: Optional[GenomicRanges] = None,
         row_data: Optional[BiocOrPandasFrame] = None,
         col_data: Optional[BiocOrPandasFrame] = None,
         metadata: Optional[MutableMapping] = None,
@@ -118,7 +120,7 @@ class SingleCellExperiment(SummarizedExperiment):
         alternative_experiments: Optional[
             MutableMapping[
                 str,
-                SummarizedExperiment,
+                RangedSummarizedExperiment,
             ]
         ] = None,
         row_pairs: Optional[MatrixTypesWithFrame] = None,
@@ -127,7 +129,11 @@ class SingleCellExperiment(SummarizedExperiment):
     ) -> None:
         """Initialize a single-cell experiment."""
         super().__init__(
-            assays=assays, row_data=row_data, col_data=col_data, metadata=metadata
+            assays=assays,
+            row_ranges=row_ranges,
+            row_data=row_data,
+            col_data=col_data,
+            metadata=metadata,
         )
 
         self._validate_reduced_dims(reduced_dims)
@@ -183,7 +189,7 @@ class SingleCellExperiment(SummarizedExperiment):
         alternative_experiments: Optional[
             MutableMapping[
                 str,
-                SummarizedExperiment,
+                RangedSummarizedExperiment,
             ]
         ],
         type_check_alternative_experiments: bool,
@@ -191,10 +197,10 @@ class SingleCellExperiment(SummarizedExperiment):
         """Internal method to validate alternative experiments and optionally their types.
 
         Args:
-            alternative_experiments (MutableMapping[str, SummarizedExperiment], optional):
+            alternative_experiments (MutableMapping[str, RangedSummarizedExperiment], optional):
                 A dictionary of alternative experiments with names as
                 keys and values is a subclass of
-                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+                :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
 
                 Note: The rows represent cells in the embeddings.
 
@@ -203,7 +209,7 @@ class SingleCellExperiment(SummarizedExperiment):
 
         Raises:
             ValueError: If alternative experiments do not contain the same number of cells.
-            TypeError: If alternative experiments is not a subclass of `SummarizedExperiment`.
+            TypeError: If alternative experiments is not a subclass of `RangedSummarizedExperiment`.
         """
         if alternative_experiments is not None:
             if not isinstance(alternative_experiments, dict):
