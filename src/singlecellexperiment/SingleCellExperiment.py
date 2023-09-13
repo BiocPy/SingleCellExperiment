@@ -1,10 +1,8 @@
 from collections import OrderedDict
 from typing import Dict, List, MutableMapping, Optional, Union
 
-from anndata import AnnData
 from biocframe import BiocFrame
 from genomicranges import GenomicRanges
-from mudata import MuData
 from numpy import ndarray
 from pandas import DataFrame
 from scipy import sparse as sp
@@ -331,7 +329,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             numpy, scipy matrix or a data frame from pandas or biocframe.
         """
         if name not in self._reduced_dims:
-            raise ValueError(f"Embedding: {name} does not exist")
+            raise ValueError(f"Embedding: '{name}' does not exist")
 
         return self._reduced_dims[name]
 
@@ -487,7 +485,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def to_anndata(
         self, alts: bool = False
-    ) -> Union[AnnData, MutableMapping[str, AnnData]]:
+    ) -> Union["AnnData", MutableMapping[str, "AnnData"]]:
         """Transform `SingleCellExperiment` object to :py:class:`~anndata.AnnData`.
 
         Args:
@@ -500,6 +498,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative experiment names as keys and the value is the corresponding
             `AnnData` object.
         """
+
+        from anndata import AnnData
 
         layers = OrderedDict()
         for asy, mat in self.assays.items():
@@ -533,7 +533,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         return obj
 
-    def to_mudata(self) -> MuData:
+    def to_mudata(self) -> "MuData":
         """Transform `SingleCellExperiment` object to :py:class:`~mudata.MuData`.
 
         If
@@ -544,6 +544,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Returns:
             MuData: A MuData object.
         """
+
+        from mudata import MuData
+
         mainData, altData = self.to_anndata(alts=True)
 
         expts = OrderedDict()

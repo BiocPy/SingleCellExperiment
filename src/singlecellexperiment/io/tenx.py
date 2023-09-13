@@ -1,7 +1,4 @@
-import h5py
-import pandas as pd
-from scipy.io import mmread
-from scipy.sparse import csc_matrix, csr_matrix
+from biocframe import BiocFrame, from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
 
@@ -22,6 +19,11 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     Returns:
         SingleCellExperiment: A single-cell experiment object.
     """
+
+    import pandas as pd
+    from scipy.io import mmread
+    from scipy.sparse import csr_matrix
+
     mat = mmread(f"{path}/matrix.mtx")
     mat = csr_matrix(mat)
 
@@ -31,7 +33,11 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     cells = pd.read_csv(path + "/barcodes.tsv", header=None, sep="\t")
     cells.columns = ["barcode"]
 
-    return SingleCellExperiment(assays={"counts": mat}, row_data=genes, col_data=cells)
+    return SingleCellExperiment(
+        assays={"counts": mat},
+        row_data=from_pandas(genes),
+        col_data=from_pandas(cells),
+    )
 
 
 def read_tenx_h5(path: str) -> SingleCellExperiment:
@@ -45,6 +51,10 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     Returns:
         SingleCellExperiment: A single-cell experiment object.
     """
+
+    import h5py
+    from scipy.sparse import csc_matrix, csr_matrix
+
     h5 = h5py.File(path, mode="r")
 
     if "matrix" not in h5.keys():
@@ -67,14 +77,16 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     # read features
     features = None
     if "features" in groups:
-        features = pd.DataFrame()
+        features = {}
         for key, val in h5["matrix"]["features"].items():
-            features[key] = [x.decode("ascii") for x in val[:]]
+            features[key] = [x.decode("ascii") for x in val]
+        features = BiocFrame(features, number_of_rows=counts.shape[0])
 
     barcodes = None
     if "barcodes" in groups:
-        barcodes = pd.DataFrame()
-        barcodes["barcodes"] = [x.decode("ascii") for x in h5["matrix"]["barcodes"][:]]
+        barcodes = {}
+        barcodes["barcodes"] = [x.decode("ascii") for x in h5["matrix"]["barcodes"]]
+        barcodes = BiocFrame(barcodes, number_of_rows=counts.shape[1])
 
     return SingleCellExperiment(
         assays={"counts": counts}, row_data=features, col_data=barcodes
