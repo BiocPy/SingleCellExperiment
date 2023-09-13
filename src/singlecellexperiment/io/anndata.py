@@ -1,7 +1,6 @@
 from collections import OrderedDict
 
-import anndata
-from anndata import AnnData
+from biocframe import from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
 
@@ -22,7 +21,7 @@ def _to_normal_dict(obj):
     return norm_obj
 
 
-def from_anndata(adata: AnnData) -> SingleCellExperiment:
+def from_anndata(adata: "AnnData") -> SingleCellExperiment:
     """Read an :py:class:`~anndata.AnnData` into
     :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
@@ -46,8 +45,8 @@ def from_anndata(adata: AnnData) -> SingleCellExperiment:
 
     return SingleCellExperiment(
         assays=layers,
-        row_data=adata.var,
-        col_data=adata.obs,
+        row_data=from_pandas(adata.var),
+        col_data=from_pandas(adata.obs),
         metadata=adata.uns,
         reduced_dims=obsm,
         row_pairs=varp,
@@ -64,6 +63,8 @@ def read_h5ad(path: str) -> SingleCellExperiment:
     Returns:
         SingleCellExperiment: A single-cell experiment object.
     """
+
+    import anndata
 
     adata = anndata.read_h5ad(path)
     return from_anndata(adata)
