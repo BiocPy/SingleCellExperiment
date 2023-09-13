@@ -1,8 +1,4 @@
-import h5py
-import pandas as pd
-from scipy.io import mmread
-from scipy.sparse import csc_matrix, csr_matrix
-from biocframe import BiocFrame
+from biocframe import BiocFrame, from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
 
@@ -23,6 +19,11 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     Returns:
         SingleCellExperiment: A single-cell experiment object.
     """
+
+    import pandas as pd
+    from scipy.io import mmread
+    from scipy.sparse import csr_matrix
+
     mat = mmread(f"{path}/matrix.mtx")
     mat = csr_matrix(mat)
 
@@ -34,8 +35,8 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
 
     return SingleCellExperiment(
         assays={"counts": mat},
-        row_data=BiocFrame.from_pandas(genes),
-        col_data=BiocFrame.from_pandas(cells),
+        row_data=from_pandas(genes),
+        col_data=from_pandas(cells),
     )
 
 
@@ -50,6 +51,10 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     Returns:
         SingleCellExperiment: A single-cell experiment object.
     """
+
+    import h5py
+    from scipy.sparse import csc_matrix, csr_matrix
+
     h5 = h5py.File(path, mode="r")
 
     if "matrix" not in h5.keys():
