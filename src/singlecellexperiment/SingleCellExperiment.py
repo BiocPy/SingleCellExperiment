@@ -21,8 +21,8 @@ __license__ = "MIT"
 
 class SingleCellExperiment(RangedSummarizedExperiment):
     """Container class for single-cell experiments. Extends
-    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for embeddings and
-    alternative experiments that share the same cells.
+    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for
+    embeddings and alternative experiments that share the same cells.
 
     Unlike R, numpy or scipy matrices are unnamed and do not contain rownames and colnames.
     Hence, these matrices cannot be directly used as values either in assays or alternative
