@@ -57,7 +57,7 @@ def test_SCE_props():
     assert tse is not None
     assert isinstance(tse, sce)
 
-    assert tse.alternative_experiments is None
+    assert tse.alternative_experiments == {}
     alt = SummarizedExperiment(
         assays={"counts": counts}, row_data=df_gr, col_data=col_data
     )
