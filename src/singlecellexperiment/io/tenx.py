@@ -1,3 +1,5 @@
+from warnings import warn
+
 from biocframe import BiocFrame, from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
@@ -76,11 +78,24 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
 
     # read features
     features = None
+    ignore_list = []
     if "features" in groups:
         features = {}
         for key, val in h5["matrix"]["features"].items():
-            features[key] = [x.decode("ascii") for x in val]
+            temp_features = [x.decode("ascii") for x in val]
+
+            if len(temp_features) != counts.shape[0]:
+                ignore_list.append(key)
+            else:
+                features[key] = temp_features
+
         features = BiocFrame(features, number_of_rows=counts.shape[0])
+
+    if len(ignore_list) > 0:
+        warn(
+            f"These columns from h5 are ignored - {', '.join(ignore_list)} because of "
+            "inconsistent length with the count matrix."
+        )
 
     barcodes = None
     if "barcodes" in groups:
