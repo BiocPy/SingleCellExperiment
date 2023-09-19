@@ -137,7 +137,9 @@ class SingleCellExperiment(SummarizedExperiment):
             alternative_experiments, type_check_alternative_experiments
         )
         self._type_check_alternative_experiments = type_check_alternative_experiments
-        self._alternative_experiments = alternative_experiments
+        self._alternative_experiments = (
+            {} if alternative_experiments is None else alternative_experiments
+        )
 
         self._validate_pairs(row_pairs)
         self._row_pairs = row_pairs
