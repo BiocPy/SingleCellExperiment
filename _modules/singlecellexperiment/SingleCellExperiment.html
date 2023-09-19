@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.3.1 documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.3.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.3.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.3.1 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -209,10 +209,8 @@
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">anndata</span> <span class="kn">import</span> <span class="n">AnnData</span>
 <span class="kn">from</span> <span class="nn">biocframe</span> <span class="kn">import</span> <span class="n">BiocFrame</span>
 <span class="kn">from</span> <span class="nn">genomicranges</span> <span class="kn">import</span> <span class="n">GenomicRanges</span>
-<span class="kn">from</span> <span class="nn">mudata</span> <span class="kn">import</span> <span class="n">MuData</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> <span class="k">as</span> <span class="n">sp</span>
@@ -349,7 +347,9 @@
             <span class="n">alternative_experiments</span><span class="p">,</span> <span class="n">type_check_alternative_experiments</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_type_check_alternative_experiments</span> <span class="o">=</span> <span class="n">type_check_alternative_experiments</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span> <span class="o">=</span> <span class="n">alternative_experiments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">{}</span> <span class="k">if</span> <span class="n">alternative_experiments</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">alternative_experiments</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_pairs</span><span class="p">(</span><span class="n">row_pairs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_row_pairs</span> <span class="o">=</span> <span class="n">row_pairs</span>
@@ -537,7 +537,7 @@
 <span class="sd">            numpy, scipy matrix or a data frame from pandas or biocframe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Embedding: &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
 
@@ -705,7 +705,7 @@
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_anndata">[docs]</a>
     <span class="k">def</span> <span class="nf">to_anndata</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">alts</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">AnnData</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">AnnData</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;AnnData&quot;</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;AnnData&quot;</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform `SingleCellExperiment` object to :py:class:`~anndata.AnnData`.</span>
 
 <span class="sd">        Args:</span>
@@ -718,6 +718,8 @@
 <span class="sd">            alternative experiment names as keys and the value is the corresponding</span>
 <span class="sd">            `AnnData` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">anndata</span> <span class="kn">import</span> <span class="n">AnnData</span>
 
         <span class="n">layers</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">asy</span><span class="p">,</span> <span class="n">mat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assays</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -754,7 +756,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.to_mudata">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_mudata">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_mudata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MuData</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">to_mudata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;MuData&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform `SingleCellExperiment` object to :py:class:`~mudata.MuData`.</span>
 
 <span class="sd">        If</span>
@@ -765,6 +767,9 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            MuData: A MuData object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">mudata</span> <span class="kn">import</span> <span class="n">MuData</span>
+
         <span class="n">mainData</span><span class="p">,</span> <span class="n">altData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">(</span><span class="n">alts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">expts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -813,7 +818,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=4621528c"></script>
+</div><script src="../../_static/documentation_options.js?v=71d9d8e6"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

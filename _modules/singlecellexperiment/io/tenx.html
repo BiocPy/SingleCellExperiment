@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.2.5 and Furo 2023.09.10 -->
-        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.3.1 documentation</title>
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.3.1 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.3.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.3.1 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.3.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -206,10 +206,9 @@
         </div>
         <article role="main">
           <h1>Source code for singlecellexperiment.io.tenx</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">h5py</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">mmread</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">csr_matrix</span>
+<span></span><span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">biocframe</span> <span class="kn">import</span> <span class="n">BiocFrame</span><span class="p">,</span> <span class="n">from_pandas</span>
 
 <span class="kn">from</span> <span class="nn">..SingleCellExperiment</span> <span class="kn">import</span> <span class="n">SingleCellExperiment</span>
 
@@ -232,6 +231,11 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">mmread</span>
+    <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span>
+
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mmread</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/matrix.mtx&quot;</span><span class="p">)</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
 
@@ -241,7 +245,11 @@
     <span class="n">cells</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/barcodes.tsv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">cells</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;barcode&quot;</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span><span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">mat</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">genes</span><span class="p">,</span> <span class="n">col_data</span><span class="o">=</span><span class="n">cells</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+        <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">mat</span><span class="p">},</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">genes</span><span class="p">),</span>
+        <span class="n">col_data</span><span class="o">=</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">cells</span><span class="p">),</span>
+    <span class="p">)</span></div>
 
 
 
@@ -258,6 +266,10 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        SingleCellExperiment: A single-cell experiment object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">h5py</span>
+    <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">csr_matrix</span>
+
     <span class="n">h5</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;matrix&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">h5</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -279,15 +291,30 @@
 
     <span class="c1"># read features</span>
     <span class="n">features</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ignore_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="s2">&quot;features&quot;</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-        <span class="n">features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">h5</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="s2">&quot;features&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val</span><span class="p">[:]]</span>
+            <span class="n">temp_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">val</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp_features</span><span class="p">)</span> <span class="o">!=</span> <span class="n">counts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">ignore_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp_features</span>
+
+        <span class="n">features</span> <span class="o">=</span> <span class="n">BiocFrame</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">number_of_rows</span><span class="o">=</span><span class="n">counts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ignore_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;These columns from h5 are ignored - </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ignore_list</span><span class="p">)</span><span class="si">}</span><span class="s2"> because of &quot;</span>
+            <span class="s2">&quot;inconsistent length with the count matrix.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">barcodes</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="s2">&quot;barcodes&quot;</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-        <span class="n">barcodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-        <span class="n">barcodes</span><span class="p">[</span><span class="s2">&quot;barcodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">h5</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="s2">&quot;barcodes&quot;</span><span class="p">][:]]</span>
+        <span class="n">barcodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">barcodes</span><span class="p">[</span><span class="s2">&quot;barcodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">h5</span><span class="p">[</span><span class="s2">&quot;matrix&quot;</span><span class="p">][</span><span class="s2">&quot;barcodes&quot;</span><span class="p">]]</span>
+        <span class="n">barcodes</span> <span class="o">=</span> <span class="n">BiocFrame</span><span class="p">(</span><span class="n">barcodes</span><span class="p">,</span> <span class="n">number_of_rows</span><span class="o">=</span><span class="n">counts</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
     <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
         <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">features</span><span class="p">,</span> <span class="n">col_data</span><span class="o">=</span><span class="n">barcodes</span>
@@ -325,7 +352,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=4621528c"></script>
+</div><script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
