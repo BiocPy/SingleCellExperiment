@@ -2,11 +2,14 @@ from collections import OrderedDict
 from typing import Dict, List, MutableMapping, Optional, Union
 
 from biocframe import BiocFrame
-from genomicranges import GenomicRanges
+from genomicranges import GenomicRanges, GenomicRangesList
 from numpy import ndarray
 from pandas import DataFrame
 from scipy import sparse as sp
-from summarizedexperiment.RangedSummarizedExperiment import RangedSummarizedExperiment
+from summarizedexperiment.RangedSummarizedExperiment import (
+    RangedSummarizedExperiment,
+    GRangesOrGRangesList,
+)
 from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
 from summarizedexperiment.types import BiocOrPandasFrame, MatrixTypes, SlicerArgTypes
 
@@ -45,6 +48,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
             All matrices in ``assays`` must be 2-dimensional and have the same
             shape (number of rows, number of columns).
+
+        row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as
+                rows of the matrices in assays.
 
         row_data (BiocOrPandasFrame, optional): Features, must be the same length as
             rows of the matrices in assays.
@@ -109,7 +115,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     def __init__(
         self,
         assays: MutableMapping[str, MatrixTypes],
-        row_ranges: Optional[GenomicRanges] = None,
+        row_ranges: Optional[GRangesOrGRangesList] = None,
         row_data: Optional[BiocOrPandasFrame] = None,
         col_data: Optional[BiocOrPandasFrame] = None,
         metadata: Optional[MutableMapping] = None,
@@ -125,7 +131,85 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         col_pairs: Optional[MatrixTypesWithFrame] = None,
         type_check_alternative_experiments: bool = True,
     ) -> None:
-        """Initialize a single-cell experiment."""
+        """Initialize a single-cell experiment.
+
+        Args:
+            assays (MutableMapping[str, MatrixTypes]): Dictionary
+                of matrices, with assay names as keys and 2-dimensional matrices represented as
+                :py:class:`~numpy.ndarray` or :py:class:`~scipy.sparse.spmatrix` matrices.
+
+                Alternatively, you may use any 2-dimensional matrix that contains the property ``shape``
+                and implements the slice operation using the ``__getitem__`` dunder method.
+
+                All matrices in ``assays`` must be 2-dimensional and have the same
+                shape (number of rows, number of columns).
+
+            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as
+                rows of the matrices in assays.
+
+            row_data (BiocOrPandasFrame, optional): Features, must be the same length as
+                rows of the matrices in assays.
+
+                Features may be either a :py:class:`~pandas.DataFrame` or
+                :py:class:`~biocframe.BiocFrame.BiocFrame`.
+
+                Defaults to None.
+
+            col_data (BiocOrPandasFrame, optional): Sample data, must be
+                the same length as columns of the matrices in assays.
+
+                Sample Information may be either a :py:class:`~pandas.DataFrame` or
+                :py:class:`~biocframe.BiocFrame.BiocFrame`.
+
+                Defaults to None.
+
+            metadata (MutableMapping, optional): Additional experimental metadata describing the
+                methods. Defaults to None.
+
+            reduced_dims (MutableMapping[str, MatrixTypesWithFrame], optional):
+                Slot for lower dimensionality embeddings.
+
+                Usually a dictionary with the embedding method as keys, e.g.: t-SNE, UMAP etc
+                and the dimensions as values.
+
+                Embeddings may be represented as a matrix or a data frame.
+
+                :py:class:`~numpy.ndarray`, :py:class:`~scipy.sparse.spmatrix`,
+                :py:class:`~pandas.DataFrame` and :py:class:`~biocframe.BiocFrame.BiocFrame` are
+                supported types to represent embeddings.
+
+                Defaults to None.
+
+            main_experiment_name (str, optional): Main experiment name. Defaults to None.
+
+            alternative_experiments (MutableMapping[str, RangedSummarizedExperiment], optional):
+                Alternative experiments is used to manage multi-modal experiments performed on
+                the same sample/cells. Hence alternative experiments must contain the same cells (rows)
+                as the primary experiment in the object (columns).
+
+                ``alternative_experiments`` is a dictionary with keys as name of the alternative
+                experiment, e.g.: sc-atac, crispr and the value is a subclass of
+                :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
+                It might include `SingleCellExperiment`,
+                :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`
+                and classes derived from
+                :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
+
+                Defaults to None.
+
+            row_pairs (MatrixTypesWithFrame, optional): Row pairings/relationships between features.
+                Defaults to None.
+            col_pairs (MatrixTypesWithFrame, optional): Column pairings/relationships between cells.
+                Defaults to None.
+            type_check_alternative_experiments (bool): Whether to strictly type check
+                alternative experiments. All alternative experiments must be a subclass of
+                :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
+                Defaults to True.
+        """
+
+        if row_ranges is None:
+            row_ranges = GenomicRangesList(number_of_ranges=len(row_data))
+
         super().__init__(
             assays=assays,
             row_ranges=row_ranges,
@@ -138,6 +222,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self._reduced_dims = reduced_dims
 
         self._main_experiment_name = main_experiment_name
+
+        if alternative_experiments is None:
+            alternative_experiments = {}
 
         self._validate_alternative_experiments(
             alternative_experiments, type_check_alternative_experiments
