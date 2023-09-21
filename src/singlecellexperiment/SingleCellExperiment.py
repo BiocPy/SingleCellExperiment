@@ -119,7 +119,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 All matrices in ``assays`` must be 2-dimensional and have the same shape
                 (number of rows, number of columns).
 
-            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the 
+            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the
                 matrices in assays.
 
             row_data (BiocOrPandasFrame, optional): Features, must be the same length as rows of the matrices in assays.
@@ -158,7 +158,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
 
         if row_ranges is None:
-            row_ranges = GenomicRangesList(number_of_ranges=len(row_data))
+            row_ranges = GenomicRangesList.empty(n=len(row_data))
 
         super().__init__(
             assays=assays,
@@ -167,13 +167,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             col_data=col_data,
             metadata=metadata,
         )
+        self._main_experiment_name = main_experiment_name
 
         self._set_rdims(reduced_dims=reduced_dims)
 
-        self._main_experiment_name = main_experiment_name
-
         self._set_alt_expts(
-            alt_expts=alternative_experiments,
+            alternative_experiments=alternative_experiments,
             type_check_alternative_experiments=type_check_alternative_experiments,
         )
 
@@ -198,7 +197,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 raise TypeError("`reduced_dims` is not a dictionary.")
 
             for rdname, mat in reduced_dims.items():
-                if not (hasattr(mat, "shape")):
+                if not hasattr(mat, "shape"):
                     raise TypeError(
                         f"Reduced dimension: '{rdname}' must be either a numpy ndarray, scipy "
                         "matrix, a pandas DataFrame or BiocFrame object."
@@ -282,7 +281,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self._validate_reduced_dims(reduced_dims)
         self._reduced_dims = reduced_dims
 
-    def _set_alt_expts(self, alt_expts, type_check_alternative_experiments):
+    def _set_alt_expts(
+        self, alternative_experiments, type_check_alternative_experiments
+    ):
         if alternative_experiments is None:
             alternative_experiments = {}
 
@@ -404,7 +405,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             Dict[str, SummarizedExperiment]: New alternative experiments to set.
         """
         self._set_alt_expts(
-            alt_expts=alternative_experiments,
+            alternative_experiments=alternative_experiments,
             type_check_alternative_experiments=self._type_check_alternative_experiments,
         )
 
@@ -497,6 +498,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         sliced_objs = self._slice(args)
 
+        sliced_row_ranges = None
+        if sliced_objs.row_indices is not None and self.row_ranges is not None:
+            sliced_row_ranges = self.row_ranges[sliced_objs.row_indices]
+
         new_reduced_dims = None
         if self.reduced_dims is not None:
             new_reduced_dims = OrderedDict()
@@ -519,6 +524,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         return SingleCellExperiment(
             sliced_objs.assays,
+            sliced_row_ranges,
             sliced_objs.row_data,
             sliced_objs.col_data,
             self.metadata,

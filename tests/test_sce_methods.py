@@ -68,20 +68,20 @@ def test_SCE_props():
     assert tse.row_data is not None
     assert tse.col_data is not None
 
-    assert tse.col_pairs is None
+    assert tse.col_pairs == {}
     tse.col_pairs = {"random": col_data}
     assert tse.col_pairs is not None
 
     with pytest.raises(Exception):
         tse.row_pairs = counts
 
-    assert tse.row_pairs is None
+    assert tse.row_pairs == {}
 
     assert tse.main_experiment_name is None
     tse.main_experiment_name = "scrna-seq"
     assert tse.main_experiment_name is not None
 
-    assert tse.reduced_dims is None
+    assert tse.reduced_dims == {}
     tse.reduced_dims = {"tsnooch": np.random.rand(ncols, 4)}
     with pytest.raises(Exception):
         tse.reduced_dims = {"tsnooch": np.random.rand(ncols - 1, 4)}
