@@ -119,8 +119,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 All matrices in ``assays`` must be 2-dimensional and have the same shape
                 (number of rows, number of columns).
 
-            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the matrices
-                in assays.
+            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the 
+                matrices in assays.
 
             row_data (BiocOrPandasFrame, optional): Features, must be the same length as rows of the matrices in assays.
                 Features may be either a :py:class:`~pandas.DataFrame` or
