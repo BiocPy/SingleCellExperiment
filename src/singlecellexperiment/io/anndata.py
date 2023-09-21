@@ -4,6 +4,11 @@ from biocframe import from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
 
+try:
+    from anndata import AnnData
+except ImportError:
+    pass
+
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
@@ -21,7 +26,7 @@ def _to_normal_dict(obj):
     return norm_obj
 
 
-def from_anndata(adata: "AnnData") -> SingleCellExperiment:
+def from_anndata(adata: AnnData) -> SingleCellExperiment:
     """Read an :py:class:`~anndata.AnnData` into
     :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
