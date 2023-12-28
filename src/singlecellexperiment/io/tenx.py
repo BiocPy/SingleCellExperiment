@@ -10,11 +10,10 @@ __license__ = "MIT"
 
 
 def read_tenx_mtx(path: str) -> SingleCellExperiment:
-    """Read 10X Matrix market directory as 
-    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
+    """Read 10X Matrix market directory as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
-        path: 
+        path:
             Path to 10X MTX directory.
 
             Directory must contain `matrix.mtx`, and optionally
@@ -46,13 +45,12 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
 
 
 def read_tenx_h5(path: str) -> SingleCellExperiment:
-    """Read 10X H5 file as 
-    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
+    """Read 10X H5 file as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Note: Currently only supports version 3 of the 10X H5 format.
 
     Args:
-        path: 
+        path:
             Path to 10x H5 file.
 
     Returns:
