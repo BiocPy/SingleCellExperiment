@@ -1,479 +1,780 @@
 from collections import OrderedDict
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
-from genomicranges import GenomicRanges, GenomicRangesList
+import biocframe
+import biocutils as ut
+from genomicranges import GenomicRanges
 from pandas import DataFrame
+from summarizedexperiment import SummarizedExperiment
 from summarizedexperiment.RangedSummarizedExperiment import (
     GRangesOrGRangesList,
     RangedSummarizedExperiment,
 )
-from summarizedexperiment.SummarizedExperiment import SummarizedExperiment
-from summarizedexperiment.types import BiocOrPandasFrame, MatrixTypes, SlicerArgTypes
-
-from ._types import MatrixTypesWithFrame
-
-try:
-    from anndata import AnnData
-except ImportError:
-    pass
-
-try:
-    from mudata import MuData
-except ImportError:
-    pass
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
+def _validate_reduced_dims(reduced_dims, shape):
+    if reduced_dims is None:
+        raise ValueError(
+            "'reduced_dims' cannot be `None`, must be assigned to an empty dictionary."
+        )
+
+    if not isinstance(reduced_dims, dict):
+        raise TypeError("'reduced_dims' is not a dictionary.")
+
+    for rdname, mat in reduced_dims.items():
+        if not hasattr(mat, "shape"):
+            raise TypeError(
+                f"Reduced dimension: '{rdname}' must be a matrix-like object."
+                "Does not contain a `shape` property."
+            )
+
+        if shape[1] != mat.shape[0]:
+            raise ValueError(
+                f"Reduced dimension: '{rdname}' does not contain embeddings for all cells."
+            )
+
+
+def _validate_alternative_experiments(alternative_experiments, shape):
+    if alternative_experiments is None:
+        raise ValueError(
+            "'alternative_experiments' cannot be `None`, must be assigned to an empty dictionary."
+        )
+
+    if not isinstance(alternative_experiments, dict):
+        raise TypeError("'alternative_experiments' is not a dictionary.")
+
+    for alt_name, alternative_experiment in alternative_experiments.items():
+        if not hasattr(alternative_experiment, "shape"):
+            raise TypeError(
+                f"Alternative experiment: '{alt_name}' must be a 2-dimensional object."
+                "Does not contain a `shape` property."
+            )
+
+        if shape[1] != alternative_experiment.shape[1]:
+            raise ValueError(
+                f"Alternative experiment: '{alt_name}' does not contain same number of"
+                " cells."
+            )
+
+
+def _validate_pairs(pairs):
+    if pairs is not None:
+        if not isinstance(pairs, dict):
+            raise TypeError("Pair is not a dictionary.")
+
+
 class SingleCellExperiment(RangedSummarizedExperiment):
     """Container class for single-cell experiments, extending
-    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for
-    embeddings and alternative experiments that share the same cells.
+    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`
+    to provide slots for embeddings and alternative experiments that share the same cells.
 
-    In contrast to R, :py:class:`~numpy.ndarray` or scipy matrices are unnamed and do not contain rownames and colnames.
-    Consequently, these matrices cannot be directly used as values in assays or alternative experiments.
-    We strictly enforce type checks in these cases.
+    In contrast to R, :py:class:`~numpy.ndarray` or scipy matrices are unnamed and do
+    not contain rownames and colnames. Hence, these matrices cannot be directly used as
+    values in assays or alternative experiments. We strictly enforce type checks in these cases.
 
     To relax these restrictions for alternative experiments, set
-    :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.type_check_alternative_experiments` to
-    False.
+    :py:attr:`~type_check_alternative_experiments` to `False`.
 
-    If you are using the alternative experiment slot, the number of cells must match the parent experiment.
-    Otherwise, these cells do not share the same sample or annotations and cannot be set in alternative experiments!
+    If you are using the alternative experiment slot, the number of cells must match the
+    parent experiment. Otherwise, these cells do not share the same sample or annotations
+    and cannot be set in alternative experiments!
 
     Note: Validation checks do not apply to ``row_pairs`` or ``col_pairs``.
-
-    Attributes:
-        assays (Dict[str, MatrixTypes]): Dictionary of matrices with assay names as keys, and 2-dimensional matrices
-            represented as :py:class:`~numpy.ndarray` or :py:class:`~scipy.sparse.spmatrix`.
-
-            Alternatively, you may use any 2-dimensional matrix that contains the property ``shape``
-            and implements the slice operation using the ``__getitem__`` dunder method.
-
-            All matrices in ``assays`` must be 2-dimensional and have the same shape
-            (number of rows, number of columns).
-
-        row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the matrices
-            in assays.
-
-        row_data (BiocOrPandasFrame, optional): Features, must be the same length as rows of the matrices in assays.
-            Features may be either a :py:class:`~pandas.DataFrame` or
-            :py:class:`~biocframe.BiocFrame.BiocFrame`.
-
-        col_data (BiocOrPandasFrame, optional): Sample data, must be the same length as columns of the matrices in
-            assays. Sample Information may be either a :py:class:`~pandas.DataFrame` or
-            :py:class:`~biocframe.BiocFrame.BiocFrame`.
-
-        metadata (Dict, optional): Additional experimental metadata describing the methods.
-
-        reduced_dims (Dict[str, MatrixTypesWithFrame], optional): Slot for lower dimensionality embeddings.
-
-            Usually a dictionary with the embedding method as keys (e.g., t-SNE, UMAP) and the dimensions as values.
-            Embeddings may be represented as a matrix or a data frame
-            (:py:class:`~numpy.ndarray`, :py:class:`~scipy.sparse.spmatrix`,
-            :py:class:`~pandas.DataFrame` and :py:class:`~biocframe.BiocFrame.BiocFrame`).
-
-        main_experiment_name (str, optional): Main experiment name.
-
-        alternative_experiments (Dict[str, SummarizedExperiment], optional): Used to manage multi-modal experiments
-            performed on the same sample/cells.
-
-            Alternative experiments must contain the same cells (rows) as the primary experiment.
-            It's a dictionary with keys as the names of the alternative experiments (e.g., sc-atac, crispr)
-            and values as subclasses of :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
-
-        row_pairs (MatrixTypesWithFrame, optional): Row pairings/relationships between features.
-
-        col_pairs (MatrixTypesWithFrame, optional): Column pairings/relationships between cells.
-
-        type_check_alternative_experiments (bool): Whether to strictly type check alternative experiments.
-            All alternative experiments must be subclasses of
-            :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
     """
 
     def __init__(
         self,
-        assays: Dict[str, MatrixTypes],
+        assays: Dict[str, Any] = None,
         row_ranges: Optional[GRangesOrGRangesList] = None,
-        row_data: Optional[BiocOrPandasFrame] = None,
-        col_data: Optional[BiocOrPandasFrame] = None,
-        metadata: Optional[Dict] = None,
-        reduced_dims: Optional[Dict[str, MatrixTypesWithFrame]] = None,
+        row_data: Optional[biocframe.BiocFrame] = None,
+        column_data: Optional[biocframe.BiocFrame] = None,
+        row_names: Optional[List[str]] = None,
+        column_names: Optional[List[str]] = None,
+        metadata: Optional[dict] = None,
+        reduced_dims: Optional[Dict[str, Any]] = None,
         main_experiment_name: Optional[str] = None,
-        alternative_experiments: Optional[Dict[str, SummarizedExperiment]] = None,
-        row_pairs: Optional[MatrixTypesWithFrame] = None,
-        col_pairs: Optional[MatrixTypesWithFrame] = None,
-        type_check_alternative_experiments: bool = True,
+        alternative_experiments: Optional[Dict[str, Any]] = None,
+        row_pairs: Optional[Any] = None,
+        column_pairs: Optional[Any] = None,
+        validate: bool = True,
     ) -> None:
         """Initialize a single-cell experiment.
 
         Args:
-            assays (Dict[str, MatrixTypes]): Dictionary of matrices with assay names as keys, and 2-dimensional matrices
-                represented as :py:class:`~numpy.ndarray` or :py:class:`~scipy.sparse.spmatrix`.
+            assays:
+                A dictionary containing matrices, with assay names as keys
+                and 2-dimensional matrices represented as either
+                :py:class:`~numpy.ndarray` or :py:class:`~scipy.sparse.spmatrix`.
 
-                Alternatively, you may use any 2-dimensional matrix that contains the property ``shape``
-                and implements the slice operation using the ``__getitem__`` dunder method.
+                Alternatively, you may use any 2-dimensional matrix that has
+                the ``shape`` property and implements the slice operation
+                using the ``__getitem__`` dunder method.
 
-                All matrices in ``assays`` must be 2-dimensional and have the same shape
-                (number of rows, number of columns).
+                All matrices in assays must be 2-dimensional and have the
+                same shape (number of rows, number of columns).
 
-            row_ranges (GRangesOrGRangesList, optional): Genomic features, must be the same length as rows of the
-                matrices in assays.
+            row_ranges:
+                Genomic features, must be the same length as the number of rows of
+                the matrices in assays.
 
-            row_data (BiocOrPandasFrame, optional): Features, must be the same length as rows of the matrices in assays.
-                Features may be either a :py:class:`~pandas.DataFrame` or
-                :py:class:`~biocframe.BiocFrame.BiocFrame`.
+            row_data:
+                Features, must be the same length as the number of rows of
+                the matrices in assays.
 
-            col_data (BiocOrPandasFrame, optional): Sample data, must be the same length as columns of the matrices in
-                assays. Sample Information may be either a :py:class:`~pandas.DataFrame` or
-                :py:class:`~biocframe.BiocFrame.BiocFrame`.
+                Feature information is coerced to a
+                :py:class:`~biocframe.BiocFrame.BiocFrame`. Defaults to None.
 
-            metadata (Dict, optional): Additional experimental metadata describing the methods.
+            column_data:
+                Sample data, must be the same length as the number of
+                columns of the matrices in assays.
 
-            reduced_dims (Dict[str, MatrixTypesWithFrame], optional): Slot for lower dimensionality embeddings.
+                Sample information is coerced to a
+                :py:class:`~biocframe.BiocFrame.BiocFrame`. Defaults to None.
 
-                Usually a dictionary with the embedding method as keys (e.g., t-SNE, UMAP) and the dimensions as values.
-                Embeddings may be represented as a matrix or a data frame
-                (:py:class:`~numpy.ndarray`, :py:class:`~scipy.sparse.spmatrix`,
-                :py:class:`~pandas.DataFrame` and :py:class:`~biocframe.BiocFrame.BiocFrame`).
+            row_names:
+                A list of strings, same as the number of rows.Defaults to None.
 
-            main_experiment_name (str, optional): Main experiment name.
+            column_names:
+                A list of string, same as the number of columns. Defaults to None.
 
-            alternative_experiments (Dict[str, SummarizedExperiment], optional): Used to manage multi-modal experiments
-                performed on the same sample/cells.
+            metadata:
+                Additional experimental metadata describing the methods.
+                Defaults to None.
+
+            reduced_dims:
+                Slot for low-dimensionality embeddings.
+
+                Usually a dictionary with the embedding method as keys (e.g., t-SNE, UMAP)
+                and the dimensions as values.
+
+                Embeddings may be represented as a matrix or a data frame, must contain a shape.
+
+            main_experiment_name:
+                A string, specifying the main experiment name.
+
+            alternative_experiments:
+                Used to manage multi-modal experiments performed on the same sample/cells.
 
                 Alternative experiments must contain the same cells (rows) as the primary experiment.
-                It's a dictionary with keys as the names of the alternative experiments (e.g., sc-atac, crispr)
-                and values as subclasses of :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
-
-            row_pairs (MatrixTypesWithFrame, optional): Row pairings/relationships between features.
-
-            col_pairs (MatrixTypesWithFrame, optional): Column pairings/relationships between cells.
-
-            type_check_alternative_experiments (bool): Whether to strictly type check alternative experiments.
-                All alternative experiments must be subclasses of
+                It's a dictionary with keys as the names of the alternative experiments
+                (e.g., sc-atac, crispr) and values as subclasses of
                 :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
-        """
 
-        if row_ranges is None:
-            row_ranges = GenomicRangesList.empty(n=len(row_data))
+            row_pairs:
+                Row pairings/relationships between features.
+
+                Defaults to None.
+
+            column_pairs:
+                Column pairings/relationships between cells.
+
+                Defaults to None.
+
+            validate:
+                Internal use only.
+        """
 
         super().__init__(
             assays=assays,
             row_ranges=row_ranges,
             row_data=row_data,
-            col_data=col_data,
+            column_data=column_data,
+            row_names=row_names,
+            column_names=column_names,
             metadata=metadata,
+            validate=validate,
         )
         self._main_experiment_name = main_experiment_name
 
-        self._set_rdims(reduced_dims=reduced_dims)
+        self._reduced_dims = reduced_dims if reduced_dims is not None else {}
 
-        self._set_alt_expts(
-            alternative_experiments=alternative_experiments,
-            type_check_alternative_experiments=type_check_alternative_experiments,
+        self._alternative_experiments = (
+            alternative_experiments if alternative_experiments is not None else {}
         )
 
-        self._set_row_pairs(row_pairs=row_pairs)
-        self._set_col_pairs(col_pairs=col_pairs)
+        self._row_pairs = row_pairs if row_pairs is not None else {}
+        self._column_pairs = column_pairs if column_pairs is not None else {}
 
-    def _validate_reduced_dims(self, reduced_dims: Dict[str, MatrixTypesWithFrame]):
-        """Internal method to validate reduced dimensions. All dimensions must contain embeddings for all cells.
+        if validate:
+            _validate_reduced_dims(self._reduced_dims, self._shape)
+            _validate_alternative_experiments(
+                self._alternative_experiments, self._shape
+            )
+            _validate_pairs(self._row_pairs)
+            _validate_pairs(self._column_pairs)
 
-        Args:
-            reduced_dims (Dict[str, MatrixTypesWithFrame]):
-                Embeddings to validate.
+    #########################
+    ######>> Copying <<######
+    #########################
 
-        Raises:
-            TypeError:
-                If ``embeddings`` is not a matrix (numpy, scipy) or a pandas Dataframe.
-                If ``reduced_dims`` is not a dictionary like object.
-            ValueError: If length of dimensions do not match the number of cells.
+    def __deepcopy__(self, memo=None, _nil=[]):
         """
-        if reduced_dims is not None:
-            if not isinstance(reduced_dims, dict):
-                raise TypeError("`reduced_dims` is not a dictionary.")
-
-            for rdname, mat in reduced_dims.items():
-                if not hasattr(mat, "shape"):
-                    raise TypeError(
-                        f"Reduced dimension: '{rdname}' must be either a numpy ndarray, scipy "
-                        "matrix, a pandas DataFrame or BiocFrame object."
-                    )
-
-                if self._shape[1] != mat.shape[0]:
-                    raise ValueError(
-                        f"Reduced dimension: '{rdname}' does not contain embeddings for all cells."
-                    )
-
-    def _validate_alternative_experiments(
-        self,
-        alternative_experiments: Optional[Dict[str, SummarizedExperiment]],
-        type_check_alternative_experiments: bool,
-    ):
-        """Internal method to validate alternative experiments and optionally their types.
-
-        Args:
-            alternative_experiments (Dict[str, SummarizedExperiment], optional):
-                A dictionary of alternative experiments with names as
-                keys and values is a subclass of
-                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
-
-                Note: The rows represent cells in the embeddings.
-
-            type_check_alternative_experiments (bool): Whether to strictly type check alternative
-                experiments.
-
-        Raises:
-            ValueError: If alternative experiments does not contain the same number of cells.
-            TypeError: If alternative experiments is not a subclass of `SummarizedExperiment`.
+        Returns:
+            A deep copy of the current ``SingleCellExperiment``.
         """
-        if alternative_experiments is not None:
-            if not isinstance(alternative_experiments, dict):
-                raise TypeError("`alternative_experiments` is not a dictionary.")
+        from copy import deepcopy
 
-            for alt_name, alternative_experiment in alternative_experiments.items():
-                if self._shape[1] != alternative_experiment.shape[1]:
-                    raise ValueError(
-                        f"Alternative experiment: '{alt_name}' does not contain same number of"
-                        " cells."
-                    )
+        _assays_copy = deepcopy(self._assays)
+        _rows_copy = deepcopy(self._rows)
+        _rowranges_copy = deepcopy(self._row_ranges)
+        _cols_copy = deepcopy(self._cols)
+        _row_names_copy = deepcopy(self._row_names)
+        _col_names_copy = deepcopy(self._column_names)
+        _metadata_copy = deepcopy(self.metadata)
+        _main_expt_name_copy = deepcopy(self._main_experiment_name)
+        _red_dim_copy = deepcopy(self._reduced_dims)
+        _alt_expt_copy = deepcopy(self._alternative_experiments)
+        _row_pair_copy = deepcopy(self._row_pairs)
+        _col_pair_copy = deepcopy(self._column_pairs)
 
-                if type_check_alternative_experiments is True:
-                    if not issubclass(
-                        type(alternative_experiment), SummarizedExperiment
-                    ):
-                        raise TypeError(
-                            f"Alternative experiment: '{alt_name}' is not a subclass of"
-                            " `SummarizedExperiment`."
-                        )
-
-    def _validate_pairs(self, pairs: Optional[MatrixTypesWithFrame]):
-        """Validate row and column pairs.
-
-        Currently only checks if they are dictionary like objects.
-
-        Args:
-            pairs (MatrixTypesWithFrame, optional): Pair to validate.
-
-        Raises:
-            TypeError: If pairs is not a dictionary like object.
-        """
-        if pairs is not None:
-            if not isinstance(pairs, dict):
-                raise TypeError("Pair is not a dictionary.")
-
-    def _validate(self):
-        """Internal method to validate the object."""
-        super()._validate()
-
-        self._validate_reduced_dims(self._reduced_dims)
-        self._validate_alternative_experiments(
-            self._alternative_experiments, self._type_check_alternative_experiments
+        current_class_const = type(self)
+        return current_class_const(
+            assays=_assays_copy,
+            row_ranges=_rowranges_copy,
+            row_data=_rows_copy,
+            column_data=_cols_copy,
+            row_names=_row_names_copy,
+            column_names=_col_names_copy,
+            metadata=_metadata_copy,
+            reduced_dims=_red_dim_copy,
+            main_experiment_name=_main_expt_name_copy,
+            alternative_experiments=_alt_expt_copy,
+            row_pairs=_row_pair_copy,
+            column_pairs=_col_pair_copy,
         )
 
-    def _set_rdims(self, reduced_dims):
-        if reduced_dims is None:
-            reduced_dims = {}
-
-        self._validate_reduced_dims(reduced_dims)
-        self._reduced_dims = reduced_dims
-
-    def _set_alt_expts(
-        self, alternative_experiments, type_check_alternative_experiments
-    ):
-        if alternative_experiments is None:
-            alternative_experiments = {}
-
-        self._validate_alternative_experiments(
-            alternative_experiments, type_check_alternative_experiments
+    def __copy__(self):
+        """
+        Returns:
+            A shallow copy of the current ``SingleCellExperiment``.
+        """
+        current_class_const = type(self)
+        return current_class_const(
+            assays=self._assays,
+            row_ranges=self._row_ranges,
+            row_data=self._rows,
+            column_data=self._cols,
+            row_names=self._row_names,
+            column_names=self._column_names,
+            metadata=self._metadata,
+            reduced_dims=self._reduced_dims,
+            main_experiment_name=self._main_experiment_name,
+            alternative_experiments=self._alternative_experiments,
+            row_pairs=self._row_pairs,
+            column_pairs=self._column_pairs,
         )
-        self._type_check_alternative_experiments = type_check_alternative_experiments
-        self._alternative_experiments = alternative_experiments
 
-    def _set_row_pairs(self, row_pairs):
-        if row_pairs is None:
-            row_pairs = {}
+    def copy(self):
+        """Alias for :py:meth:`~__copy__`."""
+        return self.__copy__()
 
-        self._validate_pairs(row_pairs)
-        self._row_pairs = row_pairs
+    ##########################
+    ######>> Printing <<######
+    ##########################
 
-    def _set_col_pairs(self, col_pairs):
-        if col_pairs is None:
-            col_pairs = {}
+    def __repr__(self) -> str:
+        """
+        Returns:
+            A string representation.
+        """
+        output = f"{type(self).__name__}(number_of_rows={self.shape[0]}"
+        output += f", number_of_columns={self.shape[1]}"
+        output += ", assays=" + ut.print_truncated_list(self.assay_names)
 
-        self._validate_pairs(col_pairs)
-        self._col_pairs = col_pairs
+        output += ", row_data=" + self._rows.__repr__()
+        if self._row_names is not None:
+            output += ", row_names=" + ut.print_truncated_list(self._row_names)
 
-    @property
-    def reduced_dims(
-        self,
-    ) -> Dict[str, MatrixTypesWithFrame]:
+        output += ", column_data=" + self._cols.__repr__()
+        if self._column_names is not None:
+            output += ", column_names=" + ut.print_truncated_list(self._column_names)
+
+        if self._row_ranges is not None:
+            output += ", row_ranges=" + self._row_ranges.__repr__()
+
+        if self._alternative_experiments is not None:
+            output += ", alternative_experiments=" + ut.print_truncated_list(
+                self.alternative_experiment_names
+            )
+
+        if self._reduced_dims is not None:
+            output += ", reduced_dims=" + ut.print_truncated_list(
+                self.reduced_dim_names
+            )
+
+        if self._main_experiment_name is not None:
+            output += ", main_experiment_name=" + self._main_experiment_name
+
+        if len(self._row_pairs) > 0:
+            output += ", row_pairs=" + ut.print_truncated_dict(self._row_pairs)
+
+        if len(self._column_pairs) > 0:
+            output += ", column_pairs=" + ut.print_truncated_dict(self._column_pairs)
+
+        if len(self._metadata) > 0:
+            output += ", metadata=" + ut.print_truncated_dict(self._metadata)
+
+        output += ")"
+        return output
+
+    def __str__(self) -> str:
+        """
+        Returns:
+            A pretty-printed string containing the contents of this object.
+        """
+        output = f"class: {type(self).__name__}\n"
+
+        output += f"dimensions: ({self.shape[0]}, {self.shape[1]})\n"
+
+        output += f"assays({len(self.assay_names)}): {ut.print_truncated_list(self.assay_names)}\n"
+
+        output += f"row_data columns({len(self._rows.column_names)}): {ut.print_truncated_list(self._rows.column_names)}\n"
+        output += f"row_names({0 if self._row_names is None else len(self._row_names)}): {' ' if self._row_names is None else ut.print_truncated_list(self._row_names)}\n"
+
+        output += f"column_data columns({len(self._cols.column_names)}): {ut.print_truncated_list(self._cols.column_names)}\n"
+        output += f"column_names({0 if self._column_names is None else len(self._column_names)}): {' ' if self._column_names is None else ut.print_truncated_list(self._column_names)}\n"
+
+        output += f"main_experiment_name: {' ' if self._main_experiment_name is None else self._main_experiment_name})\n"
+        output += f"reduced_dims({len(self.reduced_dim_names)}): {ut.print_truncated_list(self.reduced_dim_names)}\n"
+        output += f"alternative_experiments({len(self.alternative_experiment_names)}): {ut.print_truncated_list(self.alternative_experiment_names)}\n"
+        output += f"row_pairs({len(self.row_pair_names)}): {ut.print_truncated_list(self.row_pair_names)}\n"
+        output += f"column_pairs({len(self.column_pair_names)}): {ut.print_truncated_list(self.column_pair_names)}\n"
+
+        output += f"metadata({str(len(self.metadata))}): {ut.print_truncated_list(list(self.metadata.keys()), sep=' ', include_brackets=False, transform=lambda y: y)}\n"
+
+        return output
+
+    ##############################
+    ######>> reduced_dims <<######
+    ##############################
+
+    def get_reduced_dims(self) -> Dict[str, Any]:
         """Access dimensionality embeddings.
 
         Returns:
-            Dict[str, MatrixTypesWithFrame]: A dictionary of all embeddings, the embedding method as keys
-            and values is an embedding.
+            A dictionary with keys as names of embedding method and value
+            the embedding.
         """
         return self._reduced_dims
 
+    def set_reduced_dims(
+        self, reduced_dims: Dict[str, Any], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Set new reduced dimensions.
+
+        Args:
+            reduced_dims:
+                New embeddings.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        _validate_reduced_dims(reduced_dims, self.shape)
+
+        output = self._define_output(in_place)
+        output._reduced_dims = reduced_dims
+        return output
+
+    @property
+    def reduced_dims(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_reduced_dims`."""
+        return self.get_reduced_dims()
+
     @reduced_dims.setter
-    def reduced_dims(
-        self,
-        reduced_dims: Optional[Dict[str, MatrixTypesWithFrame]],
-    ):
-        """Set dimensionality embeddings.
+    def reduced_dims(self, reduced_dims: Dict[str, Any]):
+        """Alias for :py:meth:`~set_reduced_dims`."""
+        warn(
+            "Setting property 'reduced_dims' is an in-place operation, use 'set_reduced_dims' instead",
+            UserWarning,
+        )
+        self.set_reduced_dims(reduced_dims, in_place=True)
 
-        Args:
-            reduced_dims (Dict[str, MatrixTypesWithFrame], optional): New embeddings to set.
-                Pass None to remove the current embeddings.
-        """
-        self._set_rdims(reduced_dims)
+    ####################################
+    ######>> reduced_dims_names <<######
+    ####################################
 
-    @property
-    def main_experiment_name(self) -> Optional[str]:
-        """Access main experiment name.
-
-        Returns:
-            (str, optional): Name if available, otherwise None.
-        """
-        return self._main_experiment_name
-
-    @main_experiment_name.setter
-    def main_experiment_name(self, name: Optional[str]):
-        """Set main experiment name.
-
-        Args:
-            name (str, optional): Experiment name to set.
-                Pass None to remove the current name.
-        """
-        self._main_experiment_name = name
-
-    @property
-    def reduced_dim_names(self) -> Optional[List[str]]:
-        """Access names of dimensionality embeddings.
+    def get_reduced_dim_names(self) -> List[str]:
+        """Access reduced dimension names.
 
         Returns:
-            (List[str], optional): List of all embeddings names if available.
+            List of reduced dimensionality names.
         """
+        return list(self._reduced_dims.keys())
 
-        if self.reduced_dims is not None:
-            return list(self.reduced_dims.keys())
+    def set_reduced_dim_names(
+        self, names: List[str], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.reduced_dims`'s names.
 
-        return None
+        Args:
+            names:
+                New dimensionality names.
 
-    def reduced_dim(self, name: str) -> MatrixTypesWithFrame:
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        current_names = self.get_reduced_dim_names()
+        if len(names) != len(current_names):
+            raise ValueError(
+                "Length of 'names' does not match the number of `reduced_dims`."
+            )
+
+        new_reduced_dims = OrderedDict()
+        for idx in range(len(names)):
+            new_reduced_dims[names[idx]] = self._reduced_dims.pop(current_names[idx])
+
+        output = self._define_output(in_place)
+        output._reduced_dims = new_reduced_dims
+        return output
+
+    @property
+    def reduced_dim_names(self) -> List[str]:
+        """Alias for :py:meth:`~get_reduced_dim_names`."""
+        return self.get_reduced_dim_names()
+
+    @reduced_dim_names.setter
+    def reduced_dim_names(self, names: List[str]):
+        """Alias for :py:meth:`~set_reduced_dim_names`."""
+        warn(
+            "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dim_names' instead",
+            UserWarning,
+        )
+        self.set_reduced_dim_names(names, in_place=True)
+
+    ####################################
+    ######>> reduced_dim getter <<######
+    ####################################
+
+    def reduced_dim(self, dimension: Union[str, int]) -> Any:
         """Access an embedding by name.
 
         Args:
-            name (str): Name of the embedding.
+            dimension:
+                Name or index position of the reduced dimension.
 
         Raises:
-            ValueError: If embedding ``name`` does not exist.
+            AttributeError:
+                If the dimension name does not exist.
+            IndexError:
+                If index is greater than the number of reduced dimensions.
 
         Returns:
-            MatrixTypesWithFrame: The embedding represented as
-            numpy, scipy matrix or a data frame from pandas or biocframe.
+            The embedding.
         """
-        if name not in self._reduced_dims:
-            raise ValueError(f"Embedding: '{name}' does not exist.")
+        if isinstance(dimension, int):
+            if dimension < 0:
+                raise IndexError("Index cannot be negative.")
 
-        return self._reduced_dims[name]
+            if dimension > len(self.assay_names):
+                raise IndexError("Index greater than the number of reduced dimensions.")
+
+            return self.reduced_dim[self.reduced_dim_names[dimension]]
+        elif isinstance(dimension, str):
+            if dimension not in self.reduced_dim:
+                raise AttributeError(f"Reduced dimension: {dimension} does not exist.")
+
+            return self.reduced_dim[dimension]
+
+        raise TypeError(
+            f"'dimension' must be a string or integer, provided '{type(dimension)}'."
+        )
+
+    ################################
+    ######>> main_expt_name <<######
+    ################################
+
+    def get_main_experiment_name(self) -> Optional[str]:
+        """Access main experiment name.
+
+        Returns:
+            Name if available, otherwise None.
+        """
+        return self._main_experiment_name
+
+    def set_main_experiment_name(
+        self, name: Optional[str], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Set new experiment data (assays).
+
+        Args:
+            name:
+                New main experiment name.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        output = self._define_output(in_place)
+        output._main_experiment_name = name
+        return output
 
     @property
-    def alternative_experiments(
-        self,
-    ) -> Dict[str, SummarizedExperiment]:
+    def main_experiment_name(self) -> Optional[str]:
+        """Alias for :py:meth:`~get_main_experiment_name`."""
+        return self.get_main_experiment_name()
+
+    @main_experiment_name.setter
+    def main_experiment_name(self, name: Optional[str]):
+        """Alias for :py:meth:`~set_main_experiment_name`."""
+        warn(
+            "Setting property 'main_experiment_name' is an in-place operation, use 'set_main_experiment_name' instead",
+            UserWarning,
+        )
+        self.set_main_experiment_name(name, in_place=True)
+
+    #########################################
+    ######>> alternative_experiments <<######
+    #########################################
+
+    def get_alternative_experiments(self) -> Dict[str, Any]:
         """Access alternative experiments.
 
         Returns:
-            Dict[str, SummarizedExperiment]: A dictionary of alternative experiments with the name of
-            the experiments as keys and value is a subclass of `SummarizedExperiment`.
+            A dictionary with names of
+            the experiments as keys and value the experiment.
         """
         return self._alternative_experiments
 
-    @alternative_experiments.setter
-    def alternative_experiments(
-        self,
-        alternative_experiments: Dict[str, SummarizedExperiment],
-    ):
-        """Set alternative experiments.
+    def set_alternative_experiments(
+        self, alternative_experiments: Dict[str, Any], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Set new alternative experiments.
 
         Args:
-            Dict[str, SummarizedExperiment]: New alternative experiments to set.
-        """
-        self._set_alt_expts(
-            alternative_experiments=alternative_experiments,
-            type_check_alternative_experiments=self._type_check_alternative_experiments,
-        )
+            alternative_experiments:
+                New alternative experiments.
 
-    def alternative_experiment(self, name: str) -> SummarizedExperiment:
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        _validate_alternative_experiments(alternative_experiments, self.shape)
+        output = self._define_output(in_place)
+        output._alternative_experiments = alternative_experiments
+        return output
+
+    @property
+    def alternative_experiments(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_alternative_experiments`."""
+        return self.get_alternative_experiments()
+
+    @alternative_experiments.setter
+    def alternative_experiments(self, alternative_experiments: Dict[str, Any]):
+        """Alias for :py:meth:`~set_alternative_experiments`."""
+        warn(
+            "Setting property 'alternative_experiments' is an in-place operation, use 'set_alternative_experiments' instead",
+            UserWarning,
+        )
+        self.set_alternative_experiments(alternative_experiments, in_place=True)
+
+    ###############################################
+    ######>> alternative_experiment_names <<######
+    ###############################################
+
+    def get_alternative_experiment_names(self) -> List[str]:
+        """Access alternative experiment names.
+
+        Returns:
+            List of alternative experiment names.
+        """
+        return list(self._alternative_experiments.keys())
+
+    def set_alternative_experiment_names(
+        self, names: List[str], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.alternative_experiment`'s names.
+
+        Args:
+            names:
+                New alternative experiment names.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        current_names = self.get_alternative_experiment_names()
+        if len(names) != len(current_names):
+            raise ValueError(
+                "Length of 'names' does not match the number of `alternative_experiments`."
+            )
+
+        new_alt_expts = OrderedDict()
+        for idx in range(len(names)):
+            new_alt_expts[names[idx]] = self._alternative_experiments.pop(
+                current_names[idx]
+            )
+
+        output = self._define_output(in_place)
+        output._alternative_experiments = new_alt_expts
+        return output
+
+    @property
+    def alternative_experiment_names(self) -> List[str]:
+        """Alias for :py:meth:`~get_alternative_experiment_names`."""
+        return self.get_alternative_experiment_names()
+
+    @alternative_experiment_names.setter
+    def alternative_experiment_names(self, names: List[str]):
+        """Alias for :py:meth:`~set_alternative_experiment_names`."""
+        warn(
+            "Renaming names of property 'alternative_experiments' is an in-place operation, use 'set_alternative_experiment_names' instead",
+            UserWarning,
+        )
+        self.set_alternative_experiment_names(names, in_place=True)
+
+    ###############################################
+    ######>> alternative_experiment getter <<######
+    ###############################################
+
+    def alternative_experiment(self, name: Union[str, int]) -> Any:
         """Access alternative experiment by name.
 
         Args:
-            name (str): Name of the alternative experiment.
+            name:
+                Name or index position of the alternative experiment.
 
         Raises:
-            ValueError: If alternative experiment ``name`` does not exist.
+            AttributeError:
+                If the dimension name does not exist.
+            IndexError:
+                If index is greater than the number of reduced dimensions.
 
         Returns:
-            SummarizedExperiment: A `SummarizedExperiment`-like representation of the alternative
-            experiment.
+            The alternative experiment.
         """
-        if name not in self._alternative_experiments:
-            raise ValueError(f"Alternative experiment '{name}' does not exist.")
+        if isinstance(name, int):
+            if name < 0:
+                raise IndexError("Index cannot be negative.")
 
-        return self._alternative_experiments[name]
+            if name > len(self.assay_names):
+                raise IndexError("Index greater than the number of reduced dimensions.")
 
-    @property
-    def row_pairs(self) -> Dict[str, MatrixTypesWithFrame]:
+            return self.alternative_experiments[self.alternative_experiment_names[name]]
+        elif isinstance(name, str):
+            if name not in self.reduced_dim:
+                raise AttributeError(f"Reduced dimension: {name} does not exist.")
+
+            return self.alternative_experiments[name]
+
+        raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
+
+    ###########################
+    ######>> row_pairs <<######
+    ###########################
+
+    def get_row_pairs(self) -> Dict[str, Any]:
         """Access row pairings/relationships between features.
 
         Returns:
-            Dict[str, MatrixTypesWithFrame]: Access row pairs.
+            Access row pairs.
         """
         return self._row_pairs
 
-    @row_pairs.setter
-    def row_pairs(self, pairs: Dict[str, MatrixTypesWithFrame]):
-        """Set row pairs/relationships between features.
+    def set_row_pairs(
+        self, pairs: Dict[str, Any], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.row_pairs`'s names.
 
         Args:
-            Dict[str, MatrixTypesWithFrame]: New row pairs to set.
-        """
-        self._set_row_pairs(pairs)
+            names:
+                New row pairs.
 
-    @property
-    def col_pairs(self) -> Dict[str, MatrixTypesWithFrame]:
-        """Access column pairs/relationships between cells.
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
 
         Returns:
-            Dict[str, MatrixTypesWithFrame]: Access column pairs.
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
         """
-        return self._col_pairs
+        _validate_pairs(pairs)
 
-    @col_pairs.setter
-    def col_pairs(self, pairs: Dict[str, MatrixTypesWithFrame]):
-        """Set column pairs/relationships between cells.
+        output = self._define_output(in_place)
+        output._row_pairs = pairs
+        return output
+
+    @property
+    def row_pairs(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_row_pairs`."""
+        return self.get_row_pairs()
+
+    @row_pairs.setter
+    def row_pairs(self, pairs: Dict[str, Any]):
+        """Alias for :py:meth:`~set_row_pairs`."""
+        warn(
+            "Setting property 'row_pairs' is an in-place operation, use 'set_row_pairs' instead",
+            UserWarning,
+        )
+        self.set_row_pairs(pairs, in_place=True)
+
+    ###########################
+    ######>> row_pairs <<######
+    ###########################
+
+    def get_column_pairs(self) -> Dict[str, Any]:
+        """Access column pairings/relationships between cells.
+
+        Returns:
+            Access column pairs.
+        """
+        return self._column_pairs
+
+    def set_column_pairs(
+        self, pairs: Dict[str, Any], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.column_pairs`'s names.
 
         Args:
-            Dict[str, MatrixTypesWithFrame]: New column pairs.
-        """
-        self._set_col_pairs(pairs)
+            names:
+                New column pairs.
 
-    def __repr__(self) -> str:
-        pattern = (
-            f"Class SingleCellExperiment with {self.shape[0]} features and {self.shape[1]} cells \n"
-            f"  main_experiment_name: {self.main_experiment_name if self.main_experiment_name is not None else None} \n"
-            f"  assays: {list(self.assays.keys())} \n"
-            f"  row_data: {self.row_data.columns if self.row_data is not None else None} \n"
-            f"  col_data: {self.col_data.columns if self.col_data is not None else None} \n"
-            f"  reduced_dims: {self.reduced_dim_names if self.reduced_dims is not None else None} \n"
-            f"  alternative_experiments: {list(self.alternative_experiments.keys()) if self.alternative_experiments is not None else None}"  # noqa: E501
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        _validate_pairs(pairs)
+
+        output = self._define_output(in_place)
+        output._column_pairs = pairs
+        return output
+
+    @property
+    def column_pairs(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_column_pairs`."""
+        return self.get_column_pairs()
+
+    @column_pairs.setter
+    def column_pairs(self, pairs: Dict[str, Any]):
+        """Alias for :py:meth:`~set_column_pairs`."""
+        warn(
+            "Setting property 'column_pairs' is an in-place operation, use 'set_column_pairs' instead",
+            UserWarning,
         )
-        return pattern
+        self.set_column_pairs(pairs, in_place=True)
 
     def __getitem__(self, args: SlicerArgTypes) -> "SingleCellExperiment":
         """Subset SingleCellExperiment.
