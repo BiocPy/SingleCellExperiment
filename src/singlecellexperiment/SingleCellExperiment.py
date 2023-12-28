@@ -6,7 +6,6 @@ import biocframe
 import biocutils as ut
 from genomicranges import GenomicRanges
 from pandas import DataFrame
-from summarizedexperiment import SummarizedExperiment
 from summarizedexperiment.RangedSummarizedExperiment import (
     GRangesOrGRangesList,
     RangedSummarizedExperiment,
@@ -70,8 +69,8 @@ def _validate_pairs(pairs):
 
 class SingleCellExperiment(RangedSummarizedExperiment):
     """Container class for single-cell experiments, extending
-    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`
-    to provide slots for embeddings and alternative experiments that share the same cells.
+    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for
+    embeddings and alternative experiments that share the same cells.
 
     In contrast to R, :py:class:`~numpy.ndarray` or scipy matrices are unnamed and do
     not contain rownames and colnames. Hence, these matrices cannot be directly used as
