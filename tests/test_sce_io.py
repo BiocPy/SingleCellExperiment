@@ -2,6 +2,7 @@ from random import random
 
 import anndata
 import genomicranges
+from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 from mudata import MuData
@@ -17,7 +18,7 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-df_gr = pd.DataFrame(
+row_data = BiocFrame(
     {
         "seqnames": [
             "chr1",
@@ -40,7 +41,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.from_pandas(df_gr)
+gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
 col_data = pd.DataFrame(
     {
@@ -51,7 +52,7 @@ col_data = pd.DataFrame(
 
 def test_SCE_to_anndata():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     assert tse is not None
@@ -129,7 +130,7 @@ def test_SCE_randomAnnData():
 
 def test_SCE_to_mudata():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     assert tse is not None

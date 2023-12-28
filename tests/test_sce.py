@@ -3,6 +3,7 @@ from random import random
 import genomicranges
 import numpy as np
 import pandas as pd
+from biocframe import BiocFrame
 import pytest
 from summarizedexperiment import SummarizedExperiment
 
@@ -17,7 +18,7 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-df_gr = pd.DataFrame(
+row_data = BiocFrame(
     {
         "seqnames": [
             "chr1",
@@ -40,7 +41,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.from_pandas(df_gr)
+gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
 col_data = pd.DataFrame(
     {
@@ -51,7 +52,7 @@ col_data = pd.DataFrame(
 
 def test_SCE_creation():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     assert tse is not None
@@ -60,13 +61,13 @@ def test_SCE_creation():
 
 def test_SCE_creation_with_alts():
     tse = SummarizedExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     tse = SingleCellExperiment(
         assays={"counts": counts},
-        row_data=df_gr,
-        col_data=col_data,
+        row_data=row_data,
+        column_data=col_data,
         alternative_experiments={"alt": tse},
     )
 
@@ -107,13 +108,13 @@ def test_SCE_creation_with_alts_should_fail():
     )
 
     tse = SummarizedExperiment(
-        assays={"counts": acounts}, row_data=adf_gr, col_data=acol_data
+        assays={"counts": acounts}, row_data=adf_gr, column_data=acol_data
     )
 
     with pytest.raises(Exception):
         tse = SingleCellExperiment(
             assays={"counts": counts},
-            row_data=df_gr,
-            col_data=col_data,
+            row_data=row_data,
+            column_data=col_data,
             alternative_experiments={"alt": tse},
         )

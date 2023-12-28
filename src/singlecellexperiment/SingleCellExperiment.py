@@ -1,16 +1,16 @@
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Sequence, Union
 from warnings import warn
 
 import biocframe
 import biocutils as ut
 from genomicranges import GenomicRanges
-from pandas import DataFrame
-from summarizedexperiment import SummarizedExperiment
 from summarizedexperiment.RangedSummarizedExperiment import (
     GRangesOrGRangesList,
     RangedSummarizedExperiment,
 )
+
+from ._ioutils import _to_normal_dict
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -728,9 +728,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         )
         self.set_row_pairs(pairs, in_place=True)
 
-    ###########################
-    ######>> row_pairs <<######
-    ###########################
+    ##############################
+    ######>> column_pairs <<######
+    ##############################
 
     def get_column_pairs(self) -> Dict[str, Any]:
         """Access column pairings/relationships between cells.
@@ -776,78 +776,95 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         )
         self.set_column_pairs(pairs, in_place=True)
 
-    def __getitem__(self, args: SlicerArgTypes) -> "SingleCellExperiment":
-        """Subset SingleCellExperiment.
+    ##########################
+    ######>> slicers <<#######
+    ##########################
 
-        Note: Does not currently support slicing of
-        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.row_pairs`
-        and
-        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.col_pairs`.
+    # rest of them are inherited from BaseSE.
 
-        Args:
-            args (SlicerArgTypes): Indices or names to slice. The tuple contains
-                slices along dimensions (rows, cols).
+    def get_slice(
+        self,
+        rows: Optional[Union[str, int, bool, Sequence]],
+        columns: Optional[Union[str, int, bool, Sequence]],
+    ) -> "SingleCellExperiment":
+        """Alias for :py:attr:`~__getitem__`, for back-compatibility."""
 
-                Each element in the tuple, may be either a integer vector (index positions),
-                boolean vector or :py:class:`~slice` object. Defaults to None.
+        slicer = self._generic_slice(rows=rows, columns=columns)
 
-        Raises:
-            Exception: If too many or too few slices are provided.
+        new_row_ranges = None
+        if slicer.row_indices != slice(None):
+            new_row_ranges = self.row_ranges[slicer.row_indices]
 
-        Returns:
-            SingleCellExperiment: Sliced `SingleCellExperiment` object.
-        """
-        sliced_objs = self._slice(args)
+        new_reduced_dims = {}
+        for rdim, rmat in self._reduced_dim.items():
+            if slicer.row_indices != slice(None):
+                rmat = rmat[slicer.row_indices, :]
 
-        sliced_row_ranges = None
-        if sliced_objs.row_indices is not None and self.row_ranges is not None:
-            sliced_row_ranges = self.row_ranges[sliced_objs.row_indices]
+            if slicer.col_indices != slice(None):
+                rmat = rmat[:, slicer.col_indices]
 
-        new_reduced_dims = None
-        if self.reduced_dims is not None:
-            new_reduced_dims = OrderedDict()
-            for rdname, embeds in self.reduced_dims.items():
-                sliced_embeds = None
-                if isinstance(embeds, DataFrame):
-                    sliced_embeds = embeds.iloc[sliced_objs.col_indices]
-                else:
-                    sliced_embeds = embeds[sliced_objs.col_indices, :]
+            new_reduced_dims[rdim] = rmat
 
-                new_reduced_dims[rdname] = sliced_embeds
+        new_alt_expts = {}
+        for altname, altexpt in self._alternative_experiments.items():
+            if slicer.row_indices != slice(None):
+                altexpt = altexpt[rows, :]
 
-        new_alternative_experiments = None
-        if self._alternative_experiments is not None:
-            new_alternative_experiments = OrderedDict()
-            for ae in self._alternative_experiments.keys():
-                new_alternative_experiments[ae] = self._alternative_experiments[ae][
-                    sliced_objs.row_indices, sliced_objs.col_indices
-                ]
+            if slicer.col_indices != slice(None):
+                altexpt = altexpt[:, slicer.col_indices]
 
-        return SingleCellExperiment(
-            sliced_objs.assays,
-            sliced_row_ranges,
-            sliced_objs.row_data,
-            sliced_objs.col_data,
-            self.metadata,
-            new_reduced_dims,
-            self.main_experiment_name,
-            new_alternative_experiments,
+            new_alt_expts[altname] = altexpt
+
+        new_row_pairs = {}
+        for rname, rpair in self._row_pairs.items():
+            if slicer.row_indices != slice(None):
+                rpair = rpair[slicer.row_indices, :]
+
+            if slicer.col_indices != slice(None):
+                rpair = rpair[:, slicer.col_indices]
+
+            new_row_pairs[rname] = rpair
+
+        new_col_pairs = {}
+        for cname, cpair in self._column_pairs.items():
+            if slicer.row_indices != slice(None):
+                cpair = cpair[slicer.row_indices, :]
+
+            if slicer.col_indices != slice(None):
+                cpair = cpair[:, slicer.col_indices]
+
+            new_col_pairs[cname] = cpair
+
+        current_class_const = type(self)
+        return current_class_const(
+            assays=slicer.assays,
+            row_ranges=new_row_ranges,
+            row_data=slicer.rows,
+            column_data=slicer.columns,
+            row_names=slicer.row_names,
+            column_names=slicer.column_names,
+            metadata=self._metadata,
+            main_experiment_name=self._main_experiment_name,
+            reduced_dims=new_reduced_dims,
+            alternative_experiments=new_alt_expts,
+            row_pairs=new_row_pairs,
+            column_pairs=new_col_pairs,
         )
 
-    def to_anndata(self, alts: bool = False) -> Union[AnnData, Dict[str, AnnData]]:
-        """Transform `SingleCellExperiment` object into :py:class:`~anndata.AnnData`.
+    ################################
+    ######>> AnnData interop <<#####
+    ################################
+
+    def to_anndata(self, include_alternative_experiments: bool = False):
+        """Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.
 
         Args:
-            alts (bool, optional): Whether to include alternative experiments
-                int the result. Defaults to False.
+            include_alternative_experiments:
+                Whether to transform alternative experiments.
 
         Returns:
-            Union[AnnData, Dict[str, AnnData]]: A tuple with
-            the main `AnnData` object and Optionally, If ``alts`` is true, a dictionary with
-            alternative experiment names as keys and the value is the corresponding
-            `AnnData` object.
+            A tuple with ``AnnData`` main experiment and a list of alternative experiments.
         """
-
         from anndata import AnnData
 
         layers = OrderedDict()
@@ -856,7 +873,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         trows = self.row_data
         if isinstance(self.row_data, GenomicRanges):
-            trows = self.row_data.toPandas()
+            trows = self.row_data.to_pandas()
 
         obj = AnnData(
             obs=self.col_data,
@@ -865,10 +882,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             obsm=self.reduced_dims,
             layers=layers,
             varp=self.row_pairs,
-            obsp=self.col_pairs,
+            obsp=self.column_pairs,
         )
 
-        if alts is True:
+        if include_alternative_experiments is True:
             adatas = None
             if self.alternative_experiments is not None:
                 adatas = {}
@@ -880,33 +897,68 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
             return obj, adatas
 
-        return obj
+        return obj, None
 
-    def to_mudata(self) -> MuData:
-        """Transform `SingleCellExperiment` object into :py:class:`~mudata.MuData`.
+    @classmethod
+    def from_anndata(cls, input: "anndata.AnnData") -> "SingleCellExperiment":
+        """Create a ``SingleCellExperiment`` from :py:class:`~anndata.AnnData`.
 
-        If
-        :py:attr:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment.main_experiment_name`
-        is None, this experiment is called **Unknown Modality** in the :py:class:`~mudata.MuData`
-        object.
+         Args:
+            input:
+                Input data.
 
         Returns:
-            MuData: A MuData object.
+            A ``SingleCellExperiment`` object.
+        """
+
+        layers = OrderedDict()
+        for asy, mat in input.layers.items():
+            layers[asy] = mat.transpose()
+
+        if input.X is not None:
+            layers["X"] = input.X.transpose()
+
+        obsm = _to_normal_dict(input.obsm)
+        varp = _to_normal_dict(input.varp)
+        obsp = _to_normal_dict(input.obsp)
+
+        return cls(
+            assays=layers,
+            row_data=biocframe.BiocFrame.from_pandas(input.var),
+            column_data=biocframe.BiocFrame.from_pandas(input.obs),
+            metadata=input.uns,
+            reduced_dims=obsm,
+            row_pairs=varp,
+            column_pairs=obsp,
+        )
+
+    ###############################
+    ######>> MuData interop <<#####
+    ###############################
+
+    def to_mudata(self):
+        """Transform ``SingleCellExperiment`` object into :py:class:`~mudata.MuData` representation.
+
+        If :py:attr:`~main_experiment_name` is `None`, this experiment is called
+        **Unknown Modality** in the :py:class:`~mudata.MuData` object.
+
+        Returns:
+            A MuData object.
         """
 
         from mudata import MuData
 
-        mainData, altData = self.to_anndata(alts=True)
+        main_data, alt_data = self.to_anndata(alts=True)
 
         expts = OrderedDict()
         mainName = self.main_experiment_name
         if self.main_experiment_name is None:
             mainName = "Unknown Modality"
 
-        expts[mainName] = mainData
+        expts[mainName] = main_data
 
-        if altData is not None:
-            for exptName, expt in altData.items():
+        if alt_data is not None:
+            for exptName, expt in alt_data.items():
                 expts[exptName] = expt
 
         return MuData(expts)
