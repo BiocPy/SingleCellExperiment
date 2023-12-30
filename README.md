@@ -30,10 +30,10 @@ sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
     dimensions: (20, 30)
     assays(3): ['array', 'sparse', 'X']
     row_data columns(5): ['var_cat', 'cat_ordered', 'int64', 'float64', 'uint8']
-    row_names(0):  
+    row_names(0):
     column_data columns(5): ['obs_cat', 'cat_ordered', 'int64', 'float64', 'uint8']
-    column_names(0):  
-    main_experiment_name:  
+    column_names(0):
+    main_experiment_name:
     reduced_dims(0): []
     alternative_experiments(0): []
     row_pairs(0): []
