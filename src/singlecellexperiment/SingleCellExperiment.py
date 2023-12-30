@@ -481,12 +481,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if dimension > len(self.assay_names):
                 raise IndexError("Index greater than the number of reduced dimensions.")
 
-            return self.reduced_dim[self.reduced_dim_names[dimension]]
+            return self._reduced_dims[self.reduced_dim_names[dimension]]
         elif isinstance(dimension, str):
-            if dimension not in self.reduced_dim:
+            if dimension not in self._reduced_dims:
                 raise AttributeError(f"Reduced dimension: {dimension} does not exist.")
 
-            return self.reduced_dim[dimension]
+            return self._reduced_dims[dimension]
 
         raise TypeError(
             f"'dimension' must be a string or integer, provided '{type(dimension)}'."
@@ -1067,10 +1067,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if self.main_experiment_name is None:
             mainName = "Unknown Modality"
 
-        expts[mainName] = main_data
+        expts[str(mainName)] = main_data
 
         if alt_data is not None:
             for exptName, expt in alt_data.items():
-                expts[exptName] = expt
+                expts[str(exptName)] = expt
 
         return MuData(expts)
