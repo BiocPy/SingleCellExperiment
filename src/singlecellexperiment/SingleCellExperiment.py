@@ -728,6 +728,62 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         )
         self.set_row_pairs(pairs, in_place=True)
 
+    ####################################
+    ######>> row_pairs_names <<######
+    ####################################
+
+    def get_row_pair_names(self) -> List[str]:
+        """Access row pair names.
+
+        Returns:
+            List of row pair names.
+        """
+        return list(self._row_pairs.keys())
+
+    def set_row_pair_names(
+        self, names: List[str], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.row_pair`'s names.
+
+        Args:
+            names:
+                New names.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        current_names = self.get_row_pair_names()
+        if len(names) != len(current_names):
+            raise ValueError(
+                "Length of 'names' does not match the number of `row_pairs`."
+            )
+
+        new_row_pairs = OrderedDict()
+        for idx in range(len(names)):
+            new_row_pairs[names[idx]] = self._row_pairs.pop(current_names[idx])
+
+        output = self._define_output(in_place)
+        output._row_pairs = new_row_pairs
+        return output
+
+    @property
+    def row_pair_names(self) -> List[str]:
+        """Alias for :py:meth:`~get_row_pair_names`."""
+        return self.get_row_pair_names()
+
+    @row_pair_names.setter
+    def row_pair_names(self, names: List[str]):
+        """Alias for :py:meth:`~set_row_pair_names`."""
+        warn(
+            "Renaming names of property 'row_pairs' is an in-place operation, use 'set_row_pair_names' instead",
+            UserWarning,
+        )
+        self.set_row_pair_names(names, in_place=True)
+
     ##############################
     ######>> column_pairs <<######
     ##############################
@@ -775,6 +831,110 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             UserWarning,
         )
         self.set_column_pairs(pairs, in_place=True)
+
+    ###########################
+    ######>> row_pairs <<######
+    ###########################
+
+    def get_row_pairs(self) -> Dict[str, Any]:
+        """Access row pairings/relationships between features.
+
+        Returns:
+            Access row pairs.
+        """
+        return self._row_pairs
+
+    def set_row_pairs(
+        self, pairs: Dict[str, Any], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.row_pairs`'s names.
+
+        Args:
+            names:
+                New row pairs.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        _validate_pairs(pairs)
+
+        output = self._define_output(in_place)
+        output._row_pairs = pairs
+        return output
+
+    @property
+    def row_pairs(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_row_pairs`."""
+        return self.get_row_pairs()
+
+    @row_pairs.setter
+    def row_pairs(self, pairs: Dict[str, Any]):
+        """Alias for :py:meth:`~set_row_pairs`."""
+        warn(
+            "Setting property 'row_pairs' is an in-place operation, use 'set_row_pairs' instead",
+            UserWarning,
+        )
+        self.set_row_pairs(pairs, in_place=True)
+
+    ####################################
+    ######>> column_pairs_names <<######
+    ####################################
+
+    def get_column_pair_names(self) -> List[str]:
+        """Access column pair names.
+
+        Returns:
+            List of column pair names.
+        """
+        return list(self._column_pairs.keys())
+
+    def set_column_pair_names(
+        self, names: List[str], in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Replace :py:attr:`~.column_pair`'s names.
+
+        Args:
+            names:
+                New names.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        current_names = self.get_column_pair_names()
+        if len(names) != len(current_names):
+            raise ValueError(
+                "Length of 'names' does not match the number of `column_pairs`."
+            )
+
+        new_column_pairs = OrderedDict()
+        for idx in range(len(names)):
+            new_column_pairs[names[idx]] = self._column_pairs.pop(current_names[idx])
+
+        output = self._define_output(in_place)
+        output._column_pairs = new_column_pairs
+        return output
+
+    @property
+    def column_pair_names(self) -> List[str]:
+        """Alias for :py:meth:`~get_column_pair_names`."""
+        return self.get_column_pair_names()
+
+    @column_pair_names.setter
+    def column_pair_names(self, names: List[str]):
+        """Alias for :py:meth:`~set_column_pair_names`."""
+        warn(
+            "Renaming names of property 'column_pairs' is an in-place operation, use 'set_column_pair_names' instead",
+            UserWarning,
+        )
+        self.set_column_pair_names(names, in_place=True)
 
     ##########################
     ######>> slicers <<#######
