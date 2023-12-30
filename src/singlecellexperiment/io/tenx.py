@@ -13,13 +13,15 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     """Read 10X Matrix market directory as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
-        path (str): Path to 10X MTX directory.
+        path:
+            Path to 10X MTX directory.
+
             Directory must contain `matrix.mtx`, and optionally
             a `genes.tsv` to represent featires and `barcodes.tsv` for cell
             annotations.
 
     Returns:
-        SingleCellExperiment: A single-cell experiment object.
+        A single-cell experiment object.
     """
 
     import pandas as pd
@@ -38,7 +40,7 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     return SingleCellExperiment(
         assays={"counts": mat},
         row_data=from_pandas(genes),
-        col_data=from_pandas(cells),
+        column_data=from_pandas(cells),
     )
 
 
@@ -48,10 +50,11 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     Note: Currently only supports version 3 of the 10X H5 format.
 
     Args:
-        path (str): Path to 10x H5 file.
+        path:
+            Path to 10x H5 file.
 
     Returns:
-        SingleCellExperiment: A single-cell experiment object.
+        A single-cell experiment object.
     """
 
     import h5py
@@ -104,5 +107,5 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
         barcodes = BiocFrame(barcodes, number_of_rows=counts.shape[1])
 
     return SingleCellExperiment(
-        assays={"counts": counts}, row_data=features, col_data=barcodes
+        assays={"counts": counts}, row_data=features, column_data=barcodes
     )

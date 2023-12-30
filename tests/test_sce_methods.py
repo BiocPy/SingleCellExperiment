@@ -1,6 +1,7 @@
 from random import random
 
 import genomicranges
+from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 import pytest
@@ -17,7 +18,7 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-df_gr = pd.DataFrame(
+row_data = BiocFrame(
     {
         "seqnames": [
             "chr1",
@@ -40,7 +41,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.from_pandas(df_gr)
+gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
 col_data = pd.DataFrame(
     {
@@ -51,7 +52,7 @@ col_data = pd.DataFrame(
 
 def test_SCE_props():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     assert tse is not None
@@ -59,7 +60,7 @@ def test_SCE_props():
 
     assert tse.alternative_experiments == {}
     alt = SummarizedExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
     tse.alternative_experiments = {"alt": alt}
     assert tse.alternative_experiments is not None
@@ -68,9 +69,9 @@ def test_SCE_props():
     assert tse.row_data is not None
     assert tse.col_data is not None
 
-    assert tse.col_pairs == {}
-    tse.col_pairs = {"random": col_data}
-    assert tse.col_pairs is not None
+    assert tse.column_pairs == {}
+    tse.column_pairs = {"random": col_data}
+    assert tse.column_pairs is not None
 
     with pytest.raises(Exception):
         tse.row_pairs = counts

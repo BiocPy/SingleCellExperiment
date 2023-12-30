@@ -22,12 +22,13 @@ Similarly `read_tenx_h5`, `read_tenx_mtx` and `from_anndata` methods are  availa
 ```python
 import pandas as pd
 import numpy as np
+from biocframe import BiocFrame
 from genomicranges import GenomicRanges
 
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-df_gr = pd.DataFrame(
+row_data = BiocFrame(
     {
         "seqnames": [
             "chr1",
@@ -50,8 +51,6 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = GenomicRanges.from_pandas(df_gr)
-
 col_data = pd.DataFrame(
     {
         "celltype": ["cluster1", "cluster2"] * 3,
@@ -65,7 +64,7 @@ Finally construct the object,
 from singlecellexperiment import SingleCellExperiment
 
 tse = SingleCellExperiment(
-    assays={"counts": counts}, row_data=df_gr, col_data=col_data
+    assays={"counts": counts}, row_data=row_data, column_data=col_data
 )
 ```
 
@@ -76,11 +75,11 @@ Multiple methods are available to access various slots of a `SingleCellExperimen
 ```python
 tse.assays
 tse.row_data
-tse.col_data
+tse.column_data
 tse.reduced_dims
 tse.alternative_experiments
 tse.row_pairs
-tse.col_pairs
+tse.column_pairs
 ```
 
 ### Access specific sets

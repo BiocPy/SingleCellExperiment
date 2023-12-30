@@ -25,6 +25,21 @@ import singlecellexperiment
 sce = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
 ```
 
+    ## output
+    class: SingleCellExperiment
+    dimensions: (20, 30)
+    assays(3): ['array', 'sparse', 'X']
+    row_data columns(5): ['var_cat', 'cat_ordered', 'int64', 'float64', 'uint8']
+    row_names(0):
+    column_data columns(5): ['obs_cat', 'cat_ordered', 'int64', 'float64', 'uint8']
+    column_names(0):
+    main_experiment_name:
+    reduced_dims(0): []
+    alternative_experiments(0): []
+    row_pairs(0): []
+    column_pairs(0): []
+    metadata(2): O_recarray nested
+
 ***OR construct one from scratch***
 
 ```python
