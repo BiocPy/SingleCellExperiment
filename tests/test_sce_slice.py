@@ -1,6 +1,7 @@
 from random import random
 
 import genomicranges
+from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 from summarizedexperiment import SummarizedExperiment
@@ -16,7 +17,7 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-df_gr = pd.DataFrame(
+row_data = BiocFrame(
     {
         "seqnames": [
             "chr1",
@@ -39,7 +40,7 @@ df_gr = pd.DataFrame(
     }
 )
 
-gr = genomicranges.from_pandas(df_gr)
+gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
 col_data = pd.DataFrame(
     {
@@ -50,7 +51,7 @@ col_data = pd.DataFrame(
 
 def test_SCE_slice():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=df_gr, col_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
 
     tse_slice = tse[0:10, 0:3]
@@ -66,14 +67,14 @@ def test_SCE_slice():
 def test_SCE_creation_with_alts_slice():
     trse = SummarizedExperiment(
         assays={"counts": counts.copy()},
-        row_data=df_gr.copy(),
-        col_data=col_data.copy(),
+        row_data=row_data.copy(),
+        column_data=col_data.copy(),
     )
 
     tsce = SingleCellExperiment(
         assays={"counts": counts},
-        row_data=df_gr,
-        col_data=col_data,
+        row_data=row_data,
+        column_data=col_data,
         alternative_experiments={"alt": trse},
     )
 
