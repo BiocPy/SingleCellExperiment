@@ -796,7 +796,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             new_row_ranges = self.row_ranges[slicer.row_indices]
 
         new_reduced_dims = {}
-        for rdim, rmat in self._reduced_dim.items():
+        for rdim, rmat in self._reduced_dims.items():
             if slicer.row_indices != slice(None):
                 rmat = rmat[slicer.row_indices, :]
 
@@ -948,7 +948,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         from mudata import MuData
 
-        main_data, alt_data = self.to_anndata(alts=True)
+        main_data, alt_data = self.to_anndata(include_alternative_experiments=True)
 
         expts = OrderedDict()
         mainName = self.main_experiment_name

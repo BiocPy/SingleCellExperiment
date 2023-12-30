@@ -60,7 +60,7 @@ def test_SCE_to_anndata():
 
     adata = tse.to_anndata()
     assert adata is not None
-    assert isinstance(adata, anndata.AnnData)
+    assert isinstance(adata[0], anndata.AnnData)
 
 
 def test_SCE_fromH5AD():
@@ -122,7 +122,7 @@ def test_SCE_randomAnnData():
     adata.obs_names = [f"obs_{i+1}" for i in range(n)]
     adata.var_names = [f"var_{j+1}" for j in range(d)]
 
-    tse = singlecellexperiment.from_anndata(adata)
+    tse = singlecellexperiment.SingleCellExperiment.from_anndata(adata)
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
