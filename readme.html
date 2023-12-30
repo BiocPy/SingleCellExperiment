@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="SingleCellExperiment" href="index.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>SingleCellExperiment - SingleCellExperiment 0.3.3 documentation</title>
+        <title>SingleCellExperiment - SingleCellExperiment 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.3.3 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.4.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.3.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.4.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -226,6 +226,22 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">singlecellexperiment</span>
 
 <span class="n">sce</span> <span class="o">=</span> <span class="n">singlecellexperiment</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s2">&quot;tests/data/adata.h5ad&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## output
+class: SingleCellExperiment
+dimensions: (20, 30)
+assays(3): [&#39;array&#39;, &#39;sparse&#39;, &#39;X&#39;]
+row_data columns(5): [&#39;var_cat&#39;, &#39;cat_ordered&#39;, &#39;int64&#39;, &#39;float64&#39;, &#39;uint8&#39;]
+row_names(0):
+column_data columns(5): [&#39;obs_cat&#39;, &#39;cat_ordered&#39;, &#39;int64&#39;, &#39;float64&#39;, &#39;uint8&#39;]
+column_names(0):
+main_experiment_name:
+reduced_dims(0): []
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(2): O_recarray nested
 </pre></div>
 </div>
 <p><em><strong>OR construct one from scratch</strong></em></p>
@@ -317,7 +333,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=d5a15cff"></script>
+</div><script src="_static/documentation_options.js?v=6c02275b"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>

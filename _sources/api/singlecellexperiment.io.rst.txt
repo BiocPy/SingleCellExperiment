@@ -4,10 +4,10 @@ singlecellexperiment.io package
 Submodules
 ----------
 
-singlecellexperiment.io.anndata module
---------------------------------------
+singlecellexperiment.io.h5ad module
+-----------------------------------
 
-.. automodule:: singlecellexperiment.io.anndata
+.. automodule:: singlecellexperiment.io.h5ad
    :members:
    :undoc-members:
    :show-inheritance:
