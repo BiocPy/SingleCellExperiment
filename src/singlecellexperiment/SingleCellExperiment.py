@@ -339,7 +339,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output += f"column_data columns({len(self._cols.column_names)}): {ut.print_truncated_list(self._cols.column_names)}\n"
         output += f"column_names({0 if self._column_names is None else len(self._column_names)}): {' ' if self._column_names is None else ut.print_truncated_list(self._column_names)}\n"
 
-        output += f"main_experiment_name: {' ' if self._main_experiment_name is None else self._main_experiment_name})\n"
+        output += f"main_experiment_name: {' ' if self._main_experiment_name is None else self._main_experiment_name}\n"
         output += f"reduced_dims({len(self.reduced_dim_names)}): {ut.print_truncated_list(self.reduced_dim_names)}\n"
         output += f"alternative_experiments({len(self.alternative_experiment_names)}): {ut.print_truncated_list(self.alternative_experiment_names)}\n"
         output += f"row_pairs({len(self.row_pair_names)}): {ut.print_truncated_list(self.row_pair_names)}\n"
