@@ -832,54 +832,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         )
         self.set_column_pairs(pairs, in_place=True)
 
-    ###########################
-    ######>> row_pairs <<######
-    ###########################
-
-    def get_row_pairs(self) -> Dict[str, Any]:
-        """Access row pairings/relationships between features.
-
-        Returns:
-            Access row pairs.
-        """
-        return self._row_pairs
-
-    def set_row_pairs(
-        self, pairs: Dict[str, Any], in_place: bool = False
-    ) -> "SingleCellExperiment":
-        """Replace :py:attr:`~.row_pairs`'s names.
-
-        Args:
-            names:
-                New row pairs.
-
-            in_place:
-                Whether to modify the ``SingleCellExperiment`` in place.
-
-        Returns:
-            A modified ``SingleCellExperiment`` object, either as a copy of the original
-            or as a reference to the (in-place-modified) original.
-        """
-        _validate_pairs(pairs)
-
-        output = self._define_output(in_place)
-        output._row_pairs = pairs
-        return output
-
-    @property
-    def row_pairs(self) -> Dict[str, Any]:
-        """Alias for :py:meth:`~get_row_pairs`."""
-        return self.get_row_pairs()
-
-    @row_pairs.setter
-    def row_pairs(self, pairs: Dict[str, Any]):
-        """Alias for :py:meth:`~set_row_pairs`."""
-        warn(
-            "Setting property 'row_pairs' is an in-place operation, use 'set_row_pairs' instead",
-            UserWarning,
-        )
-        self.set_row_pairs(pairs, in_place=True)
-
     ####################################
     ######>> column_pairs_names <<######
     ####################################
