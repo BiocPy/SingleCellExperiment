@@ -17,6 +17,11 @@ from summarizedexperiment.RangedSummarizedExperiment import (
     RangedSummarizedExperiment,
 )
 
+from ._combineutils import (
+    merge_generic,
+    relaxed_merge_generic,
+    relaxed_merge_numpy_generic,
+)
 from ._ioutils import _to_normal_dict
 
 __author__ = "jkanche"
@@ -1098,6 +1103,8 @@ def combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
     Returns:
         A combined ``SingleCellExperiment``.
     """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
     first = x[0]
     _all_assays = [y.assays for y in x]
     check_assays_are_equal(_all_assays)
@@ -1119,6 +1126,9 @@ def combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
         row_names=_new_row_names,
         column_names=first._column_names,
         metadata=first._metadata,
+        reduced_dims=first._reduced_dims,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=first._alternative_experiments,
     )
 
 
@@ -1132,6 +1142,8 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
     Returns:
         A combined ``SingleCellExperiment``.
     """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
     first = x[0]
     _all_assays = [y.assays for y in x]
     check_assays_are_equal(_all_assays)
@@ -1140,6 +1152,9 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
     _all_cols = [y._cols for y in x]
     _new_cols = ut.combine_rows(*_all_cols)
     _new_col_names = merge_se_colnames(x)
+
+    _new_rdim = merge_generic(x, by="column", attr="reduced_dims")
+    _new_alt_expt = merge_generic(x, by="column", attr="alternative_experiments")
 
     current_class_const = type(first)
     return current_class_const(
@@ -1150,6 +1165,9 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
         row_names=first._row_names,
         column_names=_new_col_names,
         metadata=first._metadata,
+        reduced_dims=_new_rdim,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=_new_alt_expt,
     )
 
 
@@ -1170,6 +1188,8 @@ def relaxed_combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
         the union of all columns. Columns absent in any ``x`` are filled in
         with placeholders consisting of Nones or masked NumPy values.
     """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
     first = x[0]
     _new_assays = relaxed_merge_assays(x, by="row")
 
@@ -1189,6 +1209,9 @@ def relaxed_combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
         row_names=_new_row_names,
         column_names=first._column_names,
         metadata=first._metadata,
+        reduced_dims=first._reduced_dims,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=first._alternative_experiments,
     )
 
 
@@ -1211,12 +1234,19 @@ def relaxed_combine_columns(
         the union of all rows. Rows absent in any ``x`` are filled in
         with placeholders consisting of Nones or masked NumPy values.
     """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
     first = x[0]
     _new_assays = relaxed_merge_assays(x, by="column")
 
     _all_cols = [y._cols for y in x]
     _new_cols = biocframe.relaxed_combine_rows(*_all_cols)
     _new_col_names = merge_se_colnames(x)
+
+    _new_rdim = relaxed_merge_numpy_generic(x, by="column", attr="reduced_dims")
+    _new_alt_expt = relaxed_merge_generic(
+        x, by="column", attr="alternative_experiments"
+    )
 
     current_class_const = type(first)
     return current_class_const(
@@ -1227,6 +1257,9 @@ def relaxed_combine_columns(
         row_names=first._row_names,
         column_names=_new_col_names,
         metadata=first._metadata,
+        reduced_dims=_new_rdim,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=_new_alt_expt,
     )
 
 
