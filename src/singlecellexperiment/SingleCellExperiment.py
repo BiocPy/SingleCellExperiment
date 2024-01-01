@@ -1103,7 +1103,10 @@ def combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
     Returns:
         A combined ``SingleCellExperiment``.
     """
-    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+    warn(
+        "'row_pairs' and 'column_pairs' are currently ignored during this operation.",
+        UserWarning,
+    )
 
     first = x[0]
     _all_assays = [y.assays for y in x]
@@ -1142,7 +1145,10 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
     Returns:
         A combined ``SingleCellExperiment``.
     """
-    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+    warn(
+        "'row_pairs' and 'column_pairs' are currently ignored during this operation.",
+        UserWarning,
+    )
 
     first = x[0]
     _all_assays = [y.assays for y in x]
@@ -1153,8 +1159,23 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
     _new_cols = ut.combine_rows(*_all_cols)
     _new_col_names = merge_se_colnames(x)
 
-    _new_rdim = merge_generic(x, by="column", attr="reduced_dims")
-    _new_alt_expt = merge_generic(x, by="column", attr="alternative_experiments")
+    _new_rdim = None
+    try:
+        _new_rdim = merge_generic(x, by="row", attr="reduced_dims")
+    except Exception as e:
+        warn(
+            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    _new_alt_expt = None
+    try:
+        _new_alt_expt = merge_generic(x, by="column", attr="alternative_experiments")
+    except Exception as e:
+        warn(
+            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            UserWarning,
+        )
 
     current_class_const = type(first)
     return current_class_const(
@@ -1174,9 +1195,9 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
 @ut.relaxed_combine_rows.register(SingleCellExperiment)
 def relaxed_combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
     """A relaxed version of the :py:func:`~biocutils.combine_rows.combine_rows` method for
-    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_rows`` expects that all objects have the same
-    columns, ``relaxed_combine_rows`` allows for different columns. Absent columns in any object are filled in with
-    appropriate placeholder values before combining.
+    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_rows`` expects that all objects have the same columns,
+    ``relaxed_combine_rows`` allows for different columns. Absent columns in any object are filled in with appropriate
+    placeholder values before combining.
 
     Args:
         x:
@@ -1220,9 +1241,9 @@ def relaxed_combine_columns(
     *x: SingleCellExperiment,
 ) -> SingleCellExperiment:
     """A relaxed version of the :py:func:`~biocutils.combine_rows.combine_columns` method for
-    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_columns`` expects that all objects have the same
-    rows, ``relaxed_combine_columns`` allows for different rows. Absent columns in any object are filled in with
-    appropriate placeholder values before combining.
+    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_columns`` expects that all objects have the same rows,
+    ``relaxed_combine_columns`` allows for different rows. Absent columns in any object are filled in with appropriate
+    placeholder values before combining.
 
     Args:
         x:
@@ -1243,10 +1264,27 @@ def relaxed_combine_columns(
     _new_cols = biocframe.relaxed_combine_rows(*_all_cols)
     _new_col_names = merge_se_colnames(x)
 
-    _new_rdim = relaxed_merge_numpy_generic(x, by="column", attr="reduced_dims")
-    _new_alt_expt = relaxed_merge_generic(
-        x, by="column", attr="alternative_experiments"
-    )
+    _new_rdim = None
+    try:
+        _new_rdim = relaxed_merge_numpy_generic(
+            x, by="row", attr="reduced_dims", names_attr="reduced_dim_names"
+        )
+    except Exception as e:
+        warn(
+            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    _new_alt_expt = None
+    try:
+        _new_alt_expt = relaxed_merge_generic(
+            x, by="column", attr="alternative_experiments"
+        )
+    except Exception as e:
+        warn(
+            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            UserWarning,
+        )
 
     current_class_const = type(first)
     return current_class_const(
