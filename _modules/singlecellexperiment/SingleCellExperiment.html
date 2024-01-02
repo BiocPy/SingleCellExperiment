@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.4.0 documentation</title>
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -122,7 +122,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.4.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.4.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -145,7 +145,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.4.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.4.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -213,11 +213,23 @@
 <span class="kn">import</span> <span class="nn">biocframe</span>
 <span class="kn">import</span> <span class="nn">biocutils</span> <span class="k">as</span> <span class="nn">ut</span>
 <span class="kn">from</span> <span class="nn">genomicranges</span> <span class="kn">import</span> <span class="n">GenomicRanges</span>
+<span class="kn">from</span> <span class="nn">summarizedexperiment._combineutils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">check_assays_are_equal</span><span class="p">,</span>
+    <span class="n">merge_assays</span><span class="p">,</span>
+    <span class="n">merge_se_colnames</span><span class="p">,</span>
+    <span class="n">merge_se_rownames</span><span class="p">,</span>
+    <span class="n">relaxed_merge_assays</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">summarizedexperiment.RangedSummarizedExperiment</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">GRangesOrGRangesList</span><span class="p">,</span>
     <span class="n">RangedSummarizedExperiment</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">._combineutils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">merge_generic</span><span class="p">,</span>
+    <span class="n">relaxed_merge_generic</span><span class="p">,</span>
+    <span class="n">relaxed_merge_numpy_generic</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">._ioutils</span> <span class="kn">import</span> <span class="n">_to_normal_dict</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
@@ -1369,6 +1381,241 @@
         <span class="k">return</span> <span class="n">MuData</span><span class="p">(</span><span class="n">expts</span><span class="p">)</span></div>
 </div>
 
+
+
+<span class="c1">############################</span>
+<span class="c1">######&gt;&gt; combine ops &lt;&lt;#####</span>
+<span class="c1">############################</span>
+
+
+<div class="viewcode-block" id="combine_rows">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.combine_rows">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">combine_rows</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine multiple ``SingleCellExperiment`` objects by row.</span>
+
+<span class="sd">    All assays must contain the same assay names. If you need a</span>
+<span class="sd">    flexible combine operation, checkout :py:func:`~relaxed_combine_rows`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A combined ``SingleCellExperiment``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;</span><span class="p">,</span>
+        <span class="ne">UserWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">first</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_all_assays</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">assays</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">check_assays_are_equal</span><span class="p">(</span><span class="n">_all_assays</span><span class="p">)</span>
+    <span class="n">_new_assays</span> <span class="o">=</span> <span class="n">merge_assays</span><span class="p">(</span><span class="n">_all_assays</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+
+    <span class="n">_all_rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_rows</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_rows</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">_all_rows</span><span class="p">)</span>
+    <span class="n">_new_row_names</span> <span class="o">=</span> <span class="n">merge_se_rownames</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">_all_row_ranges</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_row_ranges</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_row_ranges</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">combine_sequences</span><span class="p">(</span><span class="o">*</span><span class="n">_all_row_ranges</span><span class="p">)</span>
+
+    <span class="n">current_class_const</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">current_class_const</span><span class="p">(</span>
+        <span class="n">assays</span><span class="o">=</span><span class="n">_new_assays</span><span class="p">,</span>
+        <span class="n">row_ranges</span><span class="o">=</span><span class="n">_new_row_ranges</span><span class="p">,</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">_new_rows</span><span class="p">,</span>
+        <span class="n">column_data</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_cols</span><span class="p">,</span>
+        <span class="n">row_names</span><span class="o">=</span><span class="n">_new_row_names</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_column_names</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
+        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">,</span>
+        <span class="n">main_experiment_name</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
+        <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="combine_columns">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.combine_columns">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">combine_columns</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">combine_columns</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine multiple ``SingleCellExperiment`` objects by column.</span>
+
+<span class="sd">    All assays must contain the same assay names. If you need a</span>
+<span class="sd">    flexible combine operation, checkout :py:func:`~relaxed_combine_columns`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A combined ``SingleCellExperiment``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warn</span><span class="p">(</span>
+        <span class="s2">&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;</span><span class="p">,</span>
+        <span class="ne">UserWarning</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">first</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_all_assays</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">assays</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">check_assays_are_equal</span><span class="p">(</span><span class="n">_all_assays</span><span class="p">)</span>
+    <span class="n">_new_assays</span> <span class="o">=</span> <span class="n">merge_assays</span><span class="p">(</span><span class="n">_all_assays</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;column&quot;</span><span class="p">)</span>
+
+    <span class="n">_all_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_cols</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_cols</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">_all_cols</span><span class="p">)</span>
+    <span class="n">_new_col_names</span> <span class="o">=</span> <span class="n">merge_se_colnames</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">_new_rdim</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_new_rdim</span> <span class="o">=</span> <span class="n">merge_generic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;reduced_dims&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot combine &#39;reduced_dimensions&#39; across experiments, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">_new_alt_expt</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_new_alt_expt</span> <span class="o">=</span> <span class="n">merge_generic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;alternative_experiments&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot combine &#39;alternative_experiments&#39; across experiments, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">current_class_const</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">current_class_const</span><span class="p">(</span>
+        <span class="n">assays</span><span class="o">=</span><span class="n">_new_assays</span><span class="p">,</span>
+        <span class="n">row_ranges</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_row_ranges</span><span class="p">,</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_rows</span><span class="p">,</span>
+        <span class="n">column_data</span><span class="o">=</span><span class="n">_new_cols</span><span class="p">,</span>
+        <span class="n">row_names</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_row_names</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="n">_new_col_names</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
+        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">_new_rdim</span><span class="p">,</span>
+        <span class="n">main_experiment_name</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
+        <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">_new_alt_expt</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="relaxed_combine_rows">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">relaxed_combine_rows</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">relaxed_combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A relaxed version of the :py:func:`~biocutils.combine_rows.combine_rows` method for</span>
+<span class="sd">    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_rows`` expects that all objects have the same columns,</span>
+<span class="sd">    ``relaxed_combine_rows`` allows for different columns. Absent columns in any object are filled in with appropriate</span>
+<span class="sd">    placeholder values before combining.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x:</span>
+<span class="sd">            One or more ``SingleCellExperiment`` objects, possibly with differences in the</span>
+<span class="sd">            number and identity of their columns.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A ``SingleCellExperiment`` that combines all ``experiments`` along their rows and contains</span>
+<span class="sd">        the union of all columns. Columns absent in any ``x`` are filled in</span>
+<span class="sd">        with placeholders consisting of Nones or masked NumPy values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;</span><span class="p">)</span>
+
+    <span class="n">first</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_new_assays</span> <span class="o">=</span> <span class="n">relaxed_merge_assays</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">)</span>
+
+    <span class="n">_all_rows</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_rows</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_rows</span> <span class="o">=</span> <span class="n">biocframe</span><span class="o">.</span><span class="n">relaxed_combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">_all_rows</span><span class="p">)</span>
+    <span class="n">_new_row_names</span> <span class="o">=</span> <span class="n">merge_se_rownames</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">_all_row_ranges</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_row_ranges</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_row_ranges</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">combine_sequences</span><span class="p">(</span><span class="o">*</span><span class="n">_all_row_ranges</span><span class="p">)</span>
+
+    <span class="n">current_class_const</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">current_class_const</span><span class="p">(</span>
+        <span class="n">assays</span><span class="o">=</span><span class="n">_new_assays</span><span class="p">,</span>
+        <span class="n">row_ranges</span><span class="o">=</span><span class="n">_new_row_ranges</span><span class="p">,</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">_new_rows</span><span class="p">,</span>
+        <span class="n">column_data</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_cols</span><span class="p">,</span>
+        <span class="n">row_names</span><span class="o">=</span><span class="n">_new_row_names</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_column_names</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
+        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">,</span>
+        <span class="n">main_experiment_name</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
+        <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="relaxed_combine_columns">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.relaxed_combine_columns">[docs]</a>
+<span class="nd">@ut</span><span class="o">.</span><span class="n">relaxed_combine_columns</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">relaxed_combine_columns</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A relaxed version of the :py:func:`~biocutils.combine_rows.combine_columns` method for</span>
+<span class="sd">    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_columns`` expects that all objects have the same rows,</span>
+<span class="sd">    ``relaxed_combine_columns`` allows for different rows. Absent columns in any object are filled in with appropriate</span>
+<span class="sd">    placeholder values before combining.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x:</span>
+<span class="sd">            One or more ``SingleCellExperiment`` objects, possibly with differences in the</span>
+<span class="sd">            number and identity of their rows.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A ``SingleCellExperiment`` that combines all ``experiments`` along their columns and contains</span>
+<span class="sd">        the union of all rows. Rows absent in any ``x`` are filled in</span>
+<span class="sd">        with placeholders consisting of Nones or masked NumPy values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;</span><span class="p">)</span>
+
+    <span class="n">first</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_new_assays</span> <span class="o">=</span> <span class="n">relaxed_merge_assays</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;column&quot;</span><span class="p">)</span>
+
+    <span class="n">_all_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">_cols</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+    <span class="n">_new_cols</span> <span class="o">=</span> <span class="n">biocframe</span><span class="o">.</span><span class="n">relaxed_combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">_all_cols</span><span class="p">)</span>
+    <span class="n">_new_col_names</span> <span class="o">=</span> <span class="n">merge_se_colnames</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">_new_rdim</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_new_rdim</span> <span class="o">=</span> <span class="n">relaxed_merge_numpy_generic</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;row&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;reduced_dims&quot;</span><span class="p">,</span> <span class="n">names_attr</span><span class="o">=</span><span class="s2">&quot;reduced_dim_names&quot;</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot combine &#39;reduced_dimensions&#39; across experiments, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">_new_alt_expt</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_new_alt_expt</span> <span class="o">=</span> <span class="n">relaxed_merge_generic</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="s2">&quot;column&quot;</span><span class="p">,</span> <span class="n">attr</span><span class="o">=</span><span class="s2">&quot;alternative_experiments&quot;</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Cannot combine &#39;alternative_experiments&#39; across experiments, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">current_class_const</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">first</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">current_class_const</span><span class="p">(</span>
+        <span class="n">assays</span><span class="o">=</span><span class="n">_new_assays</span><span class="p">,</span>
+        <span class="n">row_ranges</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_row_ranges</span><span class="p">,</span>
+        <span class="n">row_data</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_rows</span><span class="p">,</span>
+        <span class="n">column_data</span><span class="o">=</span><span class="n">_new_cols</span><span class="p">,</span>
+        <span class="n">row_names</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_row_names</span><span class="p">,</span>
+        <span class="n">column_names</span><span class="o">=</span><span class="n">_new_col_names</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
+        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">_new_rdim</span><span class="p">,</span>
+        <span class="n">main_experiment_name</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
+        <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">_new_alt_expt</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="nd">@ut</span><span class="o">.</span><span class="n">extract_row_names</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_rownames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">get_row_names</span><span class="p">()</span>
+
+
+<span class="nd">@ut</span><span class="o">.</span><span class="n">extract_column_names</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_colnames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">()</span>
 </pre></div>
         </article>
       </div>
@@ -1401,7 +1648,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=6c02275b"></script>
+</div><script src="../../_static/documentation_options.js?v=c87aa342"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>

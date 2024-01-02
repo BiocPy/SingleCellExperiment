@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="singlecellexperiment.io package" href="singlecellexperiment.io.html" /><link rel="prev" title="singlecellexperiment" href="modules.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>singlecellexperiment package - SingleCellExperiment 0.4.0 documentation</title>
+        <title>singlecellexperiment package - SingleCellExperiment 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.4.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.4.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.4.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.4.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -246,7 +246,7 @@ embeddings and alternative experiments that share the same cells.</p>
 not contain rownames and colnames. Hence, these matrices cannot be directly used as
 values in assays or alternative experiments. We strictly enforce type checks in these cases.</p>
 <p>To relax these restrictions for alternative experiments, set
-<a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.type_check_alternative_experiments" title="(in SingleCellExperiment v0.3.3)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">type_check_alternative_experiments</span></code></a> to <cite>False</cite>.</p>
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">type_check_alternative_experiments</span></code> to <cite>False</cite>.</p>
 <p>If you are using the alternative experiment slot, the number of cells must match the
 parent experiment. Otherwise, these cells do not share the same sample or annotations
 and cannot be set in alternative experiments!</p>
@@ -455,7 +455,7 @@ the embedding.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_slice">
 <span class="sig-name descname"><span class="pre">get_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Sequence" title="(in Python v3.9)"><span class="pre">Sequence</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Sequence" title="(in Python v3.9)"><span class="pre">Sequence</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_slice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_slice" title="Link to this definition">#</a></dt>
-<dd><p>Alias for <a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__getitem__" title="(in SingleCellExperiment v0.3.3)"><code class="xref py py-attr docutils literal notranslate"><span class="pre">__getitem__</span></code></a>, for back-compatibility.</p>
+<dd><p>Alias for <code class="xref py py-attr docutils literal notranslate"><span class="pre">__getitem__</span></code>, for back-compatibility.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -699,6 +699,72 @@ or as a reference to the (in-place-modified) original.</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.combine_columns">
+<span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">combine_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#combine_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.combine_columns" title="Link to this definition">#</a></dt>
+<dd><p>Combine multiple <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects by column.</p>
+<p>All assays must contain the same assay names. If you need a
+flexible combine operation, checkout <a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_columns" title="singlecellexperiment.SingleCellExperiment.relaxed_combine_columns"><code class="xref py py-func docutils literal notranslate"><span class="pre">relaxed_combine_columns()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A combined <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.combine_rows">
+<span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">combine_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#combine_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.combine_rows" title="Link to this definition">#</a></dt>
+<dd><p>Combine multiple <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects by row.</p>
+<p>All assays must contain the same assay names. If you need a
+flexible combine operation, checkout <a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows" title="singlecellexperiment.SingleCellExperiment.relaxed_combine_rows"><code class="xref py py-func docutils literal notranslate"><span class="pre">relaxed_combine_rows()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A combined <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.relaxed_combine_columns">
+<span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">relaxed_combine_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#relaxed_combine_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_columns" title="Link to this definition">#</a></dt>
+<dd><p>A relaxed version of the <code class="xref py py-func docutils literal notranslate"><span class="pre">combine_columns()</span></code> method for
+<a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a> objects.  Whereas <code class="docutils literal notranslate"><span class="pre">combine_columns</span></code> expects that all objects have the same rows,
+<code class="docutils literal notranslate"><span class="pre">relaxed_combine_columns</span></code> allows for different rows. Absent columns in any object are filled in with appropriate
+placeholder values before combining.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – One or more <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects, possibly with differences in the
+number and identity of their rows.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> that combines all <code class="docutils literal notranslate"><span class="pre">experiments</span></code> along their columns and contains
+the union of all rows. Rows absent in any <code class="docutils literal notranslate"><span class="pre">x</span></code> are filled in
+with placeholders consisting of Nones or masked NumPy values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.relaxed_combine_rows">
+<span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">relaxed_combine_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#relaxed_combine_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows" title="Link to this definition">#</a></dt>
+<dd><p>A relaxed version of the <code class="xref py py-func docutils literal notranslate"><span class="pre">combine_rows()</span></code> method for
+<a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a> objects.  Whereas <code class="docutils literal notranslate"><span class="pre">combine_rows</span></code> expects that all objects have the same columns,
+<code class="docutils literal notranslate"><span class="pre">relaxed_combine_rows</span></code> allows for different columns. Absent columns in any object are filled in with appropriate
+placeholder values before combining.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x</strong> – One or more <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects, possibly with differences in the
+number and identity of their columns.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> that combines all <code class="docutils literal notranslate"><span class="pre">experiments</span></code> along their rows and contains
+the union of all columns. Columns absent in any <code class="docutils literal notranslate"><span class="pre">x</span></code> are filled in
+with placeholders consisting of Nones or masked NumPy values.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-singlecellexperiment">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-singlecellexperiment" title="Link to this heading">#</a></h2>
@@ -804,6 +870,10 @@ or as a reference to the (in-place-modified) original.</p>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_mudata"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_mudata()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.combine_rows"><code class="docutils literal notranslate"><span class="pre">combine_rows()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_columns"><code class="docutils literal notranslate"><span class="pre">relaxed_combine_columns()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows"><code class="docutils literal notranslate"><span class="pre">relaxed_combine_rows()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-singlecellexperiment">Module contents</a></li>
@@ -818,7 +888,7 @@ or as a reference to the (in-place-modified) original.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=6c02275b"></script>
+</div><script src="../_static/documentation_options.js?v=c87aa342"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
