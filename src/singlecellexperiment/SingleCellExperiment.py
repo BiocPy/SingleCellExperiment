@@ -5,11 +5,23 @@ from warnings import warn
 import biocframe
 import biocutils as ut
 from genomicranges import GenomicRanges
+from summarizedexperiment._combineutils import (
+    check_assays_are_equal,
+    merge_assays,
+    merge_se_colnames,
+    merge_se_rownames,
+    relaxed_merge_assays,
+)
 from summarizedexperiment.RangedSummarizedExperiment import (
     GRangesOrGRangesList,
     RangedSummarizedExperiment,
 )
 
+from ._combineutils import (
+    merge_generic,
+    relaxed_merge_generic,
+    relaxed_merge_numpy_generic,
+)
 from ._ioutils import _to_normal_dict
 
 __author__ = "jkanche"
@@ -1074,3 +1086,226 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 expts[str(exptName)] = expt
 
         return MuData(expts)
+
+
+############################
+######>> combine ops <<#####
+############################
+
+
+@ut.combine_rows.register(SingleCellExperiment)
+def combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
+    """Combine multiple ``SingleCellExperiment`` objects by row.
+
+    All assays must contain the same assay names. If you need a
+    flexible combine operation, checkout :py:func:`~relaxed_combine_rows`.
+
+    Returns:
+        A combined ``SingleCellExperiment``.
+    """
+    warn(
+        "'row_pairs' and 'column_pairs' are currently ignored during this operation.",
+        UserWarning,
+    )
+
+    first = x[0]
+    _all_assays = [y.assays for y in x]
+    check_assays_are_equal(_all_assays)
+    _new_assays = merge_assays(_all_assays, by="row")
+
+    _all_rows = [y._rows for y in x]
+    _new_rows = ut.combine_rows(*_all_rows)
+    _new_row_names = merge_se_rownames(x)
+
+    _all_row_ranges = [y._row_ranges for y in x]
+    _new_row_ranges = ut.combine_sequences(*_all_row_ranges)
+
+    current_class_const = type(first)
+    return current_class_const(
+        assays=_new_assays,
+        row_ranges=_new_row_ranges,
+        row_data=_new_rows,
+        column_data=first._cols,
+        row_names=_new_row_names,
+        column_names=first._column_names,
+        metadata=first._metadata,
+        reduced_dims=first._reduced_dims,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=first._alternative_experiments,
+    )
+
+
+@ut.combine_columns.register(SingleCellExperiment)
+def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
+    """Combine multiple ``SingleCellExperiment`` objects by column.
+
+    All assays must contain the same assay names. If you need a
+    flexible combine operation, checkout :py:func:`~relaxed_combine_columns`.
+
+    Returns:
+        A combined ``SingleCellExperiment``.
+    """
+    warn(
+        "'row_pairs' and 'column_pairs' are currently ignored during this operation.",
+        UserWarning,
+    )
+
+    first = x[0]
+    _all_assays = [y.assays for y in x]
+    check_assays_are_equal(_all_assays)
+    _new_assays = merge_assays(_all_assays, by="column")
+
+    _all_cols = [y._cols for y in x]
+    _new_cols = ut.combine_rows(*_all_cols)
+    _new_col_names = merge_se_colnames(x)
+
+    _new_rdim = None
+    try:
+        _new_rdim = merge_generic(x, by="row", attr="reduced_dims")
+    except Exception as e:
+        warn(
+            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    _new_alt_expt = None
+    try:
+        _new_alt_expt = merge_generic(x, by="column", attr="alternative_experiments")
+    except Exception as e:
+        warn(
+            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    current_class_const = type(first)
+    return current_class_const(
+        assays=_new_assays,
+        row_ranges=first._row_ranges,
+        row_data=first._rows,
+        column_data=_new_cols,
+        row_names=first._row_names,
+        column_names=_new_col_names,
+        metadata=first._metadata,
+        reduced_dims=_new_rdim,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=_new_alt_expt,
+    )
+
+
+@ut.relaxed_combine_rows.register(SingleCellExperiment)
+def relaxed_combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
+    """A relaxed version of the :py:func:`~biocutils.combine_rows.combine_rows` method for
+    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_rows`` expects that all objects have the same columns,
+    ``relaxed_combine_rows`` allows for different columns. Absent columns in any object are filled in with appropriate
+    placeholder values before combining.
+
+    Args:
+        x:
+            One or more ``SingleCellExperiment`` objects, possibly with differences in the
+            number and identity of their columns.
+
+    Returns:
+        A ``SingleCellExperiment`` that combines all ``experiments`` along their rows and contains
+        the union of all columns. Columns absent in any ``x`` are filled in
+        with placeholders consisting of Nones or masked NumPy values.
+    """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
+    first = x[0]
+    _new_assays = relaxed_merge_assays(x, by="row")
+
+    _all_rows = [y._rows for y in x]
+    _new_rows = biocframe.relaxed_combine_rows(*_all_rows)
+    _new_row_names = merge_se_rownames(x)
+
+    _all_row_ranges = [y._row_ranges for y in x]
+    _new_row_ranges = ut.combine_sequences(*_all_row_ranges)
+
+    current_class_const = type(first)
+    return current_class_const(
+        assays=_new_assays,
+        row_ranges=_new_row_ranges,
+        row_data=_new_rows,
+        column_data=first._cols,
+        row_names=_new_row_names,
+        column_names=first._column_names,
+        metadata=first._metadata,
+        reduced_dims=first._reduced_dims,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=first._alternative_experiments,
+    )
+
+
+@ut.relaxed_combine_columns.register(SingleCellExperiment)
+def relaxed_combine_columns(
+    *x: SingleCellExperiment,
+) -> SingleCellExperiment:
+    """A relaxed version of the :py:func:`~biocutils.combine_rows.combine_columns` method for
+    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_columns`` expects that all objects have the same rows,
+    ``relaxed_combine_columns`` allows for different rows. Absent columns in any object are filled in with appropriate
+    placeholder values before combining.
+
+    Args:
+        x:
+            One or more ``SingleCellExperiment`` objects, possibly with differences in the
+            number and identity of their rows.
+
+    Returns:
+        A ``SingleCellExperiment`` that combines all ``experiments`` along their columns and contains
+        the union of all rows. Rows absent in any ``x`` are filled in
+        with placeholders consisting of Nones or masked NumPy values.
+    """
+    warn("'row_pairs' and 'column_pairs' are currently ignored during this operation.")
+
+    first = x[0]
+    _new_assays = relaxed_merge_assays(x, by="column")
+
+    _all_cols = [y._cols for y in x]
+    _new_cols = biocframe.relaxed_combine_rows(*_all_cols)
+    _new_col_names = merge_se_colnames(x)
+
+    _new_rdim = None
+    try:
+        _new_rdim = relaxed_merge_numpy_generic(
+            x, by="row", attr="reduced_dims", names_attr="reduced_dim_names"
+        )
+    except Exception as e:
+        warn(
+            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    _new_alt_expt = None
+    try:
+        _new_alt_expt = relaxed_merge_generic(
+            x, by="column", attr="alternative_experiments"
+        )
+    except Exception as e:
+        warn(
+            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            UserWarning,
+        )
+
+    current_class_const = type(first)
+    return current_class_const(
+        assays=_new_assays,
+        row_ranges=first._row_ranges,
+        row_data=first._rows,
+        column_data=_new_cols,
+        row_names=first._row_names,
+        column_names=_new_col_names,
+        metadata=first._metadata,
+        reduced_dims=_new_rdim,
+        main_experiment_name=first._main_experiment_name,
+        alternative_experiments=_new_alt_expt,
+    )
+
+
+@ut.extract_row_names.register(SingleCellExperiment)
+def _rownames_rse(x: SingleCellExperiment):
+    return x.get_row_names()
+
+
+@ut.extract_column_names.register(SingleCellExperiment)
+def _colnames_rse(x: SingleCellExperiment):
+    return x.get_column_names()
