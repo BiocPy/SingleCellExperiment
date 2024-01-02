@@ -19,7 +19,9 @@ __license__ = "MIT"
 
 
 def test_combine_columns(experiments):
-    combined = biocutils.combine_columns(experiments.se_unnamed, experiments.se_unnamed_2)
+    combined = biocutils.combine_columns(
+        experiments.se_unnamed, experiments.se_unnamed_2
+    )
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     assert len(combined.alternative_experiments) == 0
@@ -46,8 +48,11 @@ def test_relaxed_combine_columns(experiments):
     assert len(combined.alternative_experiments) == 0
     assert len(combined.row_data["A"]) == 100
 
+
 def test_combine_with_alts(experiments):
-    combined = biocutils.combine_columns(experiments.se_with_alts1, experiments.se_with_alts2)
+    combined = biocutils.combine_columns(
+        experiments.se_with_alts1, experiments.se_with_alts2
+    )
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     print(combined)

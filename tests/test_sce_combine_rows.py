@@ -46,11 +46,14 @@ def test_relaxed_combine_rows(experiments):
     assert len(combined.alternative_experiments) == 0
     assert len(combined.row_data["A"]) == 200
 
+
 def test_combine_with_alts(experiments):
-    combined = biocutils.combine_rows(experiments.se_with_alts1, experiments.se_with_alts2)
+    combined = biocutils.combine_rows(
+        experiments.se_with_alts1, experiments.se_with_alts2
+    )
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     assert len(combined.alternative_experiments) == 1
     assert len(combined.reduced_dim_names) == 1
     assert combined.reduced_dim_names == ["PCA"]
-    assert len(combined.row_data["seqnames"]) == 6 
+    assert len(combined.row_data["seqnames"]) == 6
