@@ -1,6 +1,16 @@
 # Changelog
 
-## Version 0.3.0 (development)
+## Version 0.4.0 to 0.4.1
+
+This is a complete rewrite of the package, following the functional paradigm from our [developer notes](https://github.com/BiocPy/developer_guide#use-functional-discipline).
+
+- Migrates package to the newly udpated SE/RSE classes.
+- Implement combine generics on SCE.
+- Reduce dependency on a number of external packages.
+- Update docstrings, tests
+
+
+## Version 0.3.0
 
 This release migrates the package to a more palatable Google's Python style guide. A major modification to the package is with casing, all `camelCase` properties, methods, functions and parameters are now `snake_case`.
 
