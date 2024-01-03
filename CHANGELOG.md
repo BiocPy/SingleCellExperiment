@@ -9,7 +9,6 @@ This is a complete rewrite of the package, following the functional paradigm fro
 - Reduce dependency on a number of external packages.
 - Update docstrings, tests
 
-
 ## Version 0.3.0
 
 This release migrates the package to a more palatable Google's Python style guide. A major modification to the package is with casing, all `camelCase` properties, methods, functions and parameters are now `snake_case`.
