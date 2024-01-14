@@ -51,7 +51,8 @@ col_data = pd.DataFrame(
 
 def test_SCE_slice():
     tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
+        assays={"counts": counts}, row_data=row_data, column_data=col_data,
+        reduced_dims={"random_embeds": np.random.rand(ncols, 5)}
     )
 
     tse_slice = tse[0:10, 0:3]
