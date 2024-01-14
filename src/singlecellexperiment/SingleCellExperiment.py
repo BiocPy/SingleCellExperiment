@@ -921,18 +921,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         new_reduced_dims = {}
         for rdim, rmat in self._reduced_dims.items():
-            if slicer.row_indices != slice(None):
-                rmat = rmat[slicer.row_indices, :]
-
             if slicer.col_indices != slice(None):
-                rmat = rmat[:, slicer.col_indices]
+                rmat = rmat[slicer.col_indices, :]
 
             new_reduced_dims[rdim] = rmat
 
         new_alt_expts = {}
         for altname, altexpt in self._alternative_experiments.items():
             if slicer.row_indices != slice(None):
-                altexpt = altexpt[rows, :]
+                altexpt = altexpt[slicer.row_indices, :]
 
             if slicer.col_indices != slice(None):
                 altexpt = altexpt[:, slicer.col_indices]
@@ -944,16 +941,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if slicer.row_indices != slice(None):
                 rpair = rpair[slicer.row_indices, :]
 
-            if slicer.col_indices != slice(None):
-                rpair = rpair[:, slicer.col_indices]
-
             new_row_pairs[rname] = rpair
 
         new_col_pairs = {}
         for cname, cpair in self._column_pairs.items():
-            if slicer.row_indices != slice(None):
-                cpair = cpair[slicer.row_indices, :]
-
             if slicer.col_indices != slice(None):
                 cpair = cpair[:, slicer.col_indices]
 
