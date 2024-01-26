@@ -490,7 +490,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if dimension < 0:
                 raise IndexError("Index cannot be negative.")
 
-            if dimension > len(self.assay_names):
+            if dimension > len(self.reduced_dim_names):
                 raise IndexError("Index greater than the number of reduced dimensions.")
 
             return self._reduced_dims[self.reduced_dim_names[dimension]]
@@ -680,15 +680,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
 
-            if name > len(self.assay_names):
-                raise IndexError("Index greater than the number of reduced dimensions.")
+            if name > len(self.alternative_experiment_names):
+                raise IndexError(
+                    "Index greater than the number of alternative experiments."
+                )
 
-            return self.alternative_experiments[self.alternative_experiment_names[name]]
+            return self._alternative_experiments[
+                self.alternative_experiment_names[name]
+            ]
         elif isinstance(name, str):
             if name not in self.reduced_dim:
-                raise AttributeError(f"Reduced dimension: {name} does not exist.")
+                raise AttributeError(f"Alternative experiment: {name} does not exist.")
 
-            return self.alternative_experiments[name]
+            return self._alternative_experiments[name]
 
         raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
 
@@ -917,7 +921,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         new_row_ranges = None
         if slicer.row_indices != slice(None):
-            new_row_ranges = self.row_ranges[slicer.row_indices]
+            new_row_ranges = self._row_ranges[slicer.row_indices]
 
         new_reduced_dims = {}
         for rdim, rmat in self._reduced_dims.items():
