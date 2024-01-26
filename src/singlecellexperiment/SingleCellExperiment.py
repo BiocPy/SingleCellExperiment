@@ -689,7 +689,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 self.alternative_experiment_names[name]
             ]
         elif isinstance(name, str):
-            if name not in self.reduced_dim:
+            if name not in self._alternative_experiments:
                 raise AttributeError(f"Alternative experiment: {name} does not exist.")
 
             return self._alternative_experiments[name]
