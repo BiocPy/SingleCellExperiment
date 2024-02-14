@@ -61,6 +61,8 @@ def test_SCE_to_anndata():
     adata = tse.to_anndata()
     assert adata is not None
     assert isinstance(adata[0], anndata.AnnData)
+    assert adata[0].shape[0] == counts.shape[1]
+    assert adata[0].shape[1] == counts.shape[0]
 
 
 def test_SCE_fromH5AD():
