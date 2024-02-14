@@ -4,7 +4,6 @@ from warnings import warn
 
 import biocframe
 import biocutils as ut
-from genomicranges import GenomicRanges
 from summarizedexperiment._combineutils import (
     check_assays_are_equal,
     merge_assays,
