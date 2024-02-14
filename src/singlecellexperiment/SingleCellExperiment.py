@@ -4,7 +4,6 @@ from warnings import warn
 
 import biocframe
 import biocutils as ut
-from genomicranges import GenomicRanges
 from summarizedexperiment._combineutils import (
     check_assays_are_equal,
     merge_assays,
@@ -984,25 +983,16 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Returns:
             A tuple with ``AnnData`` main experiment and a list of alternative experiments.
         """
-        from anndata import AnnData
+        obj = super().to_anndata()
 
-        layers = OrderedDict()
-        for asy, mat in self.assays.items():
-            layers[asy] = mat.transpose()
+        if self.reduced_dims is not None:
+            obj.obsm = self.reduced_dims
 
-        trows = self.row_data
-        if isinstance(self.row_data, GenomicRanges):
-            trows = self.row_data.to_pandas()
+        if self.row_pairs is not None:
+            obj.varp = self.row_pairs
 
-        obj = AnnData(
-            obs=self.col_data,
-            var=trows,
-            uns=self.metadata,
-            obsm=self.reduced_dims,
-            layers=layers,
-            varp=self.row_pairs,
-            obsp=self.column_pairs,
-        )
+        if self.column_pairs is not None:
+            obj.obsp = self.column_pairs
 
         if include_alternative_experiments is True:
             adatas = None
@@ -1013,8 +1003,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                     alternative_experiment,
                 ) in self.alternative_experiments.items():
                     adatas[alt_name] = alternative_experiment.to_anndata()
-
-            return obj, adatas
 
         return obj, None
 
