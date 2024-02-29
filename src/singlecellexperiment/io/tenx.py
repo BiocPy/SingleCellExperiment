@@ -58,7 +58,7 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     """
 
     import h5py
-    from scipy.sparse import csc_matrix, csr_matrix
+    from hdf5array import Hdf5CompressedSparseMatrix
 
     h5 = h5py.File(path, mode="r")
 
@@ -68,16 +68,11 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     groups = h5["matrix"].keys()
 
     # read the matrix
-    data = h5["matrix"]["data"][:]
-    indices = h5["matrix"]["indices"][:]
-    indptr = h5["matrix"]["indptr"][:]
     shape = tuple(h5["matrix"]["shape"][:])
 
-    counts = None
-    if len(indptr) == shape[1] + 1:
-        counts = csc_matrix((data, indices, indptr), shape=shape)
-    else:
-        counts = csr_matrix((data, indices, indptr), shape=shape)
+    counts = Hdf5CompressedSparseMatrix(
+        path=path, group_name="matrix", by_column=True, shape=shape
+    )
 
     # read features
     features = None
@@ -105,6 +100,8 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
         barcodes = {}
         barcodes["barcodes"] = [x.decode("ascii") for x in h5["matrix"]["barcodes"]]
         barcodes = BiocFrame(barcodes, number_of_rows=counts.shape[1])
+
+    h5.close()
 
     return SingleCellExperiment(
         assays={"counts": counts}, row_data=features, column_data=barcodes
