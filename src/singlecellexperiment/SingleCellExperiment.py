@@ -1030,12 +1030,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         obsm = _to_normal_dict(input.obsm)
         varp = _to_normal_dict(input.varp)
         obsp = _to_normal_dict(input.obsp)
+        _metadata = {"uns": input.uns} if input.uns is not None else None
 
         return cls(
             assays=layers,
             row_data=biocframe.BiocFrame.from_pandas(input.var),
             column_data=biocframe.BiocFrame.from_pandas(input.obs),
-            metadata={"uns": input.uns},
+            metadata=_metadata,
             reduced_dims=obsm,
             row_pairs=varp,
             column_pairs=obsp,
