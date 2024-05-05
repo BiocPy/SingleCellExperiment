@@ -129,7 +129,7 @@ def test_SCE_randomAnnData():
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
 
-    # to avoid unknown mapping types; 
+    # to avoid unknown mapping types;
     # ran into an issue with anndata.compat._overloaded_dict.OverloadedDict when loading a h5ad
     adata.uns = {".internal": [f"obs_{i+1}" for i in range(n)]}
     tse = singlecellexperiment.SingleCellExperiment.from_anndata(adata)
