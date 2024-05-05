@@ -1015,8 +1015,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 Input data.
 
         Returns:
-            A ``SingleCellExperiment`` object. If the input contains any data 
-            in the ``uns`` attribute, the `metadata` slot of the ``SingleCellExperiment`` 
+            A ``SingleCellExperiment`` object. If the input contains any data
+            in the ``uns`` attribute, the `metadata` slot of the ``SingleCellExperiment``
             will contain a key ``uns``.
         """
 
