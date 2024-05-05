@@ -30,9 +30,7 @@ __license__ = "MIT"
 
 def _validate_reduced_dims(reduced_dims, shape):
     if reduced_dims is None:
-        raise ValueError(
-            "'reduced_dims' cannot be `None`, must be assigned to an empty dictionary."
-        )
+        raise ValueError("'reduced_dims' cannot be `None`, must be assigned to an empty dictionary.")
 
     if not isinstance(reduced_dims, dict):
         raise TypeError("'reduced_dims' is not a dictionary.")
@@ -40,21 +38,16 @@ def _validate_reduced_dims(reduced_dims, shape):
     for rdname, mat in reduced_dims.items():
         if not hasattr(mat, "shape"):
             raise TypeError(
-                f"Reduced dimension: '{rdname}' must be a matrix-like object."
-                "Does not contain a `shape` property."
+                f"Reduced dimension: '{rdname}' must be a matrix-like object." "Does not contain a `shape` property."
             )
 
         if shape[1] != mat.shape[0]:
-            raise ValueError(
-                f"Reduced dimension: '{rdname}' does not contain embeddings for all cells."
-            )
+            raise ValueError(f"Reduced dimension: '{rdname}' does not contain embeddings for all cells.")
 
 
 def _validate_alternative_experiments(alternative_experiments, shape):
     if alternative_experiments is None:
-        raise ValueError(
-            "'alternative_experiments' cannot be `None`, must be assigned to an empty dictionary."
-        )
+        raise ValueError("'alternative_experiments' cannot be `None`, must be assigned to an empty dictionary.")
 
     if not isinstance(alternative_experiments, dict):
         raise TypeError("'alternative_experiments' is not a dictionary.")
@@ -67,10 +60,7 @@ def _validate_alternative_experiments(alternative_experiments, shape):
             )
 
         if shape[1] != alternative_experiment.shape[1]:
-            raise ValueError(
-                f"Alternative experiment: '{alt_name}' does not contain same number of"
-                " cells."
-            )
+            raise ValueError(f"Alternative experiment: '{alt_name}' does not contain same number of" " cells.")
 
 
 def _validate_pairs(pairs):
@@ -204,18 +194,14 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         self._reduced_dims = reduced_dims if reduced_dims is not None else {}
 
-        self._alternative_experiments = (
-            alternative_experiments if alternative_experiments is not None else {}
-        )
+        self._alternative_experiments = alternative_experiments if alternative_experiments is not None else {}
 
         self._row_pairs = row_pairs if row_pairs is not None else {}
         self._column_pairs = column_pairs if column_pairs is not None else {}
 
         if validate:
             _validate_reduced_dims(self._reduced_dims, self._shape)
-            _validate_alternative_experiments(
-                self._alternative_experiments, self._shape
-            )
+            _validate_alternative_experiments(self._alternative_experiments, self._shape)
             _validate_pairs(self._row_pairs)
             _validate_pairs(self._column_pairs)
 
@@ -309,14 +295,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             output += ", row_ranges=" + self._row_ranges.__repr__()
 
         if self._alternative_experiments is not None:
-            output += ", alternative_experiments=" + ut.print_truncated_list(
-                self.alternative_experiment_names
-            )
+            output += ", alternative_experiments=" + ut.print_truncated_list(self.alternative_experiment_names)
 
         if self._reduced_dims is not None:
-            output += ", reduced_dims=" + ut.print_truncated_list(
-                self.reduced_dim_names
-            )
+            output += ", reduced_dims=" + ut.print_truncated_list(self.reduced_dim_names)
 
         if self._main_experiment_name is not None:
             output += ", main_experiment_name=" + self._main_experiment_name
@@ -344,10 +326,14 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         output += f"assays({len(self.assay_names)}): {ut.print_truncated_list(self.assay_names)}\n"
 
-        output += f"row_data columns({len(self._rows.column_names)}): {ut.print_truncated_list(self._rows.column_names)}\n"
+        output += (
+            f"row_data columns({len(self._rows.column_names)}): {ut.print_truncated_list(self._rows.column_names)}\n"
+        )
         output += f"row_names({0 if self._row_names is None else len(self._row_names)}): {' ' if self._row_names is None else ut.print_truncated_list(self._row_names)}\n"
 
-        output += f"column_data columns({len(self._cols.column_names)}): {ut.print_truncated_list(self._cols.column_names)}\n"
+        output += (
+            f"column_data columns({len(self._cols.column_names)}): {ut.print_truncated_list(self._cols.column_names)}\n"
+        )
         output += f"column_names({0 if self._column_names is None else len(self._column_names)}): {' ' if self._column_names is None else ut.print_truncated_list(self._column_names)}\n"
 
         output += f"main_experiment_name: {' ' if self._main_experiment_name is None else self._main_experiment_name}\n"
@@ -373,9 +359,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._reduced_dims
 
-    def set_reduced_dims(
-        self, reduced_dims: Dict[str, Any], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
         """Set new reduced dimensions.
 
         Args:
@@ -421,9 +405,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._reduced_dims.keys())
 
-    def set_reduced_dim_names(
-        self, names: List[str], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.reduced_dims`'s names.
 
         Args:
@@ -439,9 +421,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         current_names = self.get_reduced_dim_names()
         if len(names) != len(current_names):
-            raise ValueError(
-                "Length of 'names' does not match the number of `reduced_dims`."
-            )
+            raise ValueError("Length of 'names' does not match the number of `reduced_dims`.")
 
         new_reduced_dims = OrderedDict()
         for idx in range(len(names)):
@@ -499,9 +479,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
             return self._reduced_dims[dimension]
 
-        raise TypeError(
-            f"'dimension' must be a string or integer, provided '{type(dimension)}'."
-        )
+        raise TypeError(f"'dimension' must be a string or integer, provided '{type(dimension)}'.")
 
     ################################
     ######>> main_expt_name <<######
@@ -515,9 +493,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._main_experiment_name
 
-    def set_main_experiment_name(
-        self, name: Optional[str], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_main_experiment_name(self, name: Optional[str], in_place: bool = False) -> "SingleCellExperiment":
         """Set new experiment data (assays).
 
         Args:
@@ -609,9 +585,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._alternative_experiments.keys())
 
-    def set_alternative_experiment_names(
-        self, names: List[str], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_alternative_experiment_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.alternative_experiment`'s names.
 
         Args:
@@ -627,15 +601,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         current_names = self.get_alternative_experiment_names()
         if len(names) != len(current_names):
-            raise ValueError(
-                "Length of 'names' does not match the number of `alternative_experiments`."
-            )
+            raise ValueError("Length of 'names' does not match the number of `alternative_experiments`.")
 
         new_alt_expts = OrderedDict()
         for idx in range(len(names)):
-            new_alt_expts[names[idx]] = self._alternative_experiments.pop(
-                current_names[idx]
-            )
+            new_alt_expts[names[idx]] = self._alternative_experiments.pop(current_names[idx])
 
         output = self._define_output(in_place)
         output._alternative_experiments = new_alt_expts
@@ -680,13 +650,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 raise IndexError("Index cannot be negative.")
 
             if name > len(self.alternative_experiment_names):
-                raise IndexError(
-                    "Index greater than the number of alternative experiments."
-                )
+                raise IndexError("Index greater than the number of alternative experiments.")
 
-            return self._alternative_experiments[
-                self.alternative_experiment_names[name]
-            ]
+            return self._alternative_experiments[self.alternative_experiment_names[name]]
         elif isinstance(name, str):
             if name not in self._alternative_experiments:
                 raise AttributeError(f"Alternative experiment: {name} does not exist.")
@@ -707,9 +673,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._row_pairs
 
-    def set_row_pairs(
-        self, pairs: Dict[str, Any], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_row_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.row_pairs`'s names.
 
         Args:
@@ -755,9 +719,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._row_pairs.keys())
 
-    def set_row_pair_names(
-        self, names: List[str], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_row_pair_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.row_pair`'s names.
 
         Args:
@@ -773,9 +735,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         current_names = self.get_row_pair_names()
         if len(names) != len(current_names):
-            raise ValueError(
-                "Length of 'names' does not match the number of `row_pairs`."
-            )
+            raise ValueError("Length of 'names' does not match the number of `row_pairs`.")
 
         new_row_pairs = OrderedDict()
         for idx in range(len(names)):
@@ -811,9 +771,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._column_pairs
 
-    def set_column_pairs(
-        self, pairs: Dict[str, Any], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_column_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.column_pairs`'s names.
 
         Args:
@@ -859,9 +817,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._column_pairs.keys())
 
-    def set_column_pair_names(
-        self, names: List[str], in_place: bool = False
-    ) -> "SingleCellExperiment":
+    def set_column_pair_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.column_pair`'s names.
 
         Args:
@@ -877,9 +833,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         current_names = self.get_column_pair_names()
         if len(names) != len(current_names):
-            raise ValueError(
-                "Length of 'names' does not match the number of `column_pairs`."
-            )
+            raise ValueError("Length of 'names' does not match the number of `column_pairs`.")
 
         new_column_pairs = OrderedDict()
         for idx in range(len(names)):
@@ -1033,7 +987,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             assays=layers,
             row_data=biocframe.BiocFrame.from_pandas(input.var),
             column_data=biocframe.BiocFrame.from_pandas(input.obs),
-            metadata=input.uns,
+            metadata={"uns": input.uns},
             reduced_dims=obsm,
             row_pairs=varp,
             column_pairs=obsp,
@@ -1249,9 +1203,7 @@ def relaxed_combine_columns(
 
     _new_rdim = None
     try:
-        _new_rdim = relaxed_merge_numpy_generic(
-            x, by="row", attr="reduced_dims", names_attr="reduced_dim_names"
-        )
+        _new_rdim = relaxed_merge_numpy_generic(x, by="row", attr="reduced_dims", names_attr="reduced_dim_names")
     except Exception as e:
         warn(
             f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
@@ -1260,9 +1212,7 @@ def relaxed_combine_columns(
 
     _new_alt_expt = None
     try:
-        _new_alt_expt = relaxed_merge_generic(
-            x, by="column", attr="alternative_experiments"
-        )
+        _new_alt_expt = relaxed_merge_generic(x, by="column", attr="alternative_experiments")
     except Exception as e:
         warn(
             f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
