@@ -44,7 +44,7 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     )
 
 
-def read_tenx_h5(path: str) -> SingleCellExperiment:
+def read_tenx_h5(path: str, realize_assays: bool = False) -> SingleCellExperiment:
     """Read 10X H5 file as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Note: Currently only supports version 3 of the 10X H5 format.
@@ -57,6 +57,7 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
         A single-cell experiment object.
     """
 
+    import delayedarray as da
     import h5py
     from hdf5array import Hdf5CompressedSparseMatrix
 
@@ -70,9 +71,10 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
     # read the matrix
     shape = tuple(h5["matrix"]["shape"][:])
 
-    counts = Hdf5CompressedSparseMatrix(
-        path=path, group_name="matrix", by_column=True, shape=shape
-    )
+    counts = Hdf5CompressedSparseMatrix(path=path, group_name="matrix", by_column=True, shape=shape)
+
+    if realize_assays is True:
+        counts = da.to_scipy_sparse_matrix(counts, "csr")
 
     # read features
     features = None
@@ -103,6 +105,4 @@ def read_tenx_h5(path: str) -> SingleCellExperiment:
 
     h5.close()
 
-    return SingleCellExperiment(
-        assays={"counts": counts}, row_data=features, column_data=barcodes
-    )
+    return SingleCellExperiment(assays={"counts": counts}, row_data=features, column_data=barcodes)

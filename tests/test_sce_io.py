@@ -6,9 +6,11 @@ from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 from mudata import MuData
+from scipy import sparse
 
 import singlecellexperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
+from hdf5array import Hdf5CompressedSparseMatrix
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -95,6 +97,7 @@ def test_SCE_from10xH5():
     assert isinstance(tse, SingleCellExperiment)
 
     assert tse.assays is not None
+    assert isinstance(tse.assay(0), Hdf5CompressedSparseMatrix)
     assert tse.row_data is not None
     assert tse.col_data is not None
 
@@ -109,6 +112,10 @@ def test_SCE_from10xH5():
     assert sliced.col_data is not None
 
     assert sliced.shape == (10, 4)
+
+    tse = singlecellexperiment.read_tenx_h5("tests/data/tenx.sub.h5", realize_assays=True)
+    assert isinstance(tse.assay(0), sparse.spmatrix)
+
 
 
 def test_SCE_randomAnnData():
