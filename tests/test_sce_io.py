@@ -113,9 +113,10 @@ def test_SCE_from10xH5():
 
     assert sliced.shape == (10, 4)
 
-    tse = singlecellexperiment.read_tenx_h5("tests/data/tenx.sub.h5", realize_assays=True)
+    tse = singlecellexperiment.read_tenx_h5(
+        "tests/data/tenx.sub.h5", realize_assays=True
+    )
     assert isinstance(tse.assay(0), sparse.spmatrix)
-
 
 
 def test_SCE_randomAnnData():
