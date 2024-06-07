@@ -53,6 +53,10 @@ def read_tenx_h5(path: str, realize_assays: bool = False) -> SingleCellExperimen
         path:
             Path to 10x H5 file.
 
+        realize_assays:
+            Whether to realize assays into memory.
+            Defaults to False.
+
     Returns:
         A single-cell experiment object.
     """
