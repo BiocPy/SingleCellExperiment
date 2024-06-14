@@ -6,7 +6,7 @@ kernelspec:
 
 ## Represent single-cell experiments
 
-This package provides container class to represent single-cell experimental data as 2-dimensional matrices. In these matrices, the rows typically denote features or genomic regions of interest, while columns represent cells. In addition, a `SingleCellExperiment` (SCE) object may contain low-dimensionality embeddings, alternative experiments performed on same sample or set of cells. 
+This package provides container class to represent single-cell experimental data as 2-dimensional matrices. In these matrices, the rows typically denote features or genomic regions of interest, while columns represent cells. In addition, a `SingleCellExperiment` (SCE) object may contain low-dimensionality embeddings, alternative experiments performed on same sample or set of cells.
 
 :::{important}
 The design of `SingleCellExperiment` class and its derivates adheres to the R/Bioconductor specification, where rows correspond to features, and columns represent cells.
@@ -49,7 +49,7 @@ import numpy as np
 from scipy import sparse as sp
 from biocframe import BiocFrame
 from genomicranges import GenomicRanges
-from random import random 
+from random import random
 
 nrows = 200
 ncols = 6
@@ -121,7 +121,7 @@ print(adata)
 Converting `AnnData` as `SingleCellExperiment` is straightforward:
 
 ```{code-cell}
-sce_adata = SingleCellExperiment.from_anndata(adata) 
+sce_adata = SingleCellExperiment.from_anndata(adata)
 print(sce_adata)
 ```
 
@@ -158,7 +158,7 @@ Methods are also available to read a 10x matrix market directory using the `read
 
 ## Getters/Setters
 
-Getters are available to access various attributes using either the property notation or functional style. 
+Getters are available to access various attributes using either the property notation or functional style.
 
 Since `SingleCellExperiment` extends `RangedSummarizedExperiment`, all getters and setters from the base class are accessible here; more details [here](./summarized_experiment.qmd).
 
