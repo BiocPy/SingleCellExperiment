@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.2 - 0.4.7
+
+- Fix issue coercing `SummarizedExperiments` to `AnnData` objects and vice-versa.
+- Handling coercions when matrices are delayed arrays or backed (for `AnnData`).
+- Update sphinx configuration to run snippets in the documentation.
+
 ## Version 0.4.0 to 0.4.1
 
 This is a complete rewrite of the package, following the functional paradigm from our [developer notes](https://github.com/BiocPy/developer_guide#use-functional-discipline).
