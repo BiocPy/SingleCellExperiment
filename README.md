@@ -4,20 +4,26 @@
 
 # SingleCellExperiment
 
-Container class to represent single-cell experiments; follows Bioconductor's [SingleCellExperiment](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html).
+This package provides container class to represent single-cell experimental data as 2-dimensional matrices. In these matrices, the rows typically denote features or genomic regions of interest, while columns represent cells. In addition, a `SingleCellExperiment` (SCE) object may contain low-dimensionality embeddings, alternative experiments performed on same sample or set of cells. Follows Bioconductor's [SingleCellExperiment](https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html).
 
 
 ## Install
 
-Package is published to [PyPI](https://pypi.org/project/singlecellexperiment/)
+To get started, install the package from [PyPI](https://pypi.org/project/singlecellexperiment/)
 
-```shell
+```bash
 pip install singlecellexperiment
 ```
 
 ## Usage
 
-Readers are available to read AnnData, H5AD or 10x (MTX, H5) V3 formats as `SingleCellExperiment` objects.
+The `SingleCellExperiment` extends [RangeSummarizedExperiment](https://github.com/BiocPy/SummarizedExperiment) and contains additional attributes:
+
+- `reduced_dims`: Slot for low-dimensionality embeddings for each cell.
+- `alternative_experiments`: Manages multi-modal experiments performed on the same sample or set of cells.
+- `row_pairs` or `column_pairs`: Stores relationships between features or cells.
+
+Readers are available to parse h5ad or `AnnData` objects to SCE:
 
 ```python
 import singlecellexperiment
@@ -51,7 +57,8 @@ tse = SingleCellExperiment(
 )
 ```
 
-Since `SingleCellExperiment` extends `SummarizedExperiment`, most methods especially slicing and accessors are applicable here. Checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/) for more info.
+Since `SingleCellExperiment` extends `RangeSummarizedExperiment`, most methods especially slicing and accessors are applicable here.
+Checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/) for more info.
 
 <!-- pyscaffold-notes -->
 
