@@ -1,6 +1,11 @@
 # Changelog
 
-## Version 0.4.2 - 0.4.7
+## Version 0.4.7
+
+- Fix package version issues to support Python<=3.9. Mostly related to how anndata dependencies are versioned in the MuData package discussed [here](https://github.com/scverse/mudata/issues/82).
+- The package now enforces the versions of mudata, anndata and numpy that are compatible with each other.
+
+## Version 0.4.2 - 0.4.6
 
 - Fix issue coercing `SummarizedExperiments` to `AnnData` objects and vice-versa.
 - Handling coercions when matrices are delayed arrays or backed (for `AnnData`).
