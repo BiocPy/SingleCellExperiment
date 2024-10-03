@@ -3,13 +3,14 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="singlecellexperiment" href="api/modules.html" /><link rel="prev" title="SingleCellExperiment" href="readme.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="singlecellexperiment" href="api/modules.html" /><link rel="prev" title="SingleCellExperiment" href="index.html" />
 
-    <!-- Generated with Sphinx 7.3.7 and Furo 2024.05.06 -->
-        <title>Tutorial - SingleCellExperiment 0.4.6 documentation</title>
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
+        <title>Represent single-cell experiments - SingleCellExperiment 0.4.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=387cc868" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
     
 
@@ -88,19 +89,6 @@
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
     </svg>
   </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
   <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
     <title>Auto light/dark, in light mode</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -141,7 +129,7 @@
       <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
       <path d="M13.5 6.5l4 4" />
       <path d="M20 21l2 -2l-2 -2" />
-      <path d="M17 17l-2 2l2 2" /
+      <path d="M17 17l-2 2l2 2" />
     </svg>
   </symbol>
   <symbol id="svg-eye" viewBox="0 0 24 24">
@@ -179,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.4.6 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.4.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -203,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.4.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.4.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,13 +200,13 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="readme.html">Overview</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tutorial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#import-as-singlecellexperiment">Import as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="#construct-a-singlecellexperiment-object">Construct a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#accessors">Accessors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#subset-experiment">Subset experiment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#export-as-anndata-objects">Export as AnnData objects</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Represent single-cell experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#construction">Construction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#getters-setters">Getters/Setters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#subset-experiments">Subset experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#combining-experiments">Combining experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/singlecellexperiment.html">singlecellexperiment package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of singlecellexperiment package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/singlecellexperiment.io.html">singlecellexperiment.io package</a></li>
@@ -270,32 +258,54 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section class="tex2jax_ignore mathjax_ignore" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">¶</a></h1>
-<p>Container class to represent single-cell experiments; follows Bioconductor’s <a class="reference external" href="https://bioconductor.org/packages/release/bioc/html/SingleCellExperiment.html">SingleCellExperiment</a>.</p>
+          <section id="represent-single-cell-experiments">
+<h1>Represent single-cell experiments<a class="headerlink" href="#represent-single-cell-experiments" title="Link to this heading">¶</a></h1>
+<p>This package provides container class to represent single-cell experimental data as 2-dimensional matrices. In these matrices, the rows typically denote features or genomic regions of interest, while columns represent cells. In addition, a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> (SCE) object may contain low-dimensionality embeddings, alternative experiments performed on same sample or set of cells.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The design of <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> class and its derivates adheres to the R/Bioconductor specification, where rows correspond to features, and columns represent cells.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These classes follow a functional paradigm for accessing or setting properties, with further details discussed in <a class="reference external" href="https://biocpy.github.io/tutorial/chapters/philosophy.html#functional-discipline">functional paradigm</a> section.</p>
+</div>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="import-as-singlecellexperiment">
-<h1>Import as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code><a class="headerlink" href="#import-as-singlecellexperiment" title="Link to this heading">¶</a></h1>
-<p>Readers are available to read <code class="docutils literal notranslate"><span class="pre">AnnData</span></code>, <code class="docutils literal notranslate"><span class="pre">H5AD</span></code> or <code class="docutils literal notranslate"><span class="pre">10x</span> <span class="pre">(MTX,</span> <span class="pre">H5)</span> <span class="pre">V3</span></code> formats as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">singlecellexperiment</span>
-
-<span class="n">sce</span> <span class="o">=</span> <span class="n">singlecellexperiment</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s2">&quot;tests/data/adata.h5ad&quot;</span><span class="p">)</span>
+<section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
+<p>To get started, install the package from <a class="reference external" href="https://pypi.org/project/singlecellexperiment/">PyPI</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>singlecellexperiment
 </pre></div>
 </div>
-<p>Similarly <code class="docutils literal notranslate"><span class="pre">read_tenx_h5</span></code>, <code class="docutils literal notranslate"><span class="pre">read_tenx_mtx</span></code> and <code class="docutils literal notranslate"><span class="pre">from_anndata</span></code> methods are  available to read various formats.</p>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="construct-a-singlecellexperiment-object">
-<h1>Construct a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object<a class="headerlink" href="#construct-a-singlecellexperiment-object" title="Link to this heading">¶</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code>, so it must contain <code class="docutils literal notranslate"><span class="pre">assays</span></code>, <code class="docutils literal notranslate"><span class="pre">row_data</span></code> and <code class="docutils literal notranslate"><span class="pre">column_data</span></code> objects. Additionally
-<code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects may contain dimensionality embeddings (e.g tSNE, UMAP etc), alternative experiment for multi-modal experiments and row/column pairings.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<section id="construction">
+<h1>Construction<a class="headerlink" href="#construction" title="Link to this heading">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">RangeSummarizedExperiment</span></code> and contains additional attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">reduced_dims</span></code>: Slot for low-dimensionality embeddings for each cell.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alternative_experiments</span></code>: Manages multi-modal experiments performed on the same sample or set of cells.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">row_pairs</span></code> or <code class="docutils literal notranslate"><span class="pre">column_pairs</span></code>: Stores relationships between features or cells.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In contrast to R, matrices in Python are unnamed and do not contain row or column names. Hence, these matrices cannot be directly used as values in assays or alternative experiments. We strictly enforce type checks in these cases. To relax these restrictions for alternative experiments, set <code class="docutils literal notranslate"><span class="pre">type_check_alternative_experiments</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If you are using the <code class="docutils literal notranslate"><span class="pre">alternative_experiments</span></code> slot, the number of cells must match the parent experiment.  Otherwise, the expectation is that the cells do not share the same sample or annotations and cannot be set in alternative experiments!</p>
+</div>
+<p>Before we construct a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object, lets generate information about rows, columns and a mock experimental data from single-cell rna-seq experiments:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> <span class="k">as</span> <span class="n">sp</span>
 <span class="kn">from</span> <span class="nn">biocframe</span> <span class="kn">import</span> <span class="n">BiocFrame</span>
 <span class="kn">from</span> <span class="nn">genomicranges</span> <span class="kn">import</span> <span class="n">GenomicRanges</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">random</span>
 
 <span class="n">nrows</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">ncols</span> <span class="o">=</span> <span class="mi">6</span>
-<span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">)</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csr&quot;</span><span class="p">)</span>
 <span class="n">row_data</span> <span class="o">=</span> <span class="n">BiocFrame</span><span class="p">(</span>
     <span class="p">{</span>
         <span class="s2">&quot;seqnames&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -326,54 +336,452 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Finally construct the object,</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">singlecellexperiment</span> <span class="kn">import</span> <span class="n">SingleCellExperiment</span>
+</div>
+</div>
+<p>Now lets create the <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> instance:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">singlecellexperiment</span> <span class="kn">import</span> <span class="n">SingleCellExperiment</span>
 
-<span class="n">tse</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
-    <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">row_data</span><span class="p">,</span> <span class="n">column_data</span><span class="o">=</span><span class="n">col_data</span>
+<span class="n">sce</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">counts</span><span class="p">},</span> <span class="n">row_data</span><span class="o">=</span><span class="n">row_data</span><span class="p">,</span> <span class="n">column_data</span><span class="o">=</span><span class="n">col_data</span><span class="p">,</span>
+    <span class="n">reduced_dims</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;random_embeds&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">ncols</span><span class="p">,</span> <span class="mi">4</span><span class="p">)}</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sce</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (200, 6)
+assays(1): [&#39;counts&#39;]
+row_data columns(6): [&#39;seqnames&#39;, &#39;starts&#39;, &#39;ends&#39;, &#39;strand&#39;, &#39;score&#39;, &#39;GC&#39;]
+row_names(0):  
+column_data columns(1): [&#39;celltype&#39;]
+column_names(6): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;]
+main_experiment_name:  
+reduced_dims(1): [&#39;random_embeds&#39;]
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(0): 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also use delayed or file-backed arrays for representing experimental data, check out <a class="reference internal" href="#./summarized_experiment.qmd#delayed-or-file-backed-arrays"><span class="xref myst">this section</span></a> from summarized experiment.</p>
+</div>
+<section id="interop-with-anndata">
+<h2>Interop with <code class="docutils literal notranslate"><span class="pre">anndata</span></code><a class="headerlink" href="#interop-with-anndata" title="Link to this heading">¶</a></h2>
+<p>We provide convenient methods for loading an <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">h5ad</span></code> file into <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects.</p>
+<p>For example, lets create an <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> object,</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">anndata</span> <span class="k">as</span> <span class="nn">ad</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span> <span class="k">as</span> <span class="n">sp</span>
+
+<span class="n">counts</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">ad</span><span class="o">.</span><span class="n">AnnData</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>AnnData object with n_obs × n_vars = 100 × 2000
+</pre></div>
+</div>
+</div>
+</div>
+<p>Converting <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> as <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> is straightforward:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sce_adata</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="o">.</span><span class="n">from_anndata</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_adata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (2000, 100)
+assays(1): [&#39;X&#39;]
+row_data columns(0): []
+row_names(2000): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, ..., &#39;1997&#39;, &#39;1998&#39;, &#39;1999&#39;]
+column_data columns(0): []
+column_names(100): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, ..., &#39;97&#39;, &#39;98&#39;, &#39;99&#39;]
+main_experiment_name:  
+reduced_dims(0): []
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(1): uns
+</pre></div>
+</div>
+</div>
+</div>
+<p>and vice-verse.  All assays from SCE are represented in the <code class="docutils literal notranslate"><span class="pre">layers</span></code> slot of the <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata2</span> <span class="o">=</span> <span class="n">sce_adata</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adata2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(AnnData object with n_obs × n_vars = 100 × 2000
+    uns: &#39;uns&#39;
+    layers: &#39;X&#39;, None)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/anndata/_core/anndata.py:121: ImplicitModificationWarning: Transforming to str index.
+  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Similarly, one can load a h5ad file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">singlecellexperiment</span> <span class="kn">import</span> <span class="n">read_h5ad</span>
+<span class="n">sce_h5</span> <span class="o">=</span> <span class="n">read_h5ad</span><span class="p">(</span><span class="s2">&quot;../../assets/data/adata.h5ad&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_h5</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="from-10x-formats">
+<h2>From 10X formats<a class="headerlink" href="#from-10x-formats" title="Link to this heading">¶</a></h2>
+<p>In addition, we also provide convenient methods to load a <a class="reference external" href="https://www.10xgenomics.com/support/software/cell-ranger/latest/analysis/outputs/cr-outputs-h5-matrices">10X Genomics HDF5 Feature-Barcode Matrix Format</a> file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">singlecellexperiment</span> <span class="kn">import</span> <span class="n">read_tenx_h5</span>
+<span class="n">sce_h5</span> <span class="o">=</span> <span class="n">read_tenx_h5</span><span class="p">(</span><span class="s2">&quot;../../assets/data/tenx.sub.h5&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_h5</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Methods are also available to read a 10x matrix market directory using the <code class="docutils literal notranslate"><span class="pre">read_tenx_mtx</span></code> function.</p>
+</div>
+</section>
+</section>
+<section id="getters-setters">
+<h1>Getters/Setters<a class="headerlink" href="#getters-setters" title="Link to this heading">¶</a></h1>
+<p>Getters are available to access various attributes using either the property notation or functional style.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">RangedSummarizedExperiment</span></code>, all getters and setters from the base class are accessible here; more details <a class="reference internal" href="#./summarized_experiment.qmd"><span class="xref myst">here</span></a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># access assay names</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reduced dim names (as property): &quot;</span><span class="p">,</span> <span class="n">sce</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reduced dim names (functional style): &quot;</span><span class="p">,</span> <span class="n">sce</span><span class="o">.</span><span class="n">get_reduced_dim_names</span><span class="p">())</span>
+
+<span class="c1"># access row data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce</span><span class="o">.</span><span class="n">row_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>reduced dim names (as property):  [&#39;random_embeds&#39;]
+reduced dim names (functional style):  [&#39;random_embeds&#39;]
+BiocFrame with 200 rows and 6 columns
+      seqnames  starts    ends strand   score                  GC
+        &lt;list&gt; &lt;range&gt; &lt;range&gt; &lt;list&gt; &lt;range&gt;              &lt;list&gt;
+  [0]     chr1     100     110      -       0 0.23929243158312297
+  [1]     chr2     101     111      +       1 0.42055100724885097
+  [2]     chr2     102     112      +       2  0.5580973577803723
+           ...     ...     ...    ...     ...                 ...
+[197]     chr3     297     307      +     197  0.9039167253656578
+[198]     chr3     298     308      -     198 0.17491260994572377
+[199]     chr3     299     309      -     199  0.9046480123365814
+</pre></div>
+</div>
+</div>
+</div>
+<section id="access-a-reduced-dimension">
+<h2>Access a reduced dimension<a class="headerlink" href="#access-a-reduced-dimension" title="Link to this heading">¶</a></h2>
+<p>One can access an reduced dimension by index or name:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">reduced_dim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># same as se.reduced_dim(&quot;random_embeds&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.65444999, 0.90601852, 0.87720018, 0.09727131],
+       [0.27040466, 0.05925716, 0.40215101, 0.35083125],
+       [0.3231138 , 0.73572795, 0.98296675, 0.92569003],
+       [0.33351471, 0.57698531, 0.26307458, 0.06270545],
+       [0.51755486, 0.74829941, 0.09911028, 0.50273699],
+       [0.76457642, 0.9932149 , 0.4097655 , 0.1936202 ]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="subset-experiments">
+<h1>Subset experiments<a class="headerlink" href="#subset-experiments" title="Link to this heading">¶</a></h1>
+<p>You can subset experimental data by using the subset (<code class="docutils literal notranslate"><span class="pre">[]</span></code>) operator. This operation accepts different slice input types, such as a boolean vector, a <code class="docutils literal notranslate"><span class="pre">slice</span></code> object, a list of indices, or names (if available) to subset.</p>
+<p>In our previous example, we didn’t include row or column names. Let’s create another <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object that includes names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset_sce</span> <span class="o">=</span> <span class="n">sce</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">subset_sce</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (10, 3)
+assays(1): [&#39;counts&#39;]
+row_data columns(6): [&#39;seqnames&#39;, &#39;starts&#39;, &#39;ends&#39;, &#39;strand&#39;, &#39;score&#39;, &#39;GC&#39;]
+row_names(0):  
+column_data columns(1): [&#39;celltype&#39;]
+column_names(3): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]
+main_experiment_name:  
+reduced_dims(1): [&#39;random_embeds&#39;]
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(0): 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="combining-experiments">
+<h1>Combining experiments<a class="headerlink" href="#combining-experiments" title="Link to this heading">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> implements methods for the <code class="docutils literal notranslate"><span class="pre">combine</span></code> generic from <a class="reference external" href="https://github.com/BiocPy/biocutils"><strong>BiocUtils</strong></a>.</p>
+<p>These methods enable the merging or combining of multiple <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects, allowing users to aggregate data from different experiments or conditions. Note: <code class="docutils literal notranslate"><span class="pre">row_pairs</span></code> and <code class="docutils literal notranslate"><span class="pre">column_pairs</span></code> are not ignored as part of this operation.</p>
+<p>To demonstrate, let’s create multiple <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects (read more about this in <a class="reference internal" href="#./summarized_experiment.qmd#combining-experiments"><span class="xref myst">combine section from <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code></span></a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">nrows</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sce1</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">))},</span>
+    <span class="n">row_data</span><span class="o">=</span><span class="n">BiocFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">nrows</span><span class="p">}),</span>
+    <span class="n">column_data</span><span class="o">=</span><span class="n">BiocFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ncols</span><span class="p">}),</span>
+<span class="p">)</span>
+
+<span class="n">sce2</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">)),</span>
+        <span class="c1"># &quot;normalized&quot;: np.random.normal(size=(nrows, ncols)),</span>
+    <span class="p">},</span>
+    <span class="n">row_data</span><span class="o">=</span><span class="n">BiocFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">nrows</span><span class="p">}),</span>
+    <span class="n">column_data</span><span class="o">=</span><span class="n">BiocFrame</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">ncols</span><span class="p">}),</span>
+<span class="p">)</span>
+
+<span class="n">rowdata1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;seqnames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;chr_5&quot;</span><span class="p">,</span> <span class="s2">&quot;chr_3&quot;</span><span class="p">,</span> <span class="s2">&quot;chr_2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">510</span><span class="p">,</span> <span class="mi">310</span><span class="p">,</span> <span class="mi">210</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HER2&quot;</span><span class="p">,</span> <span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="s2">&quot;TPFK&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">coldata1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;SAM_1&quot;</span><span class="p">,</span> <span class="s2">&quot;SAM_2&quot;</span><span class="p">,</span> <span class="s2">&quot;SAM_3&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doublet_score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.62</span><span class="p">,</span> <span class="mf">0.18</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cell_1&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_2&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_3&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">sce_alts1</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="s2">&quot;lognorm&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+    <span class="p">},</span>
+    <span class="n">row_data</span><span class="o">=</span><span class="n">rowdata1</span><span class="p">,</span>
+    <span class="n">column_data</span><span class="o">=</span><span class="n">coldata1</span><span class="p">,</span>
+    <span class="n">row_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HER2&quot;</span><span class="p">,</span> <span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="s2">&quot;TPFK&quot;</span><span class="p">],</span>
+    <span class="n">column_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cell_1&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_2&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_3&quot;</span><span class="p">],</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;seq_type&quot;</span><span class="p">:</span> <span class="s2">&quot;paired&quot;</span><span class="p">},</span>
+    <span class="n">reduced_dims</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;PCA&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))},</span>
+    <span class="n">alternative_experiments</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;modality1&quot;</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+            <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))},</span>
+        <span class="p">)</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">rowdata2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;seqnames&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;chr_5&quot;</span><span class="p">,</span> <span class="s2">&quot;chr_3&quot;</span><span class="p">,</span> <span class="s2">&quot;chr_2&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">500</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">],</span>
+        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">510</span><span class="p">,</span> <span class="mi">310</span><span class="p">,</span> <span class="mi">210</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;HER2&quot;</span><span class="p">,</span> <span class="s2">&quot;BRCA1&quot;</span><span class="p">,</span> <span class="s2">&quot;TPFK&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">coldata2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;SAM_4&quot;</span><span class="p">,</span> <span class="s2">&quot;SAM_5&quot;</span><span class="p">,</span> <span class="s2">&quot;SAM_6&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;disease&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;True&quot;</span><span class="p">,</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doublet_score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.23</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cell_4&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_5&quot;</span><span class="p">,</span> <span class="s2">&quot;cell_6&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">sce_alts2</span> <span class="o">=</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+    <span class="n">assays</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;counts&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span>
+        <span class="c1"># &quot;lognorm&quot;: np.random.lognormal(size=(3, 3)),</span>
+    <span class="p">},</span>
+    <span class="n">row_data</span><span class="o">=</span><span class="n">rowdata2</span><span class="p">,</span>
+    <span class="n">column_data</span><span class="o">=</span><span class="n">coldata2</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;seq_platform&quot;</span><span class="p">:</span> <span class="s2">&quot;Illumina NovaSeq 6000&quot;</span><span class="p">},</span>
+    <span class="n">reduced_dims</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;PCA&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))},</span>
+    <span class="n">alternative_experiments</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;modality1&quot;</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
+            <span class="n">assays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;counts2&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lam</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))},</span>
+        <span class="p">)</span>
+    <span class="p">},</span>
 <span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="accessors">
-<h1>Accessors<a class="headerlink" href="#accessors" title="Link to this heading">¶</a></h1>
-<p>Multiple methods are available to access various slots of a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tse</span><span class="o">.</span><span class="n">assays</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">row_data</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">column_data</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">reduced_dims</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">alternative_experiments</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">row_pairs</span>
-<span class="n">tse</span><span class="o">.</span><span class="n">column_pairs</span>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">combine_rows</span></code> or <code class="docutils literal notranslate"><span class="pre">combine_columns</span></code> operations, expect all experiments to contain the same assay names. To combine experiments by row:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">biocutils</span> <span class="kn">import</span> <span class="n">relaxed_combine_columns</span><span class="p">,</span> <span class="n">combine_columns</span><span class="p">,</span> <span class="n">combine_rows</span><span class="p">,</span> <span class="n">relaxed_combine_rows</span>
+<span class="n">sce_combined</span> <span class="o">=</span> <span class="n">combine_rows</span><span class="p">(</span><span class="n">sce2</span><span class="p">,</span> <span class="n">sce1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_combined</span><span class="p">)</span>
 </pre></div>
 </div>
-<section id="access-specific-sets">
-<h2>Access specific sets<a class="headerlink" href="#access-specific-sets" title="Link to this heading">¶</a></h2>
-<p>For reduced dimension and alternative experiment slots, one can also access specific objects</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tse</span><span class="o">.</span><span class="n">reduced_dim</span><span class="p">(</span><span class="s2">&quot;tSNE&quot;</span><span class="p">)</span>
-
-<span class="n">tse</span><span class="o">.</span><span class="n">alternative_experiment</span><span class="p">(</span><span class="s2">&quot;crop-seq&quot;</span><span class="p">)</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (200, 10)
+assays(1): [&#39;counts&#39;]
+row_data columns(1): [&#39;A&#39;]
+row_names(0):  
+column_data columns(1): [&#39;A&#39;]
+column_names(0):  
+main_experiment_name:  
+reduced_dims(0): []
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(0): 
 </pre></div>
 </div>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="subset-experiment">
-<h1>Subset experiment<a class="headerlink" href="#subset-experiment" title="Link to this heading">¶</a></h1>
-<p>Similar to <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code>, you can subset by index</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># subset the first 10 rows and the first 3 samples</span>
-<span class="n">subset_tse</span> <span class="o">=</span> <span class="n">tse</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/singlecellexperiment/SingleCellExperiment.py:1092: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
+  warn(
 </pre></div>
 </div>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="export-as-anndata-objects">
-<h1>Export as AnnData objects<a class="headerlink" href="#export-as-anndata-objects" title="Link to this heading">¶</a></h1>
-<p>Methods are available to convert <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">tse</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+</div>
+</div>
+<p>Similarly to combine by column:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sce_combined</span> <span class="o">=</span> <span class="n">combine_columns</span><span class="p">(</span><span class="n">sce2</span><span class="p">,</span> <span class="n">sce1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_combined</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>or an <code class="docutils literal notranslate"><span class="pre">MuData</span></code></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mdata</span> <span class="o">=</span> <span class="n">tse</span><span class="o">.</span><span class="n">to_mudata</span><span class="p">()</span>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (100, 20)
+assays(1): [&#39;counts&#39;]
+row_data columns(1): [&#39;A&#39;]
+row_names(0):  
+column_data columns(1): [&#39;A&#39;]
+column_names(0):  
+main_experiment_name:  
+reduced_dims(0): []
+alternative_experiments(0): []
+row_pairs(0): []
+column_pairs(0): []
+metadata(0): 
 </pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/singlecellexperiment/SingleCellExperiment.py:1134: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
+  warn(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">relaxed_combine_columns</span></code> or <code class="docutils literal notranslate"><span class="pre">relaxed_combined_rows</span></code> when there’s mismatch in the number of features or samples. Missing rows or columns in any object are filled in with appropriate placeholder values before combining, e.g. missing assay’s are replaced with a masked numpy array.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># sce_alts1 contains an additional assay not present in sce_alts2</span>
+<span class="n">sce_relaxed_combine</span> <span class="o">=</span> <span class="n">relaxed_combine_columns</span><span class="p">(</span><span class="n">sce_alts1</span><span class="p">,</span> <span class="n">sce_alts2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sce_relaxed_combine</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
+dimensions: (3, 6)
+assays(2): [&#39;lognorm&#39;, &#39;counts&#39;]
+row_data columns(3): [&#39;seqnames&#39;, &#39;start&#39;, &#39;end&#39;]
+row_names(3): [&#39;HER2&#39;, &#39;BRCA1&#39;, &#39;TPFK&#39;]
+column_data columns(3): [&#39;sample&#39;, &#39;disease&#39;, &#39;doublet_score&#39;]
+column_names(6): [&#39;cell_1&#39;, &#39;cell_2&#39;, &#39;cell_3&#39;, &#39;cell_4&#39;, &#39;cell_5&#39;, &#39;cell_6&#39;]
+main_experiment_name:  
+reduced_dims(1): [&#39;PCA&#39;]
+alternative_experiments(1): [&#39;modality1&#39;]
+row_pairs(0): []
+column_pairs(0): []
+metadata(1): seq_type
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/singlecellexperiment/SingleCellExperiment.py:1244: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
+  warn(&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="export-as-anndata-or-mudata">
+<h1>Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code><a class="headerlink" href="#export-as-anndata-or-mudata" title="Link to this heading">¶</a></h1>
+<p>The package also provides methods to convert a <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object into a <code class="docutils literal notranslate"><span class="pre">MuData</span></code> representation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mdata</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">to_mudata</span><span class="p">()</span>
+<span class="n">mdata</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/anndata/_core/anndata.py:121: ImplicitModificationWarning: Transforming to str index.
+  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
+</pre></div>
+</div>
+<div class="output text_html"><pre>MuData object with n_obs × n_vars = 6 × 200
+  var:	&#x27;seqnames&#x27;, &#x27;starts&#x27;, &#x27;ends&#x27;, &#x27;strand&#x27;, &#x27;score&#x27;, &#x27;GC&#x27;
+  1 modality
+    Unknown Modality:	6 x 200
+      obs:	&#x27;celltype&#x27;, &#x27;rownames&#x27;
+      var:	&#x27;seqnames&#x27;, &#x27;starts&#x27;, &#x27;ends&#x27;, &#x27;strand&#x27;, &#x27;score&#x27;, &#x27;GC&#x27;
+      obsm:	&#x27;random_embeds&#x27;
+      layers:	&#x27;counts&#x27;</pre></div></div>
+</div>
+<p>or coerce to an <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="p">,</span> <span class="n">alts</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;main experiment: &quot;</span><span class="p">,</span> <span class="n">adata</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternative experiments: &quot;</span><span class="p">,</span> <span class="n">alts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>main experiment:  AnnData object with n_obs × n_vars = 6 × 200
+    obs: &#39;celltype&#39;, &#39;rownames&#39;
+    var: &#39;seqnames&#39;, &#39;starts&#39;, &#39;ends&#39;, &#39;strand&#39;, &#39;score&#39;, &#39;GC&#39;
+    obsm: &#39;random_embeds&#39;
+    layers: &#39;counts&#39;
+alternative experiments:  None
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.9/site-packages/anndata/_core/anndata.py:121: ImplicitModificationWarning: Transforming to str index.
+  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 
@@ -391,14 +799,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="readme.html">
+          <a class="prev-page" href="index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">SingleCellExperiment</div>
+                <div class="title">Home</div>
                 
               </div>
             </a>
@@ -426,9 +834,9 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=03f3338f"></script>
+</div><script src="_static/documentation_options.js?v=a78bb796"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=4e2eecee"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
     </body>
 </html>
