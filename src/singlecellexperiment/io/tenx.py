@@ -75,9 +75,7 @@ def read_tenx_h5(path: str, realize_assays: bool = False) -> SingleCellExperimen
     # read the matrix
     shape = tuple(h5["matrix"]["shape"][:])
 
-    counts = Hdf5CompressedSparseMatrix(
-        path=path, group_name="matrix", by_column=True, shape=shape
-    )
+    counts = Hdf5CompressedSparseMatrix(path=path, group_name="matrix", by_column=True, shape=shape)
 
     if realize_assays is True:
         counts = da.to_scipy_sparse_matrix(counts, "csr")
@@ -111,6 +109,4 @@ def read_tenx_h5(path: str, realize_assays: bool = False) -> SingleCellExperimen
 
     h5.close()
 
-    return SingleCellExperiment(
-        assays={"counts": counts}, row_data=features, column_data=barcodes
-    )
+    return SingleCellExperiment(assays={"counts": counts}, row_data=features, column_data=barcodes)
