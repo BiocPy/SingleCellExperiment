@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.5.0
+
+- chore: Remove Python 3.8 (EOL)
+- precommit: Replace docformatter with ruff's formatter
+
 ## Version 0.4.7
 
 - Fix package version issues to support Python<=3.9. Mostly related to how anndata dependencies are versioned in the MuData package discussed [here](https://github.com/scverse/mudata/issues/82).
