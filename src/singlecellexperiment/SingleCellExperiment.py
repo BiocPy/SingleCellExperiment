@@ -552,7 +552,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if in_place is False:
             _tmp_red_dims = _tmp_red_dims.copy()
         _tmp_red_dims[name] = embedding
-        
+
         _validate_reduced_dims(_tmp_red_dims, self._shape)
         output._reduced_dims = _tmp_red_dims
         return output
@@ -768,7 +768,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if in_place is False:
             _tmp_alt_expt = _tmp_alt_expt.copy()
         _tmp_alt_expt[name] = alternative_experiment
-        
+
         _validate_alternative_experiments(_tmp_alt_expt, self._shape)
         output._alternative_experiments = _tmp_alt_expt
         return output
