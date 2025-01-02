@@ -402,11 +402,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self.set_reduced_dimensions(reduced_dims, in_place=True)
 
     @property
-    def reduced_dimensionss(self) -> Dict[str, Any]:
+    def reduced_dimensions(self) -> Dict[str, Any]:
         """Alias for :py:meth:`~get_reduced_dimensions`."""
         return self.get_reduced_dimensions()
 
-    @reduced_dimensionss.setter
+    @reduced_dimensions.setter
     def reduced_dimensions(self, reduced_dims: Dict[str, Any]):
         """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
@@ -543,13 +543,18 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 Whether to modify the ``SingleCellExperiment`` in place.
 
         Returns:
-            A modified ``BasSingleCellExperimenteSE`` object, either as a copy of the original
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
             or as a reference to the (in-place-modified) original.
         """
         output = self._define_output(in_place)
+
+        _tmp_red_dims = output._reduced_dims
         if in_place is False:
-            output._reduced_dims = output._reduced_dims.copy()
-        output._reduced_dims[name] = embedding
+            _tmp_red_dims = _tmp_red_dims.copy()
+        _tmp_red_dims[name] = embedding
+        
+        _validate_reduced_dims(_tmp_red_dims, self._shape)
+        output._reduced_dims = _tmp_red_dims
         return output
 
     ################################
@@ -758,9 +763,14 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             or as a reference to the (in-place-modified) original.
         """
         output = self._define_output(in_place)
+
+        _tmp_alt_expt = output._alternative_experiments
         if in_place is False:
-            output._alternative_experiments = output._alternative_experiments.copy()
-        output._alternative_experiments[name] = alternative_experiment
+            _tmp_alt_expt = _tmp_alt_expt.copy()
+        _tmp_alt_expt[name] = alternative_experiment
+        
+        _validate_alternative_experiments(_tmp_alt_expt, self._shape)
+        output._alternative_experiments = _tmp_alt_expt
         return output
 
     ###########################
