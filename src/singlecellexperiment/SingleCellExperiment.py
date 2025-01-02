@@ -1048,7 +1048,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return combine_columns(self, *other)
 
 
-
 ############################
 ######>> combine ops <<#####
 ############################
