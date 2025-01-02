@@ -524,7 +524,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             return self._reduced_dims[name]
 
         raise TypeError(f"'dimension' must be a string or integer, provided '{type(name)}'.")
-    
+
     def reduced_dim(self, name: Union[str, int]) -> Any:
         """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
         return self.get_reduced_dimension(name=name)
@@ -736,7 +736,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility."""
         return self.get_alternative_experiment(name=name)
 
-    def set_alternative_experiment(self, name: str, alternative_experiment: Any, in_place: bool = False) -> "SingleCellExperiment":
+    def set_alternative_experiment(
+        self, name: str, alternative_experiment: Any, in_place: bool = False
+    ) -> "SingleCellExperiment":
         """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`'s.
 
         Args:
