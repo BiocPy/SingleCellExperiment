@@ -134,8 +134,12 @@ def test_SCE_creation_modifications():
     assert tse is not None
     assert isinstance(tse, sce)
 
-    nassay_tse = tse.set_reduced_dimension("something", np.random.rand(ncols - 1, 4), in_place=False)
+    with pytest.raises(Exception):
+        tse.set_reduced_dimension("something", np.random.rand(ncols - 1, 4), in_place=False)
+
+    nassay_tse = tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=False)
+
     assert nassay_tse.get_reduced_dimension_names() != tse.get_reduced_dimension_names()
 
-    tse.set_reduced_dimension("something", np.random.rand(ncols - 1, 4), in_place=True)
+    tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=True)
     assert nassay_tse.get_reduced_dimension_names() == tse.get_reduced_dimension_names()
