@@ -3,7 +3,7 @@
 ## Version 0.5.1 - 0.5.2
 
 - Add wrapper class methods to combine experiments by rows or columns.
-- Expand function names for readability, still backwards compatible with the older function and method names. 
+- Expand function names for readability, still backwards compatible with the older function and method names.
 - Add getters and setters to replace a specific alternative experiment or reduced dimension.
 
 ## Version 0.5.0
