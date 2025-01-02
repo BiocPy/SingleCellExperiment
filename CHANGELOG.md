@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+
+- Add wrapper class methods to combine experiments by rows or columns.
+
 ## Version 0.5.0
 
 - chore: Remove Python 3.8 (EOL)
