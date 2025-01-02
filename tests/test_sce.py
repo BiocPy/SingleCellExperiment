@@ -118,3 +118,28 @@ def test_SCE_creation_with_alts_should_fail():
             column_data=col_data,
             alternative_experiments={"alt": tse},
         )
+
+def test_SCE_creation_modifications():
+    rse = SummarizedExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
+    )
+
+    tse = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        alternative_experiments={"alt": rse},
+    )
+
+    assert tse is not None
+    assert isinstance(tse, sce)
+
+    with pytest.raises(Exception):
+        tse.set_reduced_dimension("something", np.random.rand(ncols - 1, 4), in_place=False)
+
+    nassay_tse = tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=False)
+
+    assert nassay_tse.get_reduced_dimension_names() != tse.get_reduced_dimension_names()
+
+    tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=True)
+    assert nassay_tse.get_reduced_dimension_names() == tse.get_reduced_dimension_names()

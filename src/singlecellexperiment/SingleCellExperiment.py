@@ -350,7 +350,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> reduced_dims <<######
     ##############################
 
-    def get_reduced_dims(self) -> Dict[str, Any]:
+    def get_reduced_dimensions(self) -> Dict[str, Any]:
         """Access dimensionality embeddings.
 
         Returns:
@@ -359,7 +359,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._reduced_dims
 
-    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+    def get_reduced_dims(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility."""
+        return self.get_reduced_dimensions()
+
+    def set_reduced_dimensions(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
         """Set new reduced dimensions.
 
         Args:
@@ -379,25 +383,43 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = reduced_dims
         return output
 
+    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+        """Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility."""
+        return self.set_reduced_dimensions(reduced_dims=reduced_dims, in_place=in_place)
+
     @property
     def reduced_dims(self) -> Dict[str, Any]:
-        """Alias for :py:meth:`~get_reduced_dims`."""
-        return self.get_reduced_dims()
+        """Alias for :py:meth:`~get_reduced_dimensions`."""
+        return self.get_reduced_dimensions()
 
     @reduced_dims.setter
     def reduced_dims(self, reduced_dims: Dict[str, Any]):
-        """Alias for :py:meth:`~set_reduced_dims`."""
+        """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
-            "Setting property 'reduced_dims' is an in-place operation, use 'set_reduced_dims' instead",
+            "Setting property 'reduced_dims' is an in-place operation, use 'set_reduced_dimensions' instead",
             UserWarning,
         )
-        self.set_reduced_dims(reduced_dims, in_place=True)
+        self.set_reduced_dimensions(reduced_dims, in_place=True)
+
+    @property
+    def reduced_dimensions(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_reduced_dimensions`."""
+        return self.get_reduced_dimensions()
+
+    @reduced_dimensions.setter
+    def reduced_dimensions(self, reduced_dims: Dict[str, Any]):
+        """Alias for :py:meth:`~set_reduced_dimensions`."""
+        warn(
+            "Setting property 'reduced_dimensions' is an in-place operation, use 'set_reduced_dimensions' instead",
+            UserWarning,
+        )
+        self.set_reduced_dimensions(reduced_dims, in_place=True)
 
     ####################################
     ######>> reduced_dims_names <<######
     ####################################
 
-    def get_reduced_dim_names(self) -> List[str]:
+    def get_reduced_dimension_names(self) -> List[str]:
         """Access reduced dimension names.
 
         Returns:
@@ -405,7 +427,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._reduced_dims.keys())
 
-    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def get_reduced_dim_names(self) -> Dict[str, Any]:
+        """Alias for :py:meth:`~get_reduced_dimension_names`, for back-compatibility."""
+        return self.get_reduced_dimension_names()
+
+    def set_reduced_dimension_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
         """Replace :py:attr:`~.reduced_dims`'s names.
 
         Args:
@@ -431,29 +457,47 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = new_reduced_dims
         return output
 
+    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+        """Alias for :py:meth:`~set_reduced_dimension_names`, for back-compatibility."""
+        return self.set_reduced_dimension_names(names=names, in_place=in_place)
+
     @property
     def reduced_dim_names(self) -> List[str]:
-        """Alias for :py:meth:`~get_reduced_dim_names`."""
-        return self.get_reduced_dim_names()
+        """Alias for :py:meth:`~get_reduced_dimension_names`."""
+        return self.get_reduced_dimension_names()
 
     @reduced_dim_names.setter
     def reduced_dim_names(self, names: List[str]):
-        """Alias for :py:meth:`~set_reduced_dim_names`."""
+        """Alias for :py:meth:`~set_reduced_dimension_names`."""
         warn(
-            "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dim_names' instead",
+            "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dimension_names' instead",
             UserWarning,
         )
-        self.set_reduced_dim_names(names, in_place=True)
+        self.set_reduced_dimension_names(names, in_place=True)
+
+    @property
+    def reduced_dimension_names(self) -> List[str]:
+        """Alias for :py:meth:`~get_reduced_dimension_names`."""
+        return self.get_reduced_dimension_names()
+
+    @reduced_dimension_names.setter
+    def reduced_dimension_names(self, names: List[str]):
+        """Alias for :py:meth:`~set_reduced_dimension_names`."""
+        warn(
+            "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dimension_names' instead",
+            UserWarning,
+        )
+        self.set_reduced_dimension_names(names, in_place=True)
 
     ####################################
     ######>> reduced_dim getter <<######
     ####################################
 
-    def reduced_dim(self, dimension: Union[str, int]) -> Any:
+    def get_reduced_dimension(self, name: Union[str, int]) -> Any:
         """Access an embedding by name.
 
         Args:
-            dimension:
+            name:
                 Name or index position of the reduced dimension.
 
         Raises:
@@ -465,21 +509,53 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Returns:
             The embedding.
         """
-        if isinstance(dimension, int):
-            if dimension < 0:
+        if isinstance(name, int):
+            if name < 0:
                 raise IndexError("Index cannot be negative.")
 
-            if dimension > len(self.reduced_dim_names):
+            if name > len(self.reduced_dim_names):
                 raise IndexError("Index greater than the number of reduced dimensions.")
 
-            return self._reduced_dims[self.reduced_dim_names[dimension]]
-        elif isinstance(dimension, str):
-            if dimension not in self._reduced_dims:
-                raise AttributeError(f"Reduced dimension: {dimension} does not exist.")
+            return self._reduced_dims[self.reduced_dim_names[name]]
+        elif isinstance(name, str):
+            if name not in self._reduced_dims:
+                raise AttributeError(f"Reduced dimension: {name} does not exist.")
 
-            return self._reduced_dims[dimension]
+            return self._reduced_dims[name]
 
-        raise TypeError(f"'dimension' must be a string or integer, provided '{type(dimension)}'.")
+        raise TypeError(f"'dimension' must be a string or integer, provided '{type(name)}'.")
+
+    def reduced_dim(self, name: Union[str, int]) -> Any:
+        """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
+        return self.get_reduced_dimension(name=name)
+
+    def set_reduced_dimension(self, name: str, embedding: Any, in_place: bool = False) -> "SingleCellExperiment":
+        """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.reduced_dimension`'s.
+
+        Args:
+            name:
+                New or existing embedding or dimension name.
+
+            embedding:
+                Embeddings may be represented as a matrix or a data frame, must contain a shape.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``SingleCellExperiment`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        output = self._define_output(in_place)
+
+        _tmp_red_dims = output._reduced_dims
+        if in_place is False:
+            _tmp_red_dims = _tmp_red_dims.copy()
+        _tmp_red_dims[name] = embedding
+
+        _validate_reduced_dims(_tmp_red_dims, self._shape)
+        output._reduced_dims = _tmp_red_dims
+        return output
 
     ################################
     ######>> main_expt_name <<######
@@ -629,7 +705,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiment getter <<######
     ###############################################
 
-    def alternative_experiment(self, name: Union[str, int]) -> Any:
+    def get_alternative_experiment(self, name: Union[str, int]) -> Any:
         """Access alternative experiment by name.
 
         Args:
@@ -660,6 +736,42 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             return self._alternative_experiments[name]
 
         raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
+
+    def alternative_experiment(self, name: Union[str, int]) -> Any:
+        """Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility."""
+        return self.get_alternative_experiment(name=name)
+
+    def set_alternative_experiment(
+        self, name: str, alternative_experiment: Any, in_place: bool = False
+    ) -> "SingleCellExperiment":
+        """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`'s.
+
+        Args:
+            name:
+                New or existing alternative experiment name.
+
+            alternative_experiment:
+                Alternative experiments must contain the same cells (rows) as the primary experiment.
+                Is a subclasses of
+                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+
+            in_place:
+                Whether to modify the ``SingleCellExperiment`` in place.
+
+        Returns:
+            A modified ``BasSingleCellExperimenteSE`` object, either as a copy of the original
+            or as a reference to the (in-place-modified) original.
+        """
+        output = self._define_output(in_place)
+
+        _tmp_alt_expt = output._alternative_experiments
+        if in_place is False:
+            _tmp_alt_expt = _tmp_alt_expt.copy()
+        _tmp_alt_expt[name] = alternative_experiment
+
+        _validate_alternative_experiments(_tmp_alt_expt, self._shape)
+        output._alternative_experiments = _tmp_alt_expt
+        return output
 
     ###########################
     ######>> row_pairs <<######
