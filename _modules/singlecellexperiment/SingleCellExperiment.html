@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.1 documentation</title>
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.1 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -621,9 +621,9 @@
     <span class="c1">######&gt;&gt; reduced_dims &lt;&lt;######</span>
     <span class="c1">##############################</span>
 
-<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dims">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dims">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimensions">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimensions">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access dimensionality embeddings.</span>
 
 <span class="sd">        Returns:</span>
@@ -633,9 +633,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span></div>
 
 
-<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dims">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dims">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dims">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimensions">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new reduced dimensions.</span>
 
 <span class="sd">        Args:</span>
@@ -656,27 +663,48 @@
         <span class="k">return</span> <span class="n">output</span></div>
 
 
+<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dims">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="o">=</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
+
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dims`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dims</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
 
     <span class="nd">@reduced_dims</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dims`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Setting property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dims&#39; instead&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Setting property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
             <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dims</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
+
+    <span class="nd">@reduced_dimensions</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Setting property &#39;reduced_dimensions&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">####################################</span>
     <span class="c1">######&gt;&gt; reduced_dims_names &lt;&lt;######</span>
     <span class="c1">####################################</span>
 
-<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dim_names">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dim_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimension_names">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension_names">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access reduced dimension names.</span>
 
 <span class="sd">        Returns:</span>
@@ -685,9 +713,16 @@
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dim_names">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dim_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dim_names">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dim_names">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimension_names">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension_names">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.reduced_dims`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -714,31 +749,52 @@
         <span class="k">return</span> <span class="n">output</span></div>
 
 
+<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dim_names">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dim_names">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimension_names</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
+
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dim_names`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dim_names</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span>
 
     <span class="nd">@reduced_dim_names</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dim_names`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Renaming names of property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dim_names&#39; instead&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Renaming names of property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimension_names&#39; instead&quot;</span><span class="p">,</span>
             <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dim_names</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimension_names</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span>
+
+    <span class="nd">@reduced_dimension_names</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`.&quot;&quot;&quot;</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Renaming names of property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimension_names&#39; instead&quot;</span><span class="p">,</span>
+            <span class="ne">UserWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimension_names</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">####################################</span>
     <span class="c1">######&gt;&gt; reduced_dim getter &lt;&lt;######</span>
     <span class="c1">####################################</span>
 
-<div class="viewcode-block" id="SingleCellExperiment.reduced_dim">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reduced_dim">[docs]</a>
-    <span class="k">def</span> <span class="nf">reduced_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dimension</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimension">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access an embedding by name.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            dimension:</span>
+<span class="sd">            name:</span>
 <span class="sd">                Name or index position of the reduced dimension.</span>
 
 <span class="sd">        Raises:</span>
@@ -750,21 +806,59 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The embedding.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">dimension</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Index cannot be negative.&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">dimension</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Index greater than the number of reduced dimensions.&quot;</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">[</span><span class="n">dimension</span><span class="p">]]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dimension</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">dimension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced dimension: </span><span class="si">{</span><span class="n">dimension</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced dimension: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">[</span><span class="n">dimension</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;dimension&#39; must be a string or integer, provided &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">dimension</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;dimension&#39; must be a string or integer, provided &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.reduced_dim">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reduced_dim">[docs]</a>
+    <span class="k">def</span> <span class="nf">reduced_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimension">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">embedding</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.reduced_dimension`&#39;s.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name:</span>
+<span class="sd">                New or existing embedding or dimension name.</span>
+
+<span class="sd">            embedding:</span>
+<span class="sd">                Embeddings may be represented as a matrix or a data frame, must contain a shape.</span>
+
+<span class="sd">            in_place:</span>
+<span class="sd">                Whether to modify the ``SingleCellExperiment`` in place.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A modified ``SingleCellExperiment`` object, either as a copy of the original</span>
+<span class="sd">            or as a reference to the (in-place-modified) original.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_define_output</span><span class="p">(</span><span class="n">in_place</span><span class="p">)</span>
+
+        <span class="n">_tmp_red_dims</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">_reduced_dims</span>
+        <span class="k">if</span> <span class="n">in_place</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">_tmp_red_dims</span> <span class="o">=</span> <span class="n">_tmp_red_dims</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">_tmp_red_dims</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">embedding</span>
+
+        <span class="n">_validate_reduced_dims</span><span class="p">(</span><span class="n">_tmp_red_dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">_reduced_dims</span> <span class="o">=</span> <span class="n">_tmp_red_dims</span>
+        <span class="k">return</span> <span class="n">output</span></div>
 
 
     <span class="c1">################################</span>
@@ -933,9 +1027,9 @@
     <span class="c1">######&gt;&gt; alternative_experiment getter &lt;&lt;######</span>
     <span class="c1">###############################################</span>
 
-<div class="viewcode-block" id="SingleCellExperiment.alternative_experiment">
-<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.alternative_experiment">[docs]</a>
-    <span class="k">def</span> <span class="nf">alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment by name.</span>
 
 <span class="sd">        Args:</span>
@@ -966,6 +1060,48 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;name&#39; must be a string or integer, provided &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.alternative_experiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.alternative_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiment</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_alternative_experiment</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">alternative_experiment</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`&#39;s.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name:</span>
+<span class="sd">                New or existing alternative experiment name.</span>
+
+<span class="sd">            alternative_experiment:</span>
+<span class="sd">                Alternative experiments must contain the same cells (rows) as the primary experiment.</span>
+<span class="sd">                Is a subclasses of</span>
+<span class="sd">                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.</span>
+
+<span class="sd">            in_place:</span>
+<span class="sd">                Whether to modify the ``SingleCellExperiment`` in place.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A modified ``BasSingleCellExperimenteSE`` object, either as a copy of the original</span>
+<span class="sd">            or as a reference to the (in-place-modified) original.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_define_output</span><span class="p">(</span><span class="n">in_place</span><span class="p">)</span>
+
+        <span class="n">_tmp_alt_expt</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">_alternative_experiments</span>
+        <span class="k">if</span> <span class="n">in_place</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="n">_tmp_alt_expt</span> <span class="o">=</span> <span class="n">_tmp_alt_expt</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">_tmp_alt_expt</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternative_experiment</span>
+
+        <span class="n">_validate_alternative_experiments</span><span class="p">(</span><span class="n">_tmp_alt_expt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">_alternative_experiments</span> <span class="o">=</span> <span class="n">_tmp_alt_expt</span>
+        <span class="k">return</span> <span class="n">output</span></div>
 
 
     <span class="c1">###########################</span>
@@ -1665,7 +1801,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=b9afe91b"></script>
+</div><script src="../../_static/documentation_options.js?v=8e576371"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
