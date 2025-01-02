@@ -27,6 +27,15 @@ def test_combine_columns(experiments):
     assert len(combined.alternative_experiments) == 0
     assert len(combined.column_data["A"]) == 20
 
+    combined2 = experiments.se_unnamed.combine_columns(
+        experiments.se_unnamed_2
+    )
+    assert combined2 is not None
+    assert isinstance(combined2, SingleCellExperiment)
+    assert len(combined2.alternative_experiments) == 0
+    assert len(combined2.column_data["A"]) == 20
+
+
 
 def test_relaxed_combine_columns(experiments):
     ncols = 10
@@ -47,6 +56,12 @@ def test_relaxed_combine_columns(experiments):
     assert isinstance(combined, SingleCellExperiment)
     assert len(combined.alternative_experiments) == 0
     assert len(combined.row_data["A"]) == 100
+
+    combined2 = experiments.se_unnamed.relaxed_combine_columns(test2)
+    assert combined2 is not None
+    assert isinstance(combined2, SingleCellExperiment)
+    assert len(combined2.alternative_experiments) == 0
+    assert len(combined2.row_data["A"]) == 100
 
 
 def test_combine_with_alts(experiments):
