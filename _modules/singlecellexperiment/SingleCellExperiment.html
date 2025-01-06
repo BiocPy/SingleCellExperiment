@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.2 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.2 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.2 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -252,37 +252,37 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for singlecellexperiment.SingleCellExperiment</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
-<span class="kn">import</span> <span class="nn">biocframe</span>
-<span class="kn">import</span> <span class="nn">biocutils</span> <span class="k">as</span> <span class="nn">ut</span>
-<span class="kn">from</span> <span class="nn">summarizedexperiment._combineutils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">biocframe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">biocutils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ut</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">summarizedexperiment._combineutils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">check_assays_are_equal</span><span class="p">,</span>
     <span class="n">merge_assays</span><span class="p">,</span>
     <span class="n">merge_se_colnames</span><span class="p">,</span>
     <span class="n">merge_se_rownames</span><span class="p">,</span>
     <span class="n">relaxed_merge_assays</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">summarizedexperiment.RangedSummarizedExperiment</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">summarizedexperiment.RangedSummarizedExperiment</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">GRangesOrGRangesList</span><span class="p">,</span>
     <span class="n">RangedSummarizedExperiment</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">._combineutils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._combineutils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">merge_generic</span><span class="p">,</span>
     <span class="n">relaxed_merge_generic</span><span class="p">,</span>
     <span class="n">relaxed_merge_numpy_generic</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">._ioutils</span> <span class="kn">import</span> <span class="n">_to_normal_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._ioutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_to_normal_dict</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">_validate_reduced_dims</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_reduced_dims</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">reduced_dims</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;reduced_dims&#39; cannot be `None`, must be assigned to an empty dictionary.&quot;</span><span class="p">)</span>
 
@@ -299,7 +299,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced dimension: &#39;</span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2">&#39; does not contain embeddings for all cells.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_validate_alternative_experiments</span><span class="p">(</span><span class="n">alternative_experiments</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_alternative_experiments</span><span class="p">(</span><span class="n">alternative_experiments</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">alternative_experiments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;alternative_experiments&#39; cannot be `None`, must be assigned to an empty dictionary.&quot;</span><span class="p">)</span>
 
@@ -317,7 +317,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alternative experiment: &#39;</span><span class="si">{</span><span class="n">alt_name</span><span class="si">}</span><span class="s2">&#39; does not contain same number of&quot;</span> <span class="s2">&quot; cells.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">pairs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Pair is not a dictionary.&quot;</span><span class="p">)</span>
@@ -325,7 +325,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment">[docs]</a>
-<span class="k">class</span> <span class="nc">SingleCellExperiment</span><span class="p">(</span><span class="n">RangedSummarizedExperiment</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SingleCellExperiment</span><span class="p">(</span><span class="n">RangedSummarizedExperiment</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Container class for single-cell experiments, extending</span>
 <span class="sd">    :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for</span>
 <span class="sd">    embeddings and alternative experiments that share the same cells.</span>
@@ -346,7 +346,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.__init__">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">assays</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">row_ranges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GRangesOrGRangesList</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -470,12 +470,12 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.__deepcopy__">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__deepcopy__">[docs]</a>
-    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_nil</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_nil</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            A deep copy of the current ``SingleCellExperiment``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
 
         <span class="n">_assays_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_assays</span><span class="p">)</span>
         <span class="n">_rows_copy</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">)</span>
@@ -509,7 +509,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.__copy__">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__copy__">[docs]</a>
-    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            A shallow copy of the current ``SingleCellExperiment``.</span>
@@ -533,7 +533,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.copy">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.copy">[docs]</a>
-    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~__copy__`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span></div>
 
@@ -544,7 +544,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.__repr__">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__repr__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            A string representation.</span>
@@ -586,7 +586,7 @@
         <span class="k">return</span> <span class="n">output</span></div>
 
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            A pretty-printed string containing the contents of this object.</span>
@@ -623,7 +623,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimensions">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimensions">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access dimensionality embeddings.</span>
 
 <span class="sd">        Returns:</span>
@@ -635,14 +635,14 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_reduced_dims">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dims">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimensions">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new reduced dimensions.</span>
 
 <span class="sd">        Args:</span>
@@ -665,18 +665,18 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dims">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="o">=</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
 
     <span class="nd">@reduced_dims</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
@@ -685,12 +685,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
 
     <span class="nd">@reduced_dimensions</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;reduced_dimensions&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
@@ -704,7 +704,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimension_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access reduced dimension names.</span>
 
 <span class="sd">        Returns:</span>
@@ -715,14 +715,14 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_reduced_dim_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dim_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimension_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.reduced_dims`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -751,18 +751,18 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dim_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dim_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimension_names</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span>
 
     <span class="nd">@reduced_dim_names</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dim_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Renaming names of property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimension_names&#39; instead&quot;</span><span class="p">,</span>
@@ -771,12 +771,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimension_names</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension_names`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension_names</span><span class="p">()</span>
 
     <span class="nd">@reduced_dimension_names</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimension_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimension_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Renaming names of property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimension_names&#39; instead&quot;</span><span class="p">,</span>
@@ -790,7 +790,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_reduced_dimension">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access an embedding by name.</span>
 
 <span class="sd">        Args:</span>
@@ -825,14 +825,14 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.reduced_dim">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reduced_dim">[docs]</a>
-    <span class="k">def</span> <span class="nf">reduced_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimension</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimension">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">embedding</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">embedding</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.reduced_dimension`&#39;s.</span>
 
 <span class="sd">        Args:</span>
@@ -867,7 +867,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_main_experiment_name">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_main_experiment_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access main experiment name.</span>
 
 <span class="sd">        Returns:</span>
@@ -878,7 +878,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_main_experiment_name">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_main_experiment_name">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new experiment data (assays).</span>
 
 <span class="sd">        Args:</span>
@@ -898,12 +898,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_main_experiment_name`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_main_experiment_name</span><span class="p">()</span>
 
     <span class="nd">@main_experiment_name</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">main_experiment_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_main_experiment_name`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;main_experiment_name&#39; is an in-place operation, use &#39;set_main_experiment_name&#39; instead&quot;</span><span class="p">,</span>
@@ -917,7 +917,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiments">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiments">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiments.</span>
 
 <span class="sd">        Returns:</span>
@@ -929,7 +929,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiments">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiments">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_alternative_experiments</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_alternative_experiments</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new alternative experiments.</span>
@@ -952,12 +952,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_alternative_experiments`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiments</span><span class="p">()</span>
 
     <span class="nd">@alternative_experiments</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_alternative_experiments`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;alternative_experiments&#39; is an in-place operation, use &#39;set_alternative_experiments&#39; instead&quot;</span><span class="p">,</span>
@@ -971,7 +971,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiment_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment names.</span>
 
 <span class="sd">        Returns:</span>
@@ -982,7 +982,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiment_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.alternative_experiment`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -1010,12 +1010,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_alternative_experiment_names`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiment_names</span><span class="p">()</span>
 
     <span class="nd">@alternative_experiment_names</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alternative_experiment_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_alternative_experiment_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Renaming names of property &#39;alternative_experiments&#39; is an in-place operation, use &#39;set_alternative_experiment_names&#39; instead&quot;</span><span class="p">,</span>
@@ -1029,7 +1029,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment by name.</span>
 
 <span class="sd">        Args:</span>
@@ -1064,14 +1064,14 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.alternative_experiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.alternative_experiment">[docs]</a>
-    <span class="k">def</span> <span class="nf">alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiment</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_alternative_experiment</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_alternative_experiment</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">alternative_experiment</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`&#39;s.</span>
@@ -1110,7 +1110,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_row_pairs">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pairs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access row pairings/relationships between features.</span>
 
 <span class="sd">        Returns:</span>
@@ -1121,7 +1121,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_row_pairs">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pairs">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.row_pairs`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -1143,12 +1143,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_row_pairs`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_row_pairs</span><span class="p">()</span>
 
     <span class="nd">@row_pairs</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">row_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_row_pairs`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;row_pairs&#39; is an in-place operation, use &#39;set_row_pairs&#39; instead&quot;</span><span class="p">,</span>
@@ -1162,7 +1162,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_row_pair_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access row pair names.</span>
 
 <span class="sd">        Returns:</span>
@@ -1173,7 +1173,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_row_pair_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.row_pair`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -1201,12 +1201,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_row_pair_names`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_row_pair_names</span><span class="p">()</span>
 
     <span class="nd">@row_pair_names</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">row_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_row_pair_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Renaming names of property &#39;row_pairs&#39; is an in-place operation, use &#39;set_row_pair_names&#39; instead&quot;</span><span class="p">,</span>
@@ -1220,7 +1220,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_column_pairs">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pairs">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access column pairings/relationships between cells.</span>
 
 <span class="sd">        Returns:</span>
@@ -1231,7 +1231,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_column_pairs">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pairs">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.column_pairs`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -1253,12 +1253,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_column_pairs`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column_pairs</span><span class="p">()</span>
 
     <span class="nd">@column_pairs</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">column_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_column_pairs`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;column_pairs&#39; is an in-place operation, use &#39;set_column_pairs&#39; instead&quot;</span><span class="p">,</span>
@@ -1272,7 +1272,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_column_pair_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access column pair names.</span>
 
 <span class="sd">        Returns:</span>
@@ -1283,7 +1283,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_column_pair_names">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair_names">[docs]</a>
-    <span class="k">def</span> <span class="nf">set_column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace :py:attr:`~.column_pair`&#39;s names.</span>
 
 <span class="sd">        Args:</span>
@@ -1311,12 +1311,12 @@
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~get_column_pair_names`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column_pair_names</span><span class="p">()</span>
 
     <span class="nd">@column_pair_names</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">column_pair_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_column_pair_names`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Renaming names of property &#39;column_pairs&#39; is an in-place operation, use &#39;set_column_pair_names&#39; instead&quot;</span><span class="p">,</span>
@@ -1332,46 +1332,45 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_slice">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_slice">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_slice</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_slice</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">rows</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]],</span>
         <span class="n">columns</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">]],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:attr:`~__getitem__`, for back-compatibility.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:attr:`~__getitem__`.&quot;&quot;&quot;</span>
 
         <span class="n">slicer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generic_slice</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
+        <span class="n">do_slice_rows</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="ow">and</span> <span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span> <span class="o">==</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+        <span class="n">do_slice_cols</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span><span class="p">,</span> <span class="nb">slice</span><span class="p">)</span> <span class="ow">and</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span> <span class="o">==</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
 
         <span class="n">new_row_ranges</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">do_slice_rows</span><span class="p">:</span>
             <span class="n">new_row_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_ranges</span><span class="p">[</span><span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span><span class="p">]</span>
 
         <span class="n">new_reduced_dims</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">rdim</span><span class="p">,</span> <span class="n">rmat</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">do_slice_cols</span><span class="p">:</span>
                 <span class="n">rmat</span> <span class="o">=</span> <span class="n">rmat</span><span class="p">[</span><span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span><span class="p">,</span> <span class="p">:]</span>
 
             <span class="n">new_reduced_dims</span><span class="p">[</span><span class="n">rdim</span><span class="p">]</span> <span class="o">=</span> <span class="n">rmat</span>
 
         <span class="n">new_alt_expts</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">altname</span><span class="p">,</span> <span class="n">altexpt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
-                <span class="n">altexpt</span> <span class="o">=</span> <span class="n">altexpt</span><span class="p">[</span><span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span><span class="p">,</span> <span class="p">:]</span>
-
-            <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">do_slice_cols</span><span class="p">:</span>
                 <span class="n">altexpt</span> <span class="o">=</span> <span class="n">altexpt</span><span class="p">[:,</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span><span class="p">]</span>
 
             <span class="n">new_alt_expts</span><span class="p">[</span><span class="n">altname</span><span class="p">]</span> <span class="o">=</span> <span class="n">altexpt</span>
 
         <span class="n">new_row_pairs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">rname</span><span class="p">,</span> <span class="n">rpair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_row_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">do_slice_rows</span><span class="p">:</span>
                 <span class="n">rpair</span> <span class="o">=</span> <span class="n">rpair</span><span class="p">[</span><span class="n">slicer</span><span class="o">.</span><span class="n">row_indices</span><span class="p">,</span> <span class="p">:]</span>
 
             <span class="n">new_row_pairs</span><span class="p">[</span><span class="n">rname</span><span class="p">]</span> <span class="o">=</span> <span class="n">rpair</span>
 
         <span class="n">new_col_pairs</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">cname</span><span class="p">,</span> <span class="n">cpair</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_pairs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span> <span class="o">!=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">do_slice_cols</span><span class="p">:</span>
                 <span class="n">cpair</span> <span class="o">=</span> <span class="n">cpair</span><span class="p">[:,</span> <span class="n">slicer</span><span class="o">.</span><span class="n">col_indices</span><span class="p">]</span>
 
             <span class="n">new_col_pairs</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">cpair</span>
@@ -1399,7 +1398,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.to_anndata">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_anndata">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
 
 <span class="sd">        Args:</span>
@@ -1436,7 +1435,7 @@
 <div class="viewcode-block" id="SingleCellExperiment.from_anndata">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.from_anndata">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_anndata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;anndata.AnnData&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_anndata</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="s2">&quot;anndata.AnnData&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a ``SingleCellExperiment`` from :py:class:`~anndata.AnnData`.</span>
 
 <span class="sd">         Args:</span>
@@ -1478,7 +1477,7 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.to_mudata">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_mudata">[docs]</a>
-    <span class="k">def</span> <span class="nf">to_mudata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_mudata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment`` object into :py:class:`~mudata.MuData` representation.</span>
 
 <span class="sd">        If :py:attr:`~main_experiment_name` is `None`, this experiment is called</span>
@@ -1488,7 +1487,7 @@
 <span class="sd">            A MuData object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">mudata</span> <span class="kn">import</span> <span class="n">MuData</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">mudata</span><span class="w"> </span><span class="kn">import</span> <span class="n">MuData</span>
 
         <span class="n">main_data</span><span class="p">,</span> <span class="n">alt_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">(</span><span class="n">include_alternative_experiments</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -1512,28 +1511,28 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.relaxed_combine_rows">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.relaxed_combine_rows">[docs]</a>
-    <span class="k">def</span> <span class="nf">relaxed_combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">relaxed_combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around :py:func:`~relaxed_combine_rows`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">relaxed_combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.relaxed_combine_columns">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.relaxed_combine_columns">[docs]</a>
-    <span class="k">def</span> <span class="nf">relaxed_combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">relaxed_combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around :py:func:`~relaxed_combine_columns`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">relaxed_combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.combine_rows">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.combine_rows">[docs]</a>
-    <span class="k">def</span> <span class="nf">combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around :py:func:`~combine_rows`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">combine_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.combine_columns">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.combine_columns">[docs]</a>
-    <span class="k">def</span> <span class="nf">combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around :py:func:`~combine_columns`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
 </div>
@@ -1548,7 +1547,7 @@
 <div class="viewcode-block" id="combine_rows">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.combine_rows">[docs]</a>
 <span class="nd">@ut</span><span class="o">.</span><span class="n">combine_rows</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine multiple ``SingleCellExperiment`` objects by row.</span>
 
 <span class="sd">    All assays must contain the same assay names. If you need a</span>
@@ -1593,7 +1592,7 @@
 <div class="viewcode-block" id="combine_columns">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.combine_columns">[docs]</a>
 <span class="nd">@ut</span><span class="o">.</span><span class="n">combine_columns</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">combine_columns</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">combine_columns</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Combine multiple ``SingleCellExperiment`` objects by column.</span>
 
 <span class="sd">    All assays must contain the same assay names. If you need a</span>
@@ -1653,7 +1652,7 @@
 <div class="viewcode-block" id="relaxed_combine_rows">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows">[docs]</a>
 <span class="nd">@ut</span><span class="o">.</span><span class="n">relaxed_combine_rows</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">relaxed_combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">relaxed_combine_rows</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A relaxed version of the :py:func:`~biocutils.combine_rows.combine_rows` method for</span>
 <span class="sd">    :py:class:`~SingleCellExperiment` objects.  Whereas ``combine_rows`` expects that all objects have the same columns,</span>
 <span class="sd">    ``relaxed_combine_rows`` allows for different columns. Absent columns in any object are filled in with appropriate</span>
@@ -1700,7 +1699,7 @@
 <div class="viewcode-block" id="relaxed_combine_columns">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.relaxed_combine_columns">[docs]</a>
 <span class="nd">@ut</span><span class="o">.</span><span class="n">relaxed_combine_columns</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">relaxed_combine_columns</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">relaxed_combine_columns</span><span class="p">(</span>
     <span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A relaxed version of the :py:func:`~biocutils.combine_rows.combine_columns` method for</span>
@@ -1762,12 +1761,12 @@
 
 
 <span class="nd">@ut</span><span class="o">.</span><span class="n">extract_row_names</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_rownames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_rownames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">get_row_names</span><span class="p">()</span>
 
 
 <span class="nd">@ut</span><span class="o">.</span><span class="n">extract_column_names</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">SingleCellExperiment</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">_colnames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_colnames_rse</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">SingleCellExperiment</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">()</span>
 </pre></div>
         </article>
@@ -1801,7 +1800,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=8e576371"></script>
+</div><script src="../../_static/documentation_options.js?v=2a2fe768"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
