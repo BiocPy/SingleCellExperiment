@@ -1,10 +1,12 @@
 # Changelog
 
-## Version 0.5.1 - 0.5.2
+## Version 0.5.1 - 0.5.3
 
 - Add wrapper class methods to combine experiments by rows or columns.
 - Expand function names for readability, still backwards compatible with the older function and method names.
 - Add getters and setters to replace a specific alternative experiment or reduced dimension.
+- Fixed an issue with numpy arrays as slice arguments. Code now uses Biocutils's subset functions to perform these operations.
+
 
 ## Version 0.5.0
 
