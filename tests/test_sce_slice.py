@@ -66,6 +66,31 @@ def test_SCE_slice():
 
     assert tse_slice.assay("counts").shape == (10, 3)
 
+def test_SCE_slice_with_numpy():
+    tse = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        reduced_dims={"random_embeds": np.random.rand(ncols, 5)},
+    )
+
+    tse_slice = tse[np.arange(10), 0:3]
+    assert tse_slice is not None
+    assert isinstance(tse_slice, sce)
+
+    assert len(tse_slice.row_data) == 10
+    assert len(tse_slice.col_data) == 3
+
+    assert tse_slice.assay("counts").shape == (10, 3)
+
+    tse_slice = tse[np.arange(10), np.arange(3)]
+    assert tse_slice is not None
+    assert isinstance(tse_slice, sce)
+
+    assert len(tse_slice.row_data) == 10
+    assert len(tse_slice.col_data) == 3
+
+    assert tse_slice.assay("counts").shape == (10, 3)
 
 def test_SCE_creation_with_alts_slice():
     trse = SummarizedExperiment(
@@ -91,4 +116,4 @@ def test_SCE_creation_with_alts_slice():
 
     assert tsce_slice.assay("counts").shape == (10, 3)
     alt_exp = tsce_slice.alternative_experiments["alt"]
-    assert alt_exp.shape == (10, 3)
+    assert alt_exp.shape == (200, 3)

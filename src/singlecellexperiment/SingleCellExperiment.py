@@ -980,41 +980,40 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         rows: Optional[Union[str, int, bool, Sequence]],
         columns: Optional[Union[str, int, bool, Sequence]],
     ) -> "SingleCellExperiment":
-        """Alias for :py:attr:`~__getitem__`, for back-compatibility."""
+        """Alias for :py:attr:`~__getitem__`."""
 
         slicer = self._generic_slice(rows=rows, columns=columns)
+        do_slice_rows = not (isinstance(slicer.row_indices, slice) and slicer.row_indices == slice(None))
+        do_slice_cols = not (isinstance(slicer.col_indices, slice) and slicer.col_indices == slice(None))
 
         new_row_ranges = None
-        if slicer.row_indices != slice(None):
+        if do_slice_rows:
             new_row_ranges = self._row_ranges[slicer.row_indices]
 
         new_reduced_dims = {}
         for rdim, rmat in self._reduced_dims.items():
-            if slicer.col_indices != slice(None):
+            if do_slice_cols:
                 rmat = rmat[slicer.col_indices, :]
 
             new_reduced_dims[rdim] = rmat
 
         new_alt_expts = {}
         for altname, altexpt in self._alternative_experiments.items():
-            if slicer.row_indices != slice(None):
-                altexpt = altexpt[slicer.row_indices, :]
-
-            if slicer.col_indices != slice(None):
+            if do_slice_cols:
                 altexpt = altexpt[:, slicer.col_indices]
 
             new_alt_expts[altname] = altexpt
 
         new_row_pairs = {}
         for rname, rpair in self._row_pairs.items():
-            if slicer.row_indices != slice(None):
+            if do_slice_rows:
                 rpair = rpair[slicer.row_indices, :]
 
             new_row_pairs[rname] = rpair
 
         new_col_pairs = {}
         for cname, cpair in self._column_pairs.items():
-            if slicer.col_indices != slice(None):
+            if do_slice_cols:
                 cpair = cpair[:, slicer.col_indices]
 
             new_col_pairs[cname] = cpair
