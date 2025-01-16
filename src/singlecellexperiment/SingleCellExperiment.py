@@ -1058,22 +1058,24 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         )
 
         if self.reduced_dims is not None:
-            mat = self._reduced_dims
-            if isinstance(mat, DelayedArray) or issubclass(type(mat), DelayedArray):
-                if is_sparse(mat):
-                    warn(
-                        "Converting delayedarray into sparse, may require more memory",
-                        RuntimeWarning,
-                    )
+            nrdims_ = OrderedDict()
+            for dim, mat in self._reduced_dims.items():
+                if isinstance(mat, DelayedArray) or issubclass(type(mat), DelayedArray):
+                    if is_sparse(mat):
+                        warn(
+                            "Converting delayedarray into sparse, may require more memory",
+                            RuntimeWarning,
+                        )
 
-                    mat = to_scipy_sparse_matrix(mat)
-                else:
-                    warn(
-                        "Converting delayedarray into dense, may require more memory",
-                        RuntimeWarning,
-                    )
-                    mat = to_dense_array(mat)
-            obj.obsm = mat
+                        mat = to_scipy_sparse_matrix(mat)
+                    else:
+                        warn(
+                            "Converting delayedarray into dense, may require more memory",
+                            RuntimeWarning,
+                        )
+                        mat = to_dense_array(mat)
+                nrdims_[dim] = mat
+            obj.obsm = nrdims_
 
         if self.row_pairs is not None:
             obj.varp = self.row_pairs
