@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="singlecellexperiment.io package" href="singlecellexperiment.io.html" /><link rel="prev" title="singlecellexperiment" href="modules.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>singlecellexperiment package - SingleCellExperiment 0.5.3 documentation</title>
+        <title>singlecellexperiment package - SingleCellExperiment 0.5.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.5.3 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.5.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -331,14 +331,14 @@ and cannot be set in alternative experiments!</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>assays</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.11/library/typing.html#typing.Dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.11/library/typing.html#typing.Any" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – <p>A dictionary containing matrices, with assay names as keys
 and 2-dimensional matrices represented as either
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a> or <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.15.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a>.</p>
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a> or <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.15.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">spmatrix</span></code></a>.</p>
 <p>Alternatively, you may use any 2-dimensional matrix that has
 the <code class="docutils literal notranslate"><span class="pre">shape</span></code> property and implements the slice operation
 using the <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> dunder method.</p>
 <p>All matrices in assays must be 2-dimensional and have the
 same shape (number of rows, number of columns).</p>
 </p></li>
-<li><p><strong>row_ranges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.11/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRanges.GenomicRanges" title="(in GenomicRanges v0.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code></a>, <a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRangesList.GenomicRangesList" title="(in GenomicRanges v0.5.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRangesList</span></code></a>, <a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Genomic features, must be the same length as the number of rows of
+<li><p><strong>row_ranges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.11/library/typing.html#typing.Union" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRanges.GenomicRanges" title="(in GenomicRanges v0.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code></a>, <a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRangesList.GenomicRangesList" title="(in GenomicRanges v0.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRangesList</span></code></a>, <a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Genomic features, must be the same length as the number of rows of
 the matrices in assays.</p></li>
 <li><p><strong>row_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.11/library/typing.html#typing.Optional" title="(in Python v3.11)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://biocpy.github.io/BiocFrame/api/biocframe.html#biocframe.BiocFrame.BiocFrame" title="(in BiocFrame v0.6.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiocFrame</span></code></a>]</span>) – <p>Features, must be the same length as the number of rows of
 the matrices in assays.</p>
@@ -1105,7 +1105,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.relaxed_combine_rows">
 <span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">relaxed_combine_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#relaxed_combine_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.relaxed_combine_rows" title="Link to this definition">¶</a></dt>
-<dd><p>A relaxed version of the <a class="reference external" href="https://biocpy.github.io/BiocUtils/api/biocutils.html#biocutils.combine_rows.combine_rows" title="(in biocutils v0.2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_rows()</span></code></a> method for
+<dd><p>A relaxed version of the <a class="reference external" href="https://biocpy.github.io/BiocUtils/api/biocutils.html#biocutils.combine_rows.combine_rows" title="(in biocutils v0.2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">combine_rows()</span></code></a> method for
 <a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a> objects.  Whereas <code class="docutils literal notranslate"><span class="pre">combine_rows</span></code> expects that all objects have the same columns,
 <code class="docutils literal notranslate"><span class="pre">relaxed_combine_rows</span></code> allows for different columns. Absent columns in any object are filled in with appropriate
 placeholder values before combining.</p>
@@ -1263,7 +1263,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=2a2fe768"></script>
+</div><script src="../_static/documentation_options.js?v=e1a677a5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
