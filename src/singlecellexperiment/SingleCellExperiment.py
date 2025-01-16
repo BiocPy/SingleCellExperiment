@@ -1050,8 +1050,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         obj = super().to_anndata()
 
+        from delayedarray import to_dense_array
+
         if self.reduced_dims is not None:
-            obj.obsm = self.reduced_dims
+            obj.obsm = to_dense_array(self.reduced_dims)
 
         if self.row_pairs is not None:
             obj.varp = self.row_pairs
