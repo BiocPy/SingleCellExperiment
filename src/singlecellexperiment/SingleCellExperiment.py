@@ -1,4 +1,4 @@
-from collections import Counter, OrderedDict
+from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Sequence, Union
 from warnings import warn
 
@@ -45,7 +45,7 @@ def _validate_reduced_dims(reduced_dims, shape):
             raise ValueError(f"Reduced dimension: '{rdname}' does not contain embeddings for all cells.")
 
 
-def _validate_alternative_experiments(alternative_experiments, shape, column_names):
+def _validate_alternative_experiments(alternative_experiments, shape, column_names, with_dim_names=True):
     if alternative_experiments is None:
         raise ValueError("'alternative_experiments' cannot be `None`, must be assigned to an empty dictionary.")
 
@@ -64,13 +64,12 @@ def _validate_alternative_experiments(alternative_experiments, shape, column_nam
 
         _alt_cnames = alternative_experiment.get_column_names()
         _alt_cnames = None if _alt_cnames is None else list(_alt_cnames)
-        print(column_names, _alt_cnames)
         if _alt_cnames is not None:
-            if len(set(column_names).difference(_alt_cnames)) > 0:
-                raise Exception(f"Column names do not match for alternative_experiment: {alt_name}")
-
-            if Counter(column_names) != Counter(_alt_cnames):
-                raise Exception(f"Column names do not match for alternative_experiment: {alt_name}")
+            if list(column_names) != _alt_cnames:
+                if with_dim_names:
+                    raise Exception(f"Column names do not match for alternative_experiment: {alt_name}")
+                else:
+                    warn(f"Column names do not match for alternative_experiment: {alt_name}", UserWarning)
 
 
 def _validate_pairs(pairs):
@@ -112,6 +111,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         alternative_experiments: Optional[Dict[str, Any]] = None,
         row_pairs: Optional[Any] = None,
         column_pairs: Optional[Any] = None,
+        alternative_experiment_check_dim_names: bool = True,
         validate: bool = True,
     ) -> None:
         """Initialize a single-cell experiment.
@@ -176,6 +176,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 (e.g., sc-atac, crispr) and values as subclasses of
                 :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
+            alternative_experiment_check_dim_names:
+                Whether to check if the column names of the alternative experiment match the column names
+                of the main experiment. This is the equivalent to the ``withDimnames``
+                parameter in the R implementation.
+
+                Defaults to True.
+
             row_pairs:
                 Row pairings/relationships between features.
 
@@ -211,7 +218,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         if validate:
             _validate_reduced_dims(self._reduced_dims, self._shape)
-            _validate_alternative_experiments(self._alternative_experiments, self._shape, self.get_column_names())
+            _validate_alternative_experiments(
+                self._alternative_experiments,
+                self._shape,
+                self.get_column_names(),
+                with_dim_names=alternative_experiment_check_dim_names,
+            )
             _validate_pairs(self._row_pairs)
             _validate_pairs(self._column_pairs)
 
@@ -615,23 +627,41 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiments <<######
     #########################################
 
-    def get_alternative_experiments(self) -> Dict[str, Any]:
+    def get_alternative_experiments(self, with_dim_names: bool = True) -> Dict[str, Any]:
         """Access alternative experiments.
 
+        Args:
+            with_dim_names:
+                Whether to replace the column names of the alternative experiment with the column names
+                of the main experiment. This is the equivalent to the ``withDimnames``
+                parameter in the R implementation.
+
+                Defaults to True.
+
         Returns:
-            A dictionary with names of
-            the experiments as keys and value the experiment.
+            A dictionary with experiment names as keys and value the alternative experiment.
         """
-        return self._alternative_experiments
+        _out = OrderedDict()
+        for name in self.get_alternative_experiment_names():
+            _out[name] = self.get_alternative_experiment(name, with_dim_names=with_dim_names)
+
+        return _out
 
     def set_alternative_experiments(
-        self, alternative_experiments: Dict[str, Any], in_place: bool = False
+        self, alternative_experiments: Dict[str, Any], with_dim_names: bool = True, in_place: bool = False
     ) -> "SingleCellExperiment":
         """Set new alternative experiments.
 
         Args:
             alternative_experiments:
                 New alternative experiments.
+
+            with_dim_names:
+                Whether to check if the column names of the alternative experiment match the column names
+                of the main experiment. This is the equivalent to the ``withDimnames``
+                parameter in the R implementation.
+
+                Defaults to True.
 
             in_place:
                 Whether to modify the ``SingleCellExperiment`` in place.
@@ -640,7 +670,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object, either as a copy of the original
             or as a reference to the (in-place-modified) original.
         """
-        _validate_alternative_experiments(alternative_experiments, self.shape, self.get_column_names())
+        _validate_alternative_experiments(
+            alternative_experiments, self.shape, self.get_column_names(), with_dim_names=with_dim_names
+        )
         output = self._define_output(in_place)
         output._alternative_experiments = alternative_experiments
         return output
@@ -715,12 +747,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiment getter <<######
     ###############################################
 
-    def get_alternative_experiment(self, name: Union[str, int]) -> Any:
+    def get_alternative_experiment(self, name: Union[str, int], with_dim_names: bool = True) -> Any:
         """Access alternative experiment by name.
 
         Args:
             name:
                 Name or index position of the alternative experiment.
+
+            with_dim_names:
+                Whether to replace the column names of the alternative experiment with the column names
+                of the main experiment. This is the equivalent to the ``withDimnames``
+                parameter in the R implementation.
+
+                Defaults to True.
 
         Raises:
             AttributeError:
@@ -731,6 +770,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Returns:
             The alternative experiment.
         """
+        _out = None
+
         if isinstance(name, int):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
@@ -738,21 +779,26 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if name > len(self.alternative_experiment_names):
                 raise IndexError("Index greater than the number of alternative experiments.")
 
-            return self._alternative_experiments[self.alternative_experiment_names[name]]
+            _out = self._alternative_experiments[self.alternative_experiment_names[name]]
         elif isinstance(name, str):
             if name not in self._alternative_experiments:
                 raise AttributeError(f"Alternative experiment: {name} does not exist.")
 
-            return self._alternative_experiments[name]
+            _out = self._alternative_experiments[name]
+        else:
+            raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
 
-        raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
+        if with_dim_names:
+            _out = _out.set_column_names(self.get_column_names())
+
+        return _out
 
     def alternative_experiment(self, name: Union[str, int]) -> Any:
         """Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility."""
         return self.get_alternative_experiment(name=name)
 
     def set_alternative_experiment(
-        self, name: str, alternative_experiment: Any, in_place: bool = False
+        self, name: str, alternative_experiment: Any, with_dim_names: bool = True, in_place: bool = False
     ) -> "SingleCellExperiment":
         """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`'s.
 
@@ -764,6 +810,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 Alternative experiments must contain the same cells (rows) as the primary experiment.
                 Is a subclasses of
                 :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+
+            with_dim_names:
+                Whether to check if the column names of the alternative experiment match the column names
+                of the main experiment. This is the equivalent to the ``withDimnames``
+                parameter in the R implementation.
+
+                Defaults to True.
 
             in_place:
                 Whether to modify the ``SingleCellExperiment`` in place.
@@ -779,7 +832,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             _tmp_alt_expt = _tmp_alt_expt.copy()
         _tmp_alt_expt[name] = alternative_experiment
 
-        _validate_alternative_experiments(_tmp_alt_expt, self._shape, self.get_column_names())
+        _validate_alternative_experiments(
+            _tmp_alt_expt, self._shape, self.get_column_names(), with_dim_names=with_dim_names
+        )
         output._alternative_experiments = _tmp_alt_expt
         return output
 
