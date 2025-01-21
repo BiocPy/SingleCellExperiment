@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.5 documentation</title>
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.5.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.5 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.5.6 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.5 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.6 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -299,7 +299,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reduced dimension: &#39;</span><span class="si">{</span><span class="n">rdname</span><span class="si">}</span><span class="s2">&#39; does not contain embeddings for all cells.&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_validate_alternative_experiments</span><span class="p">(</span><span class="n">alternative_experiments</span><span class="p">,</span> <span class="n">shape</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_alternative_experiments</span><span class="p">(</span><span class="n">alternative_experiments</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">column_names</span><span class="p">,</span> <span class="n">with_dim_names</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">alternative_experiments</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;alternative_experiments&#39; cannot be `None`, must be assigned to an empty dictionary.&quot;</span><span class="p">)</span>
 
@@ -315,6 +315,15 @@
 
         <span class="k">if</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">alternative_experiment</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alternative experiment: &#39;</span><span class="si">{</span><span class="n">alt_name</span><span class="si">}</span><span class="s2">&#39; does not contain same number of&quot;</span> <span class="s2">&quot; cells.&quot;</span><span class="p">)</span>
+
+        <span class="n">_alt_cnames</span> <span class="o">=</span> <span class="n">alternative_experiment</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">()</span>
+        <span class="n">_alt_cnames</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">_alt_cnames</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">_alt_cnames</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_alt_cnames</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">list</span><span class="p">(</span><span class="n">column_names</span><span class="p">)</span> <span class="o">!=</span> <span class="n">_alt_cnames</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">with_dim_names</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column names do not match for alternative_experiment: </span><span class="si">{</span><span class="n">alt_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column names do not match for alternative_experiment: </span><span class="si">{</span><span class="n">alt_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_validate_pairs</span><span class="p">(</span><span class="n">pairs</span><span class="p">):</span>
@@ -360,6 +369,7 @@
         <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">row_pairs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">column_pairs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">alternative_experiment_check_dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize a single-cell experiment.</span>
@@ -424,6 +434,13 @@
 <span class="sd">                (e.g., sc-atac, crispr) and values as subclasses of</span>
 <span class="sd">                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.</span>
 
+<span class="sd">            alternative_experiment_check_dim_names:</span>
+<span class="sd">                Whether to check if the column names of the alternative experiment match the column names</span>
+<span class="sd">                of the main experiment. This is the equivalent to the ``withDimnames``</span>
+<span class="sd">                parameter in the R implementation.</span>
+
+<span class="sd">                Defaults to True.</span>
+
 <span class="sd">            row_pairs:</span>
 <span class="sd">                Row pairings/relationships between features.</span>
 
@@ -459,7 +476,12 @@
 
         <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
             <span class="n">_validate_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
-            <span class="n">_validate_alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+            <span class="n">_validate_alternative_experiments</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">(),</span>
+                <span class="n">with_dim_names</span><span class="o">=</span><span class="n">alternative_experiment_check_dim_names</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">_validate_pairs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_pairs</span><span class="p">)</span>
             <span class="n">_validate_pairs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_pairs</span><span class="p">)</span></div>
 
@@ -917,26 +939,44 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiments">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiments">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiments.</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">            with_dim_names:</span>
+<span class="sd">                Whether to replace the column names of the alternative experiment with the column names</span>
+<span class="sd">                of the main experiment. This is the equivalent to the ``withDimnames``</span>
+<span class="sd">                parameter in the R implementation.</span>
+
+<span class="sd">                Defaults to True.</span>
+
 <span class="sd">        Returns:</span>
-<span class="sd">            A dictionary with names of</span>
-<span class="sd">            the experiments as keys and value the experiment.</span>
+<span class="sd">            A dictionary with experiment names as keys and value the alternative experiment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span></div>
+        <span class="n">_out</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiment_names</span><span class="p">():</span>
+            <span class="n">_out</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alternative_experiment</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">with_dim_names</span><span class="o">=</span><span class="n">with_dim_names</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_out</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiments">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiments">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_alternative_experiments</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">alternative_experiments</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">with_dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new alternative experiments.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            alternative_experiments:</span>
 <span class="sd">                New alternative experiments.</span>
+
+<span class="sd">            with_dim_names:</span>
+<span class="sd">                Whether to check if the column names of the alternative experiment match the column names</span>
+<span class="sd">                of the main experiment. This is the equivalent to the ``withDimnames``</span>
+<span class="sd">                parameter in the R implementation.</span>
+
+<span class="sd">                Defaults to True.</span>
 
 <span class="sd">            in_place:</span>
 <span class="sd">                Whether to modify the ``SingleCellExperiment`` in place.</span>
@@ -945,7 +985,9 @@
 <span class="sd">            A modified ``SingleCellExperiment`` object, either as a copy of the original</span>
 <span class="sd">            or as a reference to the (in-place-modified) original.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_validate_alternative_experiments</span><span class="p">(</span><span class="n">alternative_experiments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">_validate_alternative_experiments</span><span class="p">(</span>
+            <span class="n">alternative_experiments</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">(),</span> <span class="n">with_dim_names</span><span class="o">=</span><span class="n">with_dim_names</span>
+        <span class="p">)</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_define_output</span><span class="p">(</span><span class="n">in_place</span><span class="p">)</span>
         <span class="n">output</span><span class="o">.</span><span class="n">_alternative_experiments</span> <span class="o">=</span> <span class="n">alternative_experiments</span>
         <span class="k">return</span> <span class="n">output</span></div>
@@ -1029,12 +1071,19 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.get_alternative_experiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alternative_experiment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">with_dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Access alternative experiment by name.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name:</span>
 <span class="sd">                Name or index position of the alternative experiment.</span>
+
+<span class="sd">            with_dim_names:</span>
+<span class="sd">                Whether to replace the column names of the alternative experiment with the column names</span>
+<span class="sd">                of the main experiment. This is the equivalent to the ``withDimnames``</span>
+<span class="sd">                parameter in the R implementation.</span>
+
+<span class="sd">                Defaults to True.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            AttributeError:</span>
@@ -1045,6 +1094,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The alternative experiment.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_out</span> <span class="o">=</span> <span class="kc">None</span>
+
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">name</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Index cannot be negative.&quot;</span><span class="p">)</span>
@@ -1052,14 +1103,19 @@
             <span class="k">if</span> <span class="n">name</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;Index greater than the number of alternative experiments.&quot;</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
+            <span class="n">_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">[</span><span class="n">name</span><span class="p">]]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alternative experiment: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;name&#39; must be a string or integer, provided &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;name&#39; must be a string or integer, provided &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">with_dim_names</span><span class="p">:</span>
+            <span class="n">_out</span> <span class="o">=</span> <span class="n">_out</span><span class="o">.</span><span class="n">set_column_names</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">_out</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.alternative_experiment">
@@ -1072,7 +1128,7 @@
 <div class="viewcode-block" id="SingleCellExperiment.set_alternative_experiment">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_alternative_experiment</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">alternative_experiment</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">alternative_experiment</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">with_dim_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`&#39;s.</span>
 
@@ -1084,6 +1140,13 @@
 <span class="sd">                Alternative experiments must contain the same cells (rows) as the primary experiment.</span>
 <span class="sd">                Is a subclasses of</span>
 <span class="sd">                :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.</span>
+
+<span class="sd">            with_dim_names:</span>
+<span class="sd">                Whether to check if the column names of the alternative experiment match the column names</span>
+<span class="sd">                of the main experiment. This is the equivalent to the ``withDimnames``</span>
+<span class="sd">                parameter in the R implementation.</span>
+
+<span class="sd">                Defaults to True.</span>
 
 <span class="sd">            in_place:</span>
 <span class="sd">                Whether to modify the ``SingleCellExperiment`` in place.</span>
@@ -1099,7 +1162,9 @@
             <span class="n">_tmp_alt_expt</span> <span class="o">=</span> <span class="n">_tmp_alt_expt</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">_tmp_alt_expt</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">alternative_experiment</span>
 
-        <span class="n">_validate_alternative_experiments</span><span class="p">(</span><span class="n">_tmp_alt_expt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">)</span>
+        <span class="n">_validate_alternative_experiments</span><span class="p">(</span>
+            <span class="n">_tmp_alt_expt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column_names</span><span class="p">(),</span> <span class="n">with_dim_names</span><span class="o">=</span><span class="n">with_dim_names</span>
+        <span class="p">)</span>
         <span class="n">output</span><span class="o">.</span><span class="n">_alternative_experiments</span> <span class="o">=</span> <span class="n">_tmp_alt_expt</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
@@ -1824,7 +1889,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=45def3bc"></script>
+</div><script src="../../_static/documentation_options.js?v=722679d6"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
