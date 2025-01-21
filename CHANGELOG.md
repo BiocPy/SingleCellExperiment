@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.5.4
+## Version 0.5.6
 
 - Check if the column names of the alternative experiments match with the column names of the main experiment. This is the equivalent to the ``withDimnames`` parameter in the R implementation.
   - On **getters** of alternative experiments, if `with_dim_names` is True, column names of the alternative experiment are **replaced** with the
@@ -8,7 +8,7 @@
   - On **setters** of alternative experiments, if `with_dim_names` is True, column names of the alternative experiment are **checked** with the
   column names of the main experiment and an Exception is raised if they do not match.
 
-## Version 0.5.1 - 0.5.3
+## Version 0.5.1 - 0.5.5
 
 - Add wrapper class methods to combine experiments by rows or columns.
 - Expand function names for readability, still backwards compatible with the older function and method names.
