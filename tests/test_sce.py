@@ -143,3 +143,32 @@ def test_SCE_creation_modifications():
 
     tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=True)
     assert nassay_tse.get_reduced_dimension_names() == tse.get_reduced_dimension_names()
+
+def test_SCE_different_alt_names():
+    rse = SummarizedExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=pd.DataFrame(index = ["ChIP"] * 6 )
+    )
+
+    with pytest.raises(Exception):
+        tse = SingleCellExperiment(
+            assays={"counts": counts},
+            row_data=row_data,
+            column_data=col_data,
+            alternative_experiments={"alt": rse},
+        )
+
+    with pytest.raises(Exception):
+        tse = SingleCellExperiment(
+            assays={"counts": counts},
+            row_data=row_data,
+            column_data=pd.DataFrame(index = ["ChIP", "Input"] * 3),
+            alternative_experiments={"alt": rse},
+        )
+
+    with pytest.raises(Exception):
+        tse = SingleCellExperiment(
+            assays={"counts": counts},
+            row_data=row_data,
+            column_data=pd.DataFrame(index = ["ChIP", "Input", "Input"] * 2),
+            alternative_experiments={"alt": rse},
+        )

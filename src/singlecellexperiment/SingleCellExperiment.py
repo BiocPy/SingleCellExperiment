@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 from typing import Any, Dict, List, Optional, Sequence, Union
 from warnings import warn
 
@@ -45,7 +45,7 @@ def _validate_reduced_dims(reduced_dims, shape):
             raise ValueError(f"Reduced dimension: '{rdname}' does not contain embeddings for all cells.")
 
 
-def _validate_alternative_experiments(alternative_experiments, shape):
+def _validate_alternative_experiments(alternative_experiments, shape, column_names):
     if alternative_experiments is None:
         raise ValueError("'alternative_experiments' cannot be `None`, must be assigned to an empty dictionary.")
 
@@ -61,6 +61,16 @@ def _validate_alternative_experiments(alternative_experiments, shape):
 
         if shape[1] != alternative_experiment.shape[1]:
             raise ValueError(f"Alternative experiment: '{alt_name}' does not contain same number of" " cells.")
+
+        _alt_cnames = alternative_experiment.get_column_names()
+        _alt_cnames = None if _alt_cnames is None else list(_alt_cnames)
+        print(column_names, _alt_cnames)
+        if _alt_cnames is not None:
+            if len(set(column_names).difference(_alt_cnames)) > 0:
+                raise Exception(f"Column names do not match for alternative_experiment: {alt_name}")
+
+            if Counter(column_names) != Counter(_alt_cnames):
+                raise Exception(f"Column names do not match for alternative_experiment: {alt_name}")
 
 
 def _validate_pairs(pairs):
@@ -201,7 +211,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         if validate:
             _validate_reduced_dims(self._reduced_dims, self._shape)
-            _validate_alternative_experiments(self._alternative_experiments, self._shape)
+            _validate_alternative_experiments(self._alternative_experiments, self._shape, self.get_column_names())
             _validate_pairs(self._row_pairs)
             _validate_pairs(self._column_pairs)
 
@@ -630,7 +640,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object, either as a copy of the original
             or as a reference to the (in-place-modified) original.
         """
-        _validate_alternative_experiments(alternative_experiments, self.shape)
+        _validate_alternative_experiments(alternative_experiments, self.shape, self.get_column_names())
         output = self._define_output(in_place)
         output._alternative_experiments = alternative_experiments
         return output
@@ -769,7 +779,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             _tmp_alt_expt = _tmp_alt_expt.copy()
         _tmp_alt_expt[name] = alternative_experiment
 
-        _validate_alternative_experiments(_tmp_alt_expt, self._shape)
+        _validate_alternative_experiments(_tmp_alt_expt, self._shape, self.get_column_names())
         output._alternative_experiments = _tmp_alt_expt
         return output
 
