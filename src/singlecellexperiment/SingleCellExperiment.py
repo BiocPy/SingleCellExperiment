@@ -38,7 +38,7 @@ def _validate_reduced_dims(reduced_dims, shape):
     for rdname, mat in reduced_dims.items():
         if not hasattr(mat, "shape"):
             raise TypeError(
-                f"Reduced dimension: '{rdname}' must be a matrix-like object." "Does not contain a `shape` property."
+                f"Reduced dimension: '{rdname}' must be a matrix-like object.Does not contain a `shape` property."
             )
 
         if shape[1] != mat.shape[0]:
@@ -60,7 +60,7 @@ def _validate_alternative_experiments(alternative_experiments, shape, column_nam
             )
 
         if shape[1] != alternative_experiment.shape[1]:
-            raise ValueError(f"Alternative experiment: '{alt_name}' does not contain same number of" " cells.")
+            raise ValueError(f"Alternative experiment: '{alt_name}' does not contain same number of cells.")
 
         _alt_cnames = alternative_experiment.get_column_names()
         _alt_cnames = None if _alt_cnames is None else list(_alt_cnames)
