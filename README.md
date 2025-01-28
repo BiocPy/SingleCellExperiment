@@ -17,7 +17,7 @@ pip install singlecellexperiment
 
 ## Usage
 
-The `SingleCellExperiment` extends [RangeSummarizedExperiment](https://github.com/BiocPy/SummarizedExperiment) and contains additional attributes:
+The `SingleCellExperiment` extends [RangedSummarizedExperiment](https://github.com/BiocPy/SummarizedExperiment) and contains additional attributes:
 
 - `reduced_dims`: Slot for low-dimensionality embeddings for each cell.
 - `alternative_experiments`: Manages multi-modal experiments performed on the same sample or set of cells.
@@ -57,7 +57,7 @@ tse = SingleCellExperiment(
 )
 ```
 
-Since `SingleCellExperiment` extends `RangeSummarizedExperiment`, most methods especially slicing and accessors are applicable here.
+Since `SingleCellExperiment` extends `RangedSummarizedExperiment`, most methods especially slicing and accessors are inherited from the parent classes.
 Checkout the [documentation](https://biocpy.github.io/SingleCellExperiment/) for more info.
 
 <!-- pyscaffold-notes -->
