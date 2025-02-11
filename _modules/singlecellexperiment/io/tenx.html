@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.5.6 documentation</title>
+        <title>singlecellexperiment.io.tenx - SingleCellExperiment 0.5.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.5.6 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">SingleCellExperiment 0.5.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -252,14 +252,15 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for singlecellexperiment.io.tenx</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">biocframe</span><span class="w"> </span><span class="kn">import</span> <span class="n">BiocFrame</span><span class="p">,</span> <span class="n">from_pandas</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..SingleCellExperiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleCellExperiment</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche, keviny2&quot;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche, keviny2&quot;</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
@@ -273,8 +274,9 @@
 <span class="sd">            Path to 10X MTX directory.</span>
 
 <span class="sd">            Directory must contain `matrix.mtx`, and optionally</span>
-<span class="sd">            a `genes.tsv` to represent featires and `barcodes.tsv` for cell</span>
-<span class="sd">            annotations.</span>
+<span class="sd">            `genes.tsv` (CellRanger version 2) or</span>
+<span class="sd">            `features.tsv` (CellRanger version 3 and later) to</span>
+<span class="sd">            represent features and `barcodes.tsv` for cell annotations.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A single-cell experiment object.</span>
@@ -287,7 +289,18 @@
     <span class="n">mat</span> <span class="o">=</span> <span class="n">mmread</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/matrix.mtx&quot;</span><span class="p">)</span>
     <span class="n">mat</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
 
-    <span class="n">genes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/genes.tsv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">features_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/features.tsv&quot;</span>
+    <span class="n">genes_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/genes.tsv&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">features_path</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">genes_path</span><span class="p">):</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;Both &#39;features.tsv&#39; and &#39;genes.tsv&#39; files are present in the directory. &quot;</span>
+            <span class="s2">&quot;Prioritizing &#39;features.tsv&#39; for processing.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">features_path</span><span class="p">):</span>
+        <span class="n">genes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">features_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">genes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">genes_path</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">genes</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gene_ids&quot;</span><span class="p">,</span> <span class="s2">&quot;gene_symbols&quot;</span><span class="p">]</span>
 
     <span class="n">cells</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/barcodes.tsv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -402,7 +415,7 @@
       
     </aside>
   </div>
-</div><script src="../../../_static/documentation_options.js?v=722679d6"></script>
+</div><script src="../../../_static/documentation_options.js?v=d65efdcf"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>

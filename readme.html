@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>SingleCellExperiment - SingleCellExperiment 0.5.6 documentation</title>
+        <title>SingleCellExperiment - SingleCellExperiment 0.5.7 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.5.6 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.5.7 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.6 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.7 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -273,7 +273,7 @@
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <a class="reference external" href="https://github.com/BiocPy/SummarizedExperiment">RangeSummarizedExperiment</a> and contains additional attributes:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <a class="reference external" href="https://github.com/BiocPy/SummarizedExperiment">RangedSummarizedExperiment</a> and contains additional attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">reduced_dims</span></code>: Slot for low-dimensionality embeddings for each cell.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">alternative_experiments</span></code>: Manages multi-modal experiments performed on the same sample or set of cells.</p></li>
@@ -310,7 +310,7 @@ metadata(2): O_recarray nested
 <span class="p">)</span>
 </pre></div>
 </div>
-<p>Since <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">RangeSummarizedExperiment</span></code>, most methods especially slicing and accessors are applicable here.
+<p>Since <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> extends <code class="docutils literal notranslate"><span class="pre">RangedSummarizedExperiment</span></code>, most methods especially slicing and accessors are inherited from the parent classes.
 Checkout the <a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/">documentation</a> for more info.</p>
 <!-- pyscaffold-notes -->
 </section>
@@ -373,7 +373,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=722679d6"></script>
+</div><script src="_static/documentation_options.js?v=d65efdcf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>
