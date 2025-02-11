@@ -12,8 +12,8 @@ import singlecellexperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 from hdf5array import Hdf5CompressedSparseMatrix
 
-__author__ = "jkanche"
-__copyright__ = "jkanche"
+__author__ = "jkanche, keviny2"
+__copyright__ = "jkanche, keviny2"
 __license__ = "MIT"
 
 
@@ -69,6 +69,29 @@ def test_SCE_to_anndata():
 
 def test_SCE_fromH5AD():
     tse = singlecellexperiment.read_h5ad("tests/data/adata.h5ad")
+
+    assert tse is not None
+    assert isinstance(tse, SingleCellExperiment)
+
+    assert tse.assays is not None
+    assert tse.row_data is not None
+    assert tse.col_data is not None
+
+    # slice
+    sliced = tse[0:10, 1:5]
+
+    assert sliced is not None
+    assert isinstance(sliced, SingleCellExperiment)
+
+    assert sliced.assays is not None
+    assert sliced.row_data is not None
+    assert sliced.col_data is not None
+
+    assert sliced.shape == (10, 4)
+
+
+def test_SCE_from10x_mtx():
+    tse = singlecellexperiment.read_tenx_mtx("tests/data/raw_feature_bc_matrix")
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)

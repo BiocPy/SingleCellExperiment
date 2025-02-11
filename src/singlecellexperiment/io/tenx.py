@@ -1,11 +1,12 @@
+import os
 from warnings import warn
 
 from biocframe import BiocFrame, from_pandas
 
 from ..SingleCellExperiment import SingleCellExperiment
 
-__author__ = "jkanche"
-__copyright__ = "jkanche"
+__author__ = "jkanche, keviny2"
+__copyright__ = "jkanche, keviny2"
 __license__ = "MIT"
 
 
@@ -17,8 +18,9 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
             Path to 10X MTX directory.
 
             Directory must contain `matrix.mtx`, and optionally
-            a `genes.tsv` to represent featires and `barcodes.tsv` for cell
-            annotations.
+            `genes.tsv` (CellRanger version 2) or
+            `features.tsv` (CellRanger version 3 and later) to
+            represent features and `barcodes.tsv` for cell annotations.
 
     Returns:
         A single-cell experiment object.
@@ -31,7 +33,18 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     mat = mmread(f"{path}/matrix.mtx")
     mat = csr_matrix(mat)
 
-    genes = pd.read_csv(path + "/genes.tsv", header=None, sep="\t")
+    features_path = path + "/features.tsv"
+    genes_path = path + "/genes.tsv"
+    if os.path.exists(features_path) and os.path.exists(genes_path):
+        warn(
+            "Both 'features.tsv' and 'genes.tsv' files are present in the directory. "
+            "Prioritizing 'features.tsv' for processing."
+        )
+
+    if os.path.exists(features_path):
+        genes = pd.read_csv(features_path, header=None, sep="\t", usecols=[0, 1])
+    else:
+        genes = pd.read_csv(genes_path, header=None, sep="\t")
     genes.columns = ["gene_ids", "gene_symbols"]
 
     cells = pd.read_csv(path + "/barcodes.tsv", header=None, sep="\t")
