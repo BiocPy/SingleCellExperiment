@@ -19,8 +19,8 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
 
             Directory must contain `matrix.mtx`, and optionally
             `genes.tsv` (CellRanger version 2) or
-            `features.tsv` (CellRanger version 3) to represent features
-            and `barcodes.tsv` for cell annotations.
+            `features.tsv` (CellRanger version 3 and later) to
+            represent features and `barcodes.tsv` for cell annotations.
 
     Returns:
         A single-cell experiment object.
