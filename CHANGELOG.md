@@ -2,6 +2,8 @@
 
 ## Version 0.5.6
 
+- Support reading outputs from CellRanger version 3 and later in `read_tenx_mtx`.
+  - Handle both `genes.csv` and `features.csv` for gene annotations.
 - Check if the column names of the alternative experiments match with the column names of the main experiment. This is the equivalent to the ``withDimnames`` parameter in the R implementation.
   - On **getters** of alternative experiments, if `with_dim_names` is True, column names of the alternative experiment are **replaced** with the
   column names of the main experiment.

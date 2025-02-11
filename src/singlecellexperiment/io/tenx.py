@@ -36,7 +36,10 @@ def read_tenx_mtx(path: str) -> SingleCellExperiment:
     features_path = path + "/features.tsv"
     genes_path = path + "/genes.tsv"
     if os.path.exists(features_path) and os.path.exists(genes_path):
-        warn("features.tsv and genes.tsv both exist. using features.tsv.")
+        warn(
+            "Both 'features.tsv' and 'genes.tsv' files are present in the directory. "
+            "Prioritizing 'features.tsv' for processing."
+        )
 
     if os.path.exists(features_path):
         genes = pd.read_csv(features_path, header=None, sep="\t", usecols=[0, 1])
