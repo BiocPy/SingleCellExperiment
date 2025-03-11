@@ -1,16 +1,22 @@
 # Changelog
 
+## Version 0.5.8
+
+- Rename `reduced_dims` to `reduced_dimensions`. Constructor accepts both these arguments for backwards compatibility.
+- Additionally, SCE's constructor takes kwargs for future proofing any additional attributes in the upstream classes.
+
 ## Version 0.5.7
+
 - Support reading outputs from CellRanger version 3 and later in `read_tenx_mtx`.
   - Handle both `genes.csv` and `features.csv` for gene annotations.
 
 ## Version 0.5.6
 
-- Check if the column names of the alternative experiments match with the column names of the main experiment. This is the equivalent to the ``withDimnames`` parameter in the R implementation.
+- Check if the column names of the alternative experiments match with the column names of the main experiment. This is the equivalent to the `withDimnames` parameter in the R implementation.
   - On **getters** of alternative experiments, if `with_dim_names` is True, column names of the alternative experiment are **replaced** with the
-  column names of the main experiment.
+    column names of the main experiment.
   - On **setters** of alternative experiments, if `with_dim_names` is True, column names of the alternative experiment are **checked** with the
-  column names of the main experiment and an Exception is raised if they do not match.
+    column names of the main experiment and an Exception is raised if they do not match.
 
 ## Version 0.5.1 - 0.5.5
 
@@ -18,7 +24,6 @@
 - Expand function names for readability, still backwards compatible with the older function and method names.
 - Add getters and setters to replace a specific alternative experiment or reduced dimension.
 - Fixed an issue with numpy arrays as slice arguments. Code now uses Biocutils's subset functions to perform these operations.
-
 
 ## Version 0.5.0
 
