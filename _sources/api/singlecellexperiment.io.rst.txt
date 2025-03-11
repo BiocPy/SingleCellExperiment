@@ -9,21 +9,21 @@ singlecellexperiment.io.h5ad module
 
 .. automodule:: singlecellexperiment.io.h5ad
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 singlecellexperiment.io.tenx module
 -----------------------------------
 
 .. automodule:: singlecellexperiment.io.tenx
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: singlecellexperiment.io
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

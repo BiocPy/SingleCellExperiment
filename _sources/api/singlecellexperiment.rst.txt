@@ -17,13 +17,13 @@ singlecellexperiment.SingleCellExperiment module
 
 .. automodule:: singlecellexperiment.SingleCellExperiment
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: singlecellexperiment
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
