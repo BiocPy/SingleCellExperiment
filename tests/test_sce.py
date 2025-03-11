@@ -172,3 +172,48 @@ def test_SCE_different_alt_names():
             column_data=pd.DataFrame(index = ["ChIP", "Input", "Input"] * 2),
             alternative_experiments={"alt": rse},
         )
+
+def test_SCE_dims():
+    embeds = np.random.rand(counts.shape[1], 4)
+    tse = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        reduced_dimensions={
+            "something": embeds
+        }
+    )
+
+    assert tse is not None
+    assert isinstance(tse, sce)
+    assert tse.get_reduced_dimension_names() == ["something"]
+
+    tse2 = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        reduced_dims={
+            "something": embeds
+        }
+    )
+
+    assert tse2 is not None
+    assert isinstance(tse2, sce)
+    assert tse2.get_reduced_dimension_names() == ["something"]
+
+    print(tse.get_reduced_dimension("something"), tse2.get_reduced_dimension("something"))
+
+    assert np.allclose(tse.get_reduced_dimension("something"), tse2.get_reduced_dimension("something"))
+
+    with pytest.raises(Exception, match="Either 'reduced_dims' or 'reduced_dimensions' should be provided, but not both."):
+        SingleCellExperiment(
+            assays={"counts": counts},
+            row_data=row_data,
+            column_data=col_data,
+            reduced_dims={
+                "something": embeds
+            },
+            reduced_dimensions={
+                "something": embeds
+            }
+        )

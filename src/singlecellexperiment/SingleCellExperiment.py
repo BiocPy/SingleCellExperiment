@@ -94,7 +94,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     parent experiment. Otherwise, these cells do not share the same sample or annotations
     and cannot be set in alternative experiments!
 
-    Note: Validation checks do not apply to ``row_pairs`` or ``col_pairs``.
+    Note: Validation checks do not apply to ``row_pairs`` or ``column_pairs``.
     """
 
     def __init__(
@@ -106,13 +106,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         row_names: Optional[List[str]] = None,
         column_names: Optional[List[str]] = None,
         metadata: Optional[dict] = None,
-        reduced_dims: Optional[Dict[str, Any]] = None,
+        reduced_dimensions: Optional[Dict[str, Any]] = None,
+        reduced_dims: Optional[Dict[str, Any]] = None,  # deprecated name
         main_experiment_name: Optional[str] = None,
         alternative_experiments: Optional[Dict[str, Any]] = None,
         row_pairs: Optional[Any] = None,
         column_pairs: Optional[Any] = None,
         alternative_experiment_check_dim_names: bool = True,
         validate: bool = True,
+        **kwargs,
     ) -> None:
         """Initialize a single-cell experiment.
 
@@ -157,13 +159,16 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 Additional experimental metadata describing the methods.
                 Defaults to None.
 
-            reduced_dims:
+            reduced_dimensions:
                 Slot for low-dimensionality embeddings.
 
                 Usually a dictionary with the embedding method as keys (e.g., t-SNE, UMAP)
                 and the dimensions as values.
 
                 Embeddings may be represented as a matrix or a data frame, must contain a shape.
+
+            reduced_dims:
+                Will be deprecated in the future versions. Use py:attr:`~reduced_dimensions` instead.
 
             main_experiment_name:
                 A string, specifying the main experiment name.
@@ -195,6 +200,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
             validate:
                 Internal use only.
+
+            kwargs:
+                Additional arguments.
         """
 
         super().__init__(
@@ -206,10 +214,20 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             column_names=column_names,
             metadata=metadata,
             validate=validate,
+            **kwargs,
         )
         self._main_experiment_name = main_experiment_name
 
-        self._reduced_dims = reduced_dims if reduced_dims is not None else {}
+        _dims = None
+        if reduced_dimensions is not None and reduced_dims is not None:
+            raise ValueError("Either 'reduced_dims' or 'reduced_dimensions' should be provided, but not both.")
+        elif reduced_dims is not None:
+            warn("'reduced_dims' is deprecated, use 'reduced_dimensions' instead.", DeprecationWarning)
+            _dims = reduced_dims
+        elif reduced_dimensions is not None:
+            _dims = reduced_dimensions
+
+        self._reduced_dims = _dims if _dims is not None else {}
 
         self._alternative_experiments = alternative_experiments if alternative_experiments is not None else {}
 
@@ -548,6 +566,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         raise TypeError(f"'dimension' must be a string or integer, provided '{type(name)}'.")
 
     def reduced_dim(self, name: Union[str, int]) -> Any:
+        """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
+        return self.get_reduced_dimension(name=name)
+
+    def reduced_dimension(self, name: Union[str, int]) -> Any:
         """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
         return self.get_reduced_dimension(name=name)
 
