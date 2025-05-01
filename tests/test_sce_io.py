@@ -9,7 +9,8 @@ from mudata import MuData
 from scipy import sparse
 
 import singlecellexperiment
-from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
+from singlecellexperiment import SingleCellExperiment
+from summarizedexperiment import SummarizedExperiment
 from hdf5array import Hdf5CompressedSparseMatrix
 
 __author__ = "jkanche, keviny2"
@@ -65,6 +66,32 @@ def test_SCE_to_anndata():
     assert isinstance(adata[0], anndata.AnnData)
     assert adata[0].shape[0] == counts.shape[1]
     assert adata[0].shape[1] == counts.shape[0]
+
+    assert adata[1] is None
+
+def test_SCE_to_anndata_with_alts():
+    se = SummarizedExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
+    )
+
+    tse = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        alternative_experiments={"alt": se},
+    )
+
+    adata = tse.to_anndata()
+    assert adata is not None
+    assert isinstance(adata[0], anndata.AnnData)
+    assert adata[0].shape[0] == counts.shape[1]
+    assert adata[0].shape[1] == counts.shape[0]
+
+    assert adata[1] is not None
+    alt_rtrip = adata[1]["alt"]
+    assert isinstance(alt_rtrip, anndata.AnnData)
+    assert alt_rtrip.shape[0] == counts.shape[1]
+    assert alt_rtrip.shape[1] == counts.shape[0]
 
 
 def test_SCE_fromH5AD():
