@@ -1170,8 +1170,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if self.column_pairs is not None:
             obj.obsp = self.column_pairs
 
+        adatas = None
         if include_alternative_experiments is True:
-            adatas = None
             if self.alternative_experiments is not None:
                 adatas = {}
                 for (
@@ -1180,7 +1180,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
                 ) in self.alternative_experiments.items():
                     adatas[alt_name] = alternative_experiment.to_anndata()
 
-        return obj, None
+        return obj, adatas
 
     @classmethod
     def from_anndata(cls, input: "anndata.AnnData") -> "SingleCellExperiment":
