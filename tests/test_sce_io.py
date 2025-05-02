@@ -83,10 +83,13 @@ def test_SCE_to_anndata_with_alts():
 
     adata = tse.to_anndata()
     assert adata is not None
+    assert adata[1] is None
     assert isinstance(adata[0], anndata.AnnData)
     assert adata[0].shape[0] == counts.shape[1]
     assert adata[0].shape[1] == counts.shape[0]
 
+    adata = tse.to_anndata(include_alternative_experiments=True)
+    assert adata is not None
     assert adata[1] is not None
     alt_rtrip = adata[1]["alt"]
     assert isinstance(alt_rtrip, anndata.AnnData)
