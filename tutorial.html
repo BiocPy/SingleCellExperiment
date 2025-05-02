@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="singlecellexperiment" href="api/modules.html" /><link rel="prev" title="SingleCellExperiment" href="index.html" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>Represent single-cell experiments - SingleCellExperiment 0.5.8 documentation</title>
+        <title>Represent single-cell experiments - SingleCellExperiment 0.5.9 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -167,7 +167,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.5.8 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.5.9 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -191,7 +191,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.8 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.5.9 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -483,13 +483,13 @@ reduced dim names (functional style):  [&#39;random_embeds&#39;]
 BiocFrame with 200 rows and 6 columns
       seqnames  starts    ends strand   score                  GC
         &lt;list&gt; &lt;range&gt; &lt;range&gt; &lt;list&gt; &lt;range&gt;              &lt;list&gt;
-  [0]     chr1     100     110      -       0  0.5514435008189529
-  [1]     chr2     101     111      +       1 0.26370349581749863
-  [2]     chr2     102     112      +       2  0.7410569557270275
+  [0]     chr1     100     110      -       0  0.2747486724041116
+  [1]     chr2     101     111      +       1  0.3569171487458789
+  [2]     chr2     102     112      +       2 0.13140216774629676
            ...     ...     ...    ...     ...                 ...
-[197]     chr3     297     307      +     197  0.5424143140840779
-[198]     chr3     298     308      -     198  0.3769920963557536
-[199]     chr3     299     309      -     199 0.34630797611900255
+[197]     chr3     297     307      +     197  0.5563515954924863
+[198]     chr3     298     308      -     198  0.4793807539257603
+[199]     chr3     299     309      -     199  0.5568999751895248
 </pre></div>
 </div>
 </div>
@@ -504,12 +504,12 @@ BiocFrame with 200 rows and 6 columns
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.50815767, 0.45734039, 0.05293934, 0.03171256],
-       [0.48387194, 0.08709972, 0.92576162, 0.65105372],
-       [0.32197221, 0.98960294, 0.51592115, 0.27259992],
-       [0.79604971, 0.19626272, 0.54998145, 0.90471295],
-       [0.82870069, 0.33444863, 0.319317  , 0.47383147],
-       [0.41274411, 0.86111081, 0.54926373, 0.32015189]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.01299347, 0.18982391, 0.853629  , 0.68738161],
+       [0.13993   , 0.08702335, 0.38158234, 0.47174573],
+       [0.14131842, 0.99105402, 0.46712108, 0.26208365],
+       [0.98840317, 0.06519951, 0.37215504, 0.35037591],
+       [0.0663672 , 0.76489415, 0.02984607, 0.84155022],
+       [0.8757014 , 0.44403411, 0.73942565, 0.60677992]])
 </pre></div>
 </div>
 </div>
@@ -715,7 +715,7 @@ metadata(0):
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
 dimensions: (3, 6)
-assays(2): [&#39;counts&#39;, &#39;lognorm&#39;]
+assays(2): [&#39;lognorm&#39;, &#39;counts&#39;]
 row_data columns(3): [&#39;seqnames&#39;, &#39;start&#39;, &#39;end&#39;]
 row_names(3): [&#39;HER2&#39;, &#39;BRCA1&#39;, &#39;TPFK&#39;]
 column_data columns(3): [&#39;sample&#39;, &#39;disease&#39;, &#39;doublet_score&#39;]
@@ -838,7 +838,7 @@ alternative experiments:  None
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=3e445e0d"></script>
+</div><script src="_static/documentation_options.js?v=9a3cda14"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>
