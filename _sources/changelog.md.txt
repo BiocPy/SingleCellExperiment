@@ -1,9 +1,10 @@
 # Changelog
 
-## Version 0.5.8
+## Version 0.5.8 - 0.5.9
 
 - Rename `reduced_dims` to `reduced_dimensions`. Constructor accepts both these arguments for backwards compatibility.
 - Additionally, SCE's constructor takes kwargs for future proofing any additional attributes in the upstream classes.
+- Fix an issue coercing objects to `to_anndata`, where it skips alternative experiments.
 
 ## Version 0.5.7
 
