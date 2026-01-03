@@ -1,16 +1,16 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="./">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="singlecellexperiment" href="api/modules.html" /><link rel="prev" title="SingleCellExperiment" href="index.html" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="singlecellexperiment" href="api/modules.html"><link rel="prev" title="SingleCellExperiment" href="index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2024.08.06 -->
-        <title>Represent single-cell experiments - SingleCellExperiment 0.5.9 documentation</title>
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Represent single-cell experiments - SingleCellExperiment 0.6.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
@@ -145,14 +145,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -162,17 +158,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.5.9 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -180,8 +174,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -190,8 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  
-  <span class="sidebar-brand-text">SingleCellExperiment 0.5.9 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -207,8 +199,8 @@
 <li class="toctree-l1"><a class="reference internal" href="#subset-experiments">Subset experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#combining-experiments">Combining experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2 has-children"><a class="reference internal" href="api/singlecellexperiment.html">singlecellexperiment package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of singlecellexperiment package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input aria-label="Toggle navigation of Module Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/singlecellexperiment.html">singlecellexperiment package</a><input aria-label="Toggle navigation of singlecellexperiment package" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="api/singlecellexperiment.io.html">singlecellexperiment.io package</a></li>
 </ul>
 </li>
@@ -244,8 +236,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -253,8 +244,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -430,13 +420,80 @@ metadata(1): uns
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(AnnData object with n_obs × n_vars = 100 × 2000
-    uns: &#39;uns&#39;
-    layers: &#39;X&#39;, None)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/functools.py:912: ImplicitModificationWarning: Transforming to str index.
+  return dispatch(args[0].__class__)(*args, **kw)
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/anndata/_core/aligned_df.py:68: ImplicitModificationWarning: Transforming to str index.
-  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">adata2</span> <span class="o">=</span> <span class="n">sce_adata</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">adata2</span><span class="p">)</span>
+
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1142,</span> in <span class="ni">SingleCellExperiment.to_anndata</span><span class="nt">(self, include_alternative_experiments)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1132</span> <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1133</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1134</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1135</span><span class="sd">     Args:</span>
+<span class="sd">   (...)   1140         A tuple with ``AnnData`` main experiment and a list of alternative experiments.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1141</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1142</span>     <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1144</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">delayedarray</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1145</span>         <span class="n">DelayedArray</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1146</span>         <span class="n">is_sparse</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1147</span>         <span class="n">to_dense_array</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1148</span>         <span class="n">to_scipy_sparse_matrix</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1151</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/summarizedexperiment/base.py:1192,</span> in <span class="ni">BaseSE.to_anndata</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="k">if</span> <span class="n">tcols</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1190</span>     <span class="n">tcols</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="ne">-&gt; </span><span class="mi">1192</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">AnnData</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1193</span>     <span class="n">obs</span><span class="o">=</span><span class="n">tcols</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1194</span>     <span class="n">var</span><span class="o">=</span><span class="n">trows</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1195</span>     <span class="n">uns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1196</span>     <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1197</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1199</span> <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">1</span> <span class="n">frame</span><span class="p">]</span>
+
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:252,</span> in <span class="ni">AnnData.__init__</span><span class="nt">(self, X, obs, var, uns, obsm, varm, layers, raw, dtype, shape, filename, filemode, asview, obsp, varp, oidx, vidx)</span>
+<span class="g g-Whitespace">    </span><span class="mi">250</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_view</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">oidx</span><span class="p">,</span> <span class="n">vidx</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">251</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">252</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_actual</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span>         <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">254</span>         <span class="n">obs</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>         <span class="n">var</span><span class="o">=</span><span class="n">var</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span>         <span class="n">uns</span><span class="o">=</span><span class="n">uns</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span>         <span class="n">obsm</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">258</span>         <span class="n">varm</span><span class="o">=</span><span class="n">varm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">259</span>         <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">260</span>         <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">261</span>         <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">262</span>         <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">263</span>         <span class="n">obsp</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="n">varp</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span>         <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span>         <span class="n">filemode</span><span class="o">=</span><span class="n">filemode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">267</span>     <span class="p">)</span>
+
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:459,</span> in <span class="ni">AnnData._init_as_actual</span><span class="nt">(self, X, obs, var, uns, obsm, varm, varp, obsp, raw, layers, dtype, shape, filename, filemode)</span>
+<span class="g g-Whitespace">    </span><span class="mi">456</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">458</span> <span class="c1"># unstructured annotations</span>
+<span class="ne">--&gt; </span><span class="mi">459</span> <span class="bp">self</span><span class="o">.</span><span class="n">uns</span> <span class="o">=</span> <span class="n">uns</span> <span class="ow">or</span> <span class="n">OrderedDict</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">461</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsm</span> <span class="o">=</span> <span class="n">obsm</span>
+<span class="g g-Whitespace">    </span><span class="mi">462</span> <span class="bp">self</span><span class="o">.</span><span class="n">varm</span> <span class="o">=</span> <span class="n">varm</span>
+
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:889,</span> in <span class="ni">AnnData.uns</span><span class="nt">(self, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">887</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Only mutable mapping types (e.g. dict) are allowed for `.uns`.&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">889</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">890</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">DictView</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">891</span>     <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="ne">ValueError</span>: Only mutable mapping types (e.g. dict) are allowed for `.uns`.
 </pre></div>
 </div>
 </div>
@@ -477,22 +534,6 @@ metadata(1): uns
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>reduced dim names (as property):  [&#39;random_embeds&#39;]
-reduced dim names (functional style):  [&#39;random_embeds&#39;]
-BiocFrame with 200 rows and 6 columns
-      seqnames  starts    ends strand   score                  GC
-        &lt;list&gt; &lt;range&gt; &lt;range&gt; &lt;list&gt; &lt;range&gt;              &lt;list&gt;
-  [0]     chr1     100     110      -       0  0.7760572957646938
-  [1]     chr2     101     111      +       1 0.30266605687660264
-  [2]     chr2     102     112      +       2 0.17748519297357557
-           ...     ...     ...    ...     ...                 ...
-[197]     chr3     297     307      +     197 0.07286085156209499
-[198]     chr3     298     308      -     198 0.10179200542282729
-[199]     chr3     299     309      -     199 0.33189413234922427
-</pre></div>
-</div>
-</div>
 </div>
 <section id="access-a-reduced-dimension">
 <h2>Access a reduced dimension<a class="headerlink" href="#access-a-reduced-dimension" title="Link to this heading">¶</a></h2>
@@ -500,16 +541,6 @@ BiocFrame with 200 rows and 6 columns
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sce</span><span class="o">.</span><span class="n">reduced_dim</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># same as se.reduced_dim(&quot;random_embeds&quot;)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.03011791, 0.12116412, 0.74157507, 0.91937762],
-       [0.67539669, 0.78370841, 0.32745512, 0.88775013],
-       [0.09304208, 0.96177765, 0.32202403, 0.33238198],
-       [0.00372557, 0.02278493, 0.62037968, 0.31142835],
-       [0.67237426, 0.2289381 , 0.23727483, 0.78675957],
-       [0.04870776, 0.72417038, 0.69793895, 0.5640135 ]])
 </pre></div>
 </div>
 </div>
@@ -524,23 +555,6 @@ BiocFrame with 200 rows and 6 columns
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subset_sce</span> <span class="o">=</span> <span class="n">sce</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">subset_sce</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
-dimensions: (10, 3)
-assays(1): [&#39;counts&#39;]
-row_data columns(6): [&#39;seqnames&#39;, &#39;starts&#39;, &#39;ends&#39;, &#39;strand&#39;, &#39;score&#39;, &#39;GC&#39;]
-row_names(0):  
-column_data columns(1): [&#39;celltype&#39;]
-column_names(3): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]
-main_experiment_name:  
-reduced_dims(1): [&#39;random_embeds&#39;]
-alternative_experiments(0): []
-row_pairs(0): []
-column_pairs(0): []
-metadata(0): 
 </pre></div>
 </div>
 </div>
@@ -648,54 +662,12 @@ metadata(0):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
-dimensions: (200, 10)
-assays(1): [&#39;counts&#39;]
-row_data columns(1): [&#39;A&#39;]
-row_names(0):  
-column_data columns(1): [&#39;A&#39;]
-column_names(0):  
-main_experiment_name:  
-reduced_dims(0): []
-alternative_experiments(0): []
-row_pairs(0): []
-column_pairs(0): []
-metadata(0): 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/singlecellexperiment/SingleCellExperiment.py:1288: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
-  warn(
-</pre></div>
-</div>
-</div>
 </div>
 <p>Similarly to combine by column:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sce_combined</span> <span class="o">=</span> <span class="n">combine_columns</span><span class="p">(</span><span class="n">sce2</span><span class="p">,</span> <span class="n">sce1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sce_combined</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
-dimensions: (100, 20)
-assays(1): [&#39;counts&#39;]
-row_data columns(1): [&#39;A&#39;]
-row_names(0):  
-column_data columns(1): [&#39;A&#39;]
-column_names(0):  
-main_experiment_name:  
-reduced_dims(0): []
-alternative_experiments(0): []
-row_pairs(0): []
-column_pairs(0): []
-metadata(0): 
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/singlecellexperiment/SingleCellExperiment.py:1330: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
-  warn(
 </pre></div>
 </div>
 </div>
@@ -712,27 +684,6 @@ metadata(0):
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>class: SingleCellExperiment
-dimensions: (3, 6)
-assays(2): [&#39;counts&#39;, &#39;lognorm&#39;]
-row_data columns(3): [&#39;seqnames&#39;, &#39;start&#39;, &#39;end&#39;]
-row_names(3): [&#39;HER2&#39;, &#39;BRCA1&#39;, &#39;TPFK&#39;]
-column_data columns(3): [&#39;sample&#39;, &#39;disease&#39;, &#39;doublet_score&#39;]
-column_names(6): [&#39;cell_1&#39;, &#39;cell_2&#39;, &#39;cell_3&#39;, &#39;cell_4&#39;, &#39;cell_5&#39;, &#39;cell_6&#39;]
-main_experiment_name:  
-reduced_dims(1): [&#39;PCA&#39;]
-alternative_experiments(1): [&#39;modality1&#39;]
-row_pairs(0): []
-column_pairs(0): []
-metadata(1): seq_type
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/singlecellexperiment/SingleCellExperiment.py:1440: UserWarning: &#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.
-  warn(&quot;&#39;row_pairs&#39; and &#39;column_pairs&#39; are currently ignored during this operation.&quot;)
-</pre></div>
-</div>
-</div>
 </div>
 </section>
 <section id="export-as-anndata-or-mudata">
@@ -745,23 +696,6 @@ metadata(1): seq_type
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/anndata/_core/aligned_df.py:68: ImplicitModificationWarning: Transforming to str index.
-  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
-/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/mudata/_core/mudata.py:1531: FutureWarning: From 0.4 .update() will not pull obs/var columns from individual modalities by default anymore. Set mudata.set_options(pull_on_update=False) to adopt the new behaviour, which will become the default. Use new pull_obs/pull_var and push_obs/push_var methods for more flexibility.
-  self._update_attr(&quot;var&quot;, axis=0, join_common=join_common)
-/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/mudata/_core/mudata.py:1429: FutureWarning: From 0.4 .update() will not pull obs/var columns from individual modalities by default anymore. Set mudata.set_options(pull_on_update=False) to adopt the new behaviour, which will become the default. Use new pull_obs/pull_var and push_obs/push_var methods for more flexibility.
-  self._update_attr(&quot;obs&quot;, axis=1, join_common=join_common)
-</pre></div>
-</div>
-<div class="output text_html"><pre>MuData object with n_obs × n_vars = 6 × 200
-  var:	&#x27;seqnames&#x27;, &#x27;starts&#x27;, &#x27;ends&#x27;, &#x27;strand&#x27;, &#x27;score&#x27;, &#x27;GC&#x27;
-  1 modality
-    Unknown Modality:	6 x 200
-      obs:	&#x27;celltype&#x27;, &#x27;rownames&#x27;
-      var:	&#x27;seqnames&#x27;, &#x27;starts&#x27;, &#x27;ends&#x27;, &#x27;strand&#x27;, &#x27;score&#x27;, &#x27;GC&#x27;
-      obsm:	&#x27;random_embeds&#x27;
-      layers:	&#x27;counts&#x27;</pre></div></div>
 </div>
 <p>or coerce to an <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> object:</p>
 <div class="cell docutils container">
@@ -769,20 +703,6 @@ metadata(1): seq_type
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="p">,</span> <span class="n">alts</span> <span class="o">=</span> <span class="n">sce</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;main experiment: &quot;</span><span class="p">,</span> <span class="n">adata</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;alternative experiments: &quot;</span><span class="p">,</span> <span class="n">alts</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>main experiment:  AnnData object with n_obs × n_vars = 6 × 200
-    obs: &#39;celltype&#39;, &#39;rownames&#39;
-    var: &#39;seqnames&#39;, &#39;starts&#39;, &#39;ends&#39;, &#39;strand&#39;, &#39;score&#39;, &#39;GC&#39;
-    obsm: &#39;random_embeds&#39;
-    layers: &#39;counts&#39;
-alternative experiments:  None
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.11/site-packages/anndata/_core/aligned_df.py:68: ImplicitModificationWarning: Transforming to str index.
-  warnings.warn(&quot;Transforming to str index.&quot;, ImplicitModificationWarning)
 </pre></div>
 </div>
 </div>
@@ -838,9 +758,9 @@ alternative experiments:  None
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=9a3cda14"></script>
+</div><script src="_static/documentation_options.js?v=8fa8b3e9"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>

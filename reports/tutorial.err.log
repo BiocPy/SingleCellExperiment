@@ -1,0 +1,100 @@
+Traceback (most recent call last):
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/nbclient/client.py", line 1323, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/runner/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+adata2 = sce_adata.to_anndata()
+print(adata2)
+------------------
+
+----- stderr -----
+/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/functools.py:912: ImplicitModificationWarning: Transforming to str index.
+  return dispatch(args[0].__class__)(*args, **kw)
+------------------
+
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m adata2 = [43msce_adata[49m[43m.[49m[43mto_anndata[49m[43m([49m[43m)[49m
+[32m      2[39m [38;5;28mprint[39m(adata2)
+
+[36mFile [39m[32m~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1142[39m, in [36mSingleCellExperiment.to_anndata[39m[34m(self, include_alternative_experiments)[39m
+[32m   1132[39m [38;5;28;01mdef[39;00m[38;5;250m [39m[34mto_anndata[39m([38;5;28mself[39m, include_alternative_experiments: [38;5;28mbool[39m = [38;5;28;01mFalse[39;00m):
+[32m   1133[39m [38;5;250m    [39m[33;03m"""Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.[39;00m
+[32m   1134[39m 
+[32m   1135[39m [33;03m    Args:[39;00m
+[32m   (...)[39m[32m   1140[39m [33;03m        A tuple with ``AnnData`` main experiment and a list of alternative experiments.[39;00m
+[32m   1141[39m [33;03m    """[39;00m
+[32m-> [39m[32m1142[39m     obj = [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[43m.[49m[43mto_anndata[49m[43m([49m[43m)[49m
+[32m   1144[39m     [38;5;28;01mfrom[39;00m[38;5;250m [39m[34;01mdelayedarray[39;00m[38;5;250m [39m[38;5;28;01mimport[39;00m (
+[32m   1145[39m         DelayedArray,
+[32m   1146[39m         is_sparse,
+[32m   1147[39m         to_dense_array,
+[32m   1148[39m         to_scipy_sparse_matrix,
+[32m   1149[39m     )
+[32m   1151[39m     [38;5;28;01mif[39;00m [38;5;28mself[39m.reduced_dims [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+[36mFile [39m[32m~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/summarizedexperiment/base.py:1192[39m, in [36mBaseSE.to_anndata[39m[34m(self)[39m
+[32m   1189[39m [38;5;28;01mif[39;00m tcols.empty:
+[32m   1190[39m     tcols.index = [38;5;28mrange[39m([38;5;28mself[39m._shape[[32m1[39m])
+[32m-> [39m[32m1192[39m obj = [43mAnnData[49m[43m([49m
+[32m   1193[39m [43m    [49m[43mobs[49m[43m=[49m[43mtcols[49m[43m,[49m
+[32m   1194[39m [43m    [49m[43mvar[49m[43m=[49m[43mtrows[49m[43m,[49m
+[32m   1195[39m [43m    [49m[43muns[49m[43m=[49m[38;5;28;43mself[39;49m[43m.[49m[43mmetadata[49m[43m,[49m
+[32m   1196[39m [43m    [49m[43mlayers[49m[43m=[49m[43mlayers[49m[43m,[49m
+[32m   1197[39m [43m[49m[43m)[49m
+[32m   1199[39m [38;5;28;01mreturn[39;00m obj
+
+    [31m[... skipping hidden 1 frame][39m
+
+[36mFile [39m[32m~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:252[39m, in [36mAnnData.__init__[39m[34m(self, X, obs, var, uns, obsm, varm, layers, raw, dtype, shape, filename, filemode, asview, obsp, varp, oidx, vidx)[39m
+[32m    250[39m     [38;5;28mself[39m._init_as_view(X, oidx, vidx)
+[32m    251[39m [38;5;28;01melse[39;00m:
+[32m--> [39m[32m252[39m     [38;5;28;43mself[39;49m[43m.[49m[43m_init_as_actual[49m[43m([49m
+[32m    253[39m [43m        [49m[43mX[49m[43m=[49m[43mX[49m[43m,[49m
+[32m    254[39m [43m        [49m[43mobs[49m[43m=[49m[43mobs[49m[43m,[49m
+[32m    255[39m [43m        [49m[43mvar[49m[43m=[49m[43mvar[49m[43m,[49m
+[32m    256[39m [43m        [49m[43muns[49m[43m=[49m[43muns[49m[43m,[49m
+[32m    257[39m [43m        [49m[43mobsm[49m[43m=[49m[43mobsm[49m[43m,[49m
+[32m    258[39m [43m        [49m[43mvarm[49m[43m=[49m[43mvarm[49m[43m,[49m
+[32m    259[39m [43m        [49m[43mraw[49m[43m=[49m[43mraw[49m[43m,[49m
+[32m    260[39m [43m        [49m[43mlayers[49m[43m=[49m[43mlayers[49m[43m,[49m
+[32m    261[39m [43m        [49m[43mdtype[49m[43m=[49m[43mdtype[49m[43m,[49m
+[32m    262[39m [43m        [49m[43mshape[49m[43m=[49m[43mshape[49m[43m,[49m
+[32m    263[39m [43m        [49m[43mobsp[49m[43m=[49m[43mobsp[49m[43m,[49m
+[32m    264[39m [43m        [49m[43mvarp[49m[43m=[49m[43mvarp[49m[43m,[49m
+[32m    265[39m [43m        [49m[43mfilename[49m[43m=[49m[43mfilename[49m[43m,[49m
+[32m    266[39m [43m        [49m[43mfilemode[49m[43m=[49m[43mfilemode[49m[43m,[49m
+[32m    267[39m [43m    [49m[43m)[49m
+
+[36mFile [39m[32m~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:459[39m, in [36mAnnData._init_as_actual[39m[34m(self, X, obs, var, uns, obsm, varm, varp, obsp, raw, layers, dtype, shape, filename, filemode)[39m
+[32m    456[39m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(msg)
+[32m    458[39m [38;5;66;03m# unstructured annotations[39;00m
+[32m--> [39m[32m459[39m [38;5;28;43mself[39;49m[43m.[49m[43muns[49m = uns [38;5;129;01mor[39;00m OrderedDict()
+[32m    461[39m [38;5;28mself[39m.obsm = obsm
+[32m    462[39m [38;5;28mself[39m.varm = varm
+
+[36mFile [39m[32m~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:889[39m, in [36mAnnData.uns[39m[34m(self, value)[39m
+[32m    887[39m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m [38;5;28misinstance[39m(value, MutableMapping):
+[32m    888[39m     msg = [33m"[39m[33mOnly mutable mapping types (e.g. dict) are allowed for `.uns`.[39m[33m"[39m
+[32m--> [39m[32m889[39m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(msg)
+[32m    890[39m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, DictView):
+[32m    891[39m     value = value.copy()
+
+[31mValueError[39m: Only mutable mapping types (e.g. dict) are allowed for `.uns`.
+
