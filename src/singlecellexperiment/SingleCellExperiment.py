@@ -13,7 +13,7 @@ from summarizedexperiment._combineutils import (
     merge_se_rownames,
     relaxed_merge_assays,
 )
-from summarizedexperiment.rse import (
+from summarizedexperiment.RangedSummarizedExperiment import (
     GRangesOrGRangesList,
     RangedSummarizedExperiment,
 )
