@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.6.0
+
+- Changed related to SummarizedExperiment and implementation of `CompressedGenomicRangesList` in the genomic ranges package.
+- Update versions of relevant dependency packages.
+
 ## Version 0.5.8 - 0.5.9
 
 - Rename `reduced_dims` to `reduced_dimensions`. Constructor accepts both these arguments for backwards compatibility.
