@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional, Sequence, Union
 from warnings import warn
@@ -105,7 +107,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         column_data: Optional[biocframe.BiocFrame] = None,
         row_names: Optional[List[str]] = None,
         column_names: Optional[List[str]] = None,
-        metadata: Optional[dict] = None,
+        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
         reduced_dimensions: Optional[Dict[str, Any]] = None,
         reduced_dims: Optional[Dict[str, Any]] = None,  # deprecated name
         main_experiment_name: Optional[str] = None,
@@ -113,7 +115,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         row_pairs: Optional[Any] = None,
         column_pairs: Optional[Any] = None,
         alternative_experiment_check_dim_names: bool = True,
-        validate: bool = True,
+        _validate: bool = True,
         **kwargs,
     ) -> None:
         """Initialize a single-cell experiment.
@@ -198,7 +200,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
                 Defaults to None.
 
-            validate:
+            _validate:
                 Internal use only.
 
             kwargs:
@@ -213,7 +215,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             row_names=row_names,
             column_names=column_names,
             metadata=metadata,
-            validate=validate,
+            _validate=_validate,
             **kwargs,
         )
         self._main_experiment_name = main_experiment_name
@@ -234,7 +236,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self._row_pairs = row_pairs if row_pairs is not None else {}
         self._column_pairs = column_pairs if column_pairs is not None else {}
 
-        if validate:
+        if _validate:
             _validate_reduced_dims(self._reduced_dims, self._shape)
             _validate_alternative_experiments(
                 self._alternative_experiments,
@@ -283,6 +285,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative_experiments=_alt_expt_copy,
             row_pairs=_row_pair_copy,
             column_pairs=_col_pair_copy,
+            _validate=False,
         )
 
     def __copy__(self):
@@ -304,6 +307,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative_experiments=self._alternative_experiments,
             row_pairs=self._row_pairs,
             column_pairs=self._column_pairs,
+            _validate=False,
         )
 
     def copy(self):
@@ -403,7 +407,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility."""
         return self.get_reduced_dimensions()
 
-    def set_reduced_dimensions(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+    def set_reduced_dimensions(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Set new reduced dimensions.
 
         Args:
@@ -423,7 +427,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = reduced_dims
         return output
 
-    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility."""
         return self.set_reduced_dimensions(reduced_dims=reduced_dims, in_place=in_place)
 
@@ -471,7 +475,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """Alias for :py:meth:`~get_reduced_dimension_names`, for back-compatibility."""
         return self.get_reduced_dimension_names()
 
-    def set_reduced_dimension_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_reduced_dimension_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.reduced_dims`'s names.
 
         Args:
@@ -497,7 +501,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = new_reduced_dims
         return output
 
-    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
         """Alias for :py:meth:`~set_reduced_dimension_names`, for back-compatibility."""
         return self.set_reduced_dimension_names(names=names, in_place=in_place)
 
@@ -573,7 +577,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
         return self.get_reduced_dimension(name=name)
 
-    def set_reduced_dimension(self, name: str, embedding: Any, in_place: bool = False) -> "SingleCellExperiment":
+    def set_reduced_dimension(self, name: str, embedding: Any, in_place: bool = False) -> SingleCellExperiment:
         """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.reduced_dimension`'s.
 
         Args:
@@ -613,7 +617,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._main_experiment_name
 
-    def set_main_experiment_name(self, name: Optional[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_main_experiment_name(self, name: Optional[str], in_place: bool = False) -> SingleCellExperiment:
         """Set new experiment data (assays).
 
         Args:
@@ -671,7 +675,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def set_alternative_experiments(
         self, alternative_experiments: Dict[str, Any], with_dim_names: bool = True, in_place: bool = False
-    ) -> "SingleCellExperiment":
+    ) -> SingleCellExperiment:
         """Set new alternative experiments.
 
         Args:
@@ -725,7 +729,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._alternative_experiments.keys())
 
-    def set_alternative_experiment_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_alternative_experiment_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.alternative_experiment`'s names.
 
         Args:
@@ -821,7 +825,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def set_alternative_experiment(
         self, name: str, alternative_experiment: Any, with_dim_names: bool = True, in_place: bool = False
-    ) -> "SingleCellExperiment":
+    ) -> SingleCellExperiment:
         """Add or replace :py:attr:`~singlecellexperiment.SingleCellExperiment.alternative_experiment`'s.
 
         Args:
@@ -872,7 +876,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._row_pairs
 
-    def set_row_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+    def set_row_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.row_pairs`'s names.
 
         Args:
@@ -918,7 +922,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._row_pairs.keys())
 
-    def set_row_pair_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_row_pair_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.row_pair`'s names.
 
         Args:
@@ -970,7 +974,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._column_pairs
 
-    def set_column_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> "SingleCellExperiment":
+    def set_column_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.column_pairs`'s names.
 
         Args:
@@ -1016,7 +1020,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._column_pairs.keys())
 
-    def set_column_pair_names(self, names: List[str], in_place: bool = False) -> "SingleCellExperiment":
+    def set_column_pair_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.column_pair`'s names.
 
         Args:
@@ -1066,7 +1070,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self,
         rows: Optional[Union[str, int, bool, Sequence]],
         columns: Optional[Union[str, int, bool, Sequence]],
-    ) -> "SingleCellExperiment":
+    ) -> SingleCellExperiment:
         """Alias for :py:attr:`~__getitem__`."""
 
         slicer = self._generic_slice(rows=rows, columns=columns)
@@ -1183,7 +1187,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return obj, adatas
 
     @classmethod
-    def from_anndata(cls, input: "anndata.AnnData") -> "SingleCellExperiment":
+    def from_anndata(cls, input: "anndata.AnnData") -> SingleCellExperiment:
         """Create a ``SingleCellExperiment`` from :py:class:`~anndata.AnnData`.
 
          Args:
@@ -1253,19 +1257,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> combine ops <<#####
     ############################
 
-    def relaxed_combine_rows(self, *other) -> "SingleCellExperiment":
+    def relaxed_combine_rows(self, *other) -> SingleCellExperiment:
         """Wrapper around :py:func:`~relaxed_combine_rows`."""
         return relaxed_combine_rows(self, *other)
 
-    def relaxed_combine_columns(self, *other) -> "SingleCellExperiment":
+    def relaxed_combine_columns(self, *other) -> SingleCellExperiment:
         """Wrapper around :py:func:`~relaxed_combine_columns`."""
         return relaxed_combine_columns(self, *other)
 
-    def combine_rows(self, *other) -> "SingleCellExperiment":
+    def combine_rows(self, *other) -> SingleCellExperiment:
         """Wrapper around :py:func:`~combine_rows`."""
         return combine_rows(self, *other)
 
-    def combine_columns(self, *other) -> "SingleCellExperiment":
+    def combine_columns(self, *other) -> SingleCellExperiment:
         """Wrapper around :py:func:`~combine_columns`."""
         return combine_columns(self, *other)
 
