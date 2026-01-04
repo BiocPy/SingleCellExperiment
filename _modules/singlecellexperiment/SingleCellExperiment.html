@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.6.0 documentation</title>
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.6.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.6.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.6.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -531,7 +531,7 @@
             <span class="n">row_names</span><span class="o">=</span><span class="n">_row_names_copy</span><span class="p">,</span>
             <span class="n">column_names</span><span class="o">=</span><span class="n">_col_names_copy</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">_metadata_copy</span><span class="p">,</span>
-            <span class="n">reduced_dims</span><span class="o">=</span><span class="n">_red_dim_copy</span><span class="p">,</span>
+            <span class="n">reduced_dimensions</span><span class="o">=</span><span class="n">_red_dim_copy</span><span class="p">,</span>
             <span class="n">main_experiment_name</span><span class="o">=</span><span class="n">_main_expt_name_copy</span><span class="p">,</span>
             <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">_alt_expt_copy</span><span class="p">,</span>
             <span class="n">row_pairs</span><span class="o">=</span><span class="n">_row_pair_copy</span><span class="p">,</span>
@@ -556,7 +556,7 @@
             <span class="n">row_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_names</span><span class="p">,</span>
             <span class="n">column_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
-            <span class="n">reduced_dims</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">,</span>
+            <span class="n">reduced_dimensions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span><span class="p">,</span>
             <span class="n">main_experiment_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
             <span class="n">alternative_experiments</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_alternative_experiments</span><span class="p">,</span>
             <span class="n">row_pairs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_pairs</span><span class="p">,</span>
@@ -602,7 +602,7 @@
             <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;, alternative_experiments=&quot;</span> <span class="o">+</span> <span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;, reduced_dims=&quot;</span> <span class="o">+</span> <span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;, reduced_dimensions=&quot;</span> <span class="o">+</span> <span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;, main_experiment_name=&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span>
@@ -642,7 +642,9 @@
         <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;column_names(</span><span class="si">{</span><span class="mi">0</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
 
         <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;main_experiment_name: </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-        <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;reduced_dims(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;reduced_dimensions(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reduced_dim_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;alternative_experiments(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative_experiment_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;row_pairs(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_pair_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">row_pair_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;column_pairs(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_pair_names</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">ut</span><span class="o">.</span><span class="n">print_truncated_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column_pair_names</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -676,11 +678,13 @@
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dimensions">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dimensions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dimensions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set new reduced dimensions.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            reduced_dims:</span>
+<span class="sd">            reduced_dimensions:</span>
 <span class="sd">                New embeddings.</span>
 
 <span class="sd">            in_place:</span>
@@ -690,18 +694,18 @@
 <span class="sd">            A modified ``SingleCellExperiment`` object, either as a copy of the original</span>
 <span class="sd">            or as a reference to the (in-place-modified) original.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">_validate_reduced_dims</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">_validate_reduced_dims</span><span class="p">(</span><span class="n">reduced_dimensions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_define_output</span><span class="p">(</span><span class="n">in_place</span><span class="p">)</span>
-        <span class="n">output</span><span class="o">.</span><span class="n">_reduced_dims</span> <span class="o">=</span> <span class="n">reduced_dims</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">_reduced_dims</span> <span class="o">=</span> <span class="n">reduced_dimensions</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
 
 <div class="viewcode-block" id="SingleCellExperiment.set_reduced_dims">
 <a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dimensions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="o">=</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dimensions</span><span class="o">=</span><span class="n">reduced_dimensions</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
@@ -710,13 +714,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
 
     <span class="nd">@reduced_dims</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dimensions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;reduced_dims&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
             <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dimensions</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
@@ -724,13 +728,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_reduced_dimensions</span><span class="p">()</span>
 
     <span class="nd">@reduced_dimensions</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dims</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduced_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reduced_dimensions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~set_reduced_dimensions`.&quot;&quot;&quot;</span>
         <span class="n">warn</span><span class="p">(</span>
             <span class="s2">&quot;Setting property &#39;reduced_dimensions&#39; is an in-place operation, use &#39;set_reduced_dimensions&#39; instead&quot;</span><span class="p">,</span>
             <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dims</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_reduced_dimensions</span><span class="p">(</span><span class="n">reduced_dimensions</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1">####################################</span>
     <span class="c1">######&gt;&gt; reduced_dims_names &lt;&lt;######</span>
@@ -1469,7 +1473,7 @@
             <span class="n">column_names</span><span class="o">=</span><span class="n">slicer</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
             <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
             <span class="n">main_experiment_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_main_experiment_name</span><span class="p">,</span>
-            <span class="n">reduced_dims</span><span class="o">=</span><span class="n">new_reduced_dims</span><span class="p">,</span>
+            <span class="n">reduced_dimensions</span><span class="o">=</span><span class="n">new_reduced_dims</span><span class="p">,</span>
             <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">new_alt_expts</span><span class="p">,</span>
             <span class="n">row_pairs</span><span class="o">=</span><span class="n">new_row_pairs</span><span class="p">,</span>
             <span class="n">column_pairs</span><span class="o">=</span><span class="n">new_col_pairs</span><span class="p">,</span>
@@ -1573,7 +1577,7 @@
             <span class="n">row_data</span><span class="o">=</span><span class="n">biocframe</span><span class="o">.</span><span class="n">BiocFrame</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">var</span><span class="p">),</span>
             <span class="n">column_data</span><span class="o">=</span><span class="n">biocframe</span><span class="o">.</span><span class="n">BiocFrame</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">obs</span><span class="p">),</span>
             <span class="n">metadata</span><span class="o">=</span><span class="n">_metadata</span><span class="p">,</span>
-            <span class="n">reduced_dims</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
+            <span class="n">reduced_dimensions</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
             <span class="n">row_pairs</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
             <span class="n">column_pairs</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
         <span class="p">)</span></div>
@@ -1908,7 +1912,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=8fa8b3e9"></script>
+</div><script src="../../_static/documentation_options.js?v=2bd037f0"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

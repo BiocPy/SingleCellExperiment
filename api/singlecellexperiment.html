@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="singlecellexperiment.io package" href="singlecellexperiment.io.html"><link rel="prev" title="singlecellexperiment" href="modules.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>singlecellexperiment package - SingleCellExperiment 0.6.0 documentation</title>
+        <title>singlecellexperiment package - SingleCellExperiment 0.6.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -328,7 +328,7 @@ using the <code class="docutils literal notranslate"><span class="pre">__getitem
 <p>All matrices in assays must be 2-dimensional and have the
 same shape (number of rows, number of columns).</p>
 </p></li>
-<li><p><strong>row_ranges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRanges.GenomicRanges" title="(in GenomicRanges v0.8.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code></a>, <a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.grangeslist.CompressedGenomicRangesList" title="(in GenomicRanges v0.8.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompressedGenomicRangesList</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Genomic features, must be the same length as the number of rows of
+<li><p><strong>row_ranges</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.GenomicRanges.GenomicRanges" title="(in GenomicRanges v0.8.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code></a>, <a class="reference external" href="https://biocpy.github.io/GenomicRanges/api/genomicranges.html#genomicranges.grangeslist.CompressedGenomicRangesList" title="(in GenomicRanges v0.8.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompressedGenomicRangesList</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Genomic features, must be the same length as the number of rows of
 the matrices in assays.</p></li>
 <li><p><strong>row_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://biocpy.github.io/BiocFrame/api/biocframe.html#biocframe.BiocFrame.BiocFrame" title="(in BiocFrame v0.7.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiocFrame</span></code></a>]</span>) – <p>Features, must be the same length as the number of rows of
 the matrices in assays.</p>
@@ -977,12 +977,12 @@ or as a reference to the (in-place-modified) original.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions">
-<span class="sig-name descname"><span class="pre">set_reduced_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_reduced_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_reduced_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_reduced_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions" title="Link to this definition">¶</a></dt>
 <dd><p>Set new reduced dimensions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>reduced_dims</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – New embeddings.</p></li>
+<li><p><strong>reduced_dimensions</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – New embeddings.</p></li>
 <li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> in place.</p></li>
 </ul>
 </dd>
@@ -998,7 +998,7 @@ or as a reference to the (in-place-modified) original.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims">
-<span class="sig-name descname"><span class="pre">set_reduced_dims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_reduced_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_reduced_dims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_reduced_dims"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims" title="Link to this definition">¶</a></dt>
 <dd><p>Alias for <a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">set_reduced_dimensions()</span></code></a>, for back-compatibility.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -1295,7 +1295,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=8fa8b3e9"></script>
+</div><script src="../_static/documentation_options.js?v=2bd037f0"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="singlecellexperiment" href="api/modules.html"><link rel="prev" title="SingleCellExperiment" href="index.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>Represent single-cell experiments - SingleCellExperiment 0.6.0 documentation</title>
+        <title>Represent single-cell experiments - SingleCellExperiment 0.6.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.0 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.0 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -351,7 +351,7 @@ row_names(0):
 column_data columns(1): [&#39;celltype&#39;]
 column_names(6): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;]
 main_experiment_name:  
-reduced_dims(1): [&#39;random_embeds&#39;]
+reduced_dimensions(1): [&#39;random_embeds&#39;]
 alternative_experiments(0): []
 row_pairs(0): []
 column_pairs(0): []
@@ -402,7 +402,7 @@ row_names(2000): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, ..., &#39;1997&#39;, &#
 column_data columns(0): []
 column_names(100): [&#39;0&#39;, &#39;1&#39;, &#39;2&#39;, ..., &#39;97&#39;, &#39;98&#39;, &#39;99&#39;]
 main_experiment_name:  
-reduced_dims(0): []
+reduced_dimensions(0): []
 alternative_experiments(0): []
 row_pairs(0): []
 column_pairs(0): []
@@ -430,21 +430,21 @@ metadata(1): uns
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">adata2</span> <span class="o">=</span> <span class="n">sce_adata</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">adata2</span><span class="p">)</span>
 
-<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1142,</span> in <span class="ni">SingleCellExperiment.to_anndata</span><span class="nt">(self, include_alternative_experiments)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1132</span> <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1133</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1134</span><span class="sd"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1135</span><span class="sd">     Args:</span>
-<span class="sd">   (...)   1140         A tuple with ``AnnData`` main experiment and a list of alternative experiments.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1141</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1142</span>     <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1144</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">delayedarray</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1145</span>         <span class="n">DelayedArray</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1146</span>         <span class="n">is_sparse</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1147</span>         <span class="n">to_dense_array</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1148</span>         <span class="n">to_scipy_sparse_matrix</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1149</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1151</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1146,</span> in <span class="ni">SingleCellExperiment.to_anndata</span><span class="nt">(self, include_alternative_experiments)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1136</span> <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1137</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1138</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1139</span><span class="sd">     Args:</span>
+<span class="sd">   (...)   1144         A tuple with ``AnnData`` main experiment and a list of alternative experiments.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1145</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1146</span>     <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1148</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">delayedarray</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1149</span>         <span class="n">DelayedArray</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1150</span>         <span class="n">is_sparse</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1151</span>         <span class="n">to_dense_array</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1152</span>         <span class="n">to_scipy_sparse_matrix</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1153</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1155</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
 <span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/summarizedexperiment/base.py:1192,</span> in <span class="ni">BaseSE.to_anndata</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="k">if</span> <span class="n">tcols</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -758,7 +758,7 @@ metadata(1): uns
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+</div><script src="_static/documentation_options.js?v=2bd037f0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
