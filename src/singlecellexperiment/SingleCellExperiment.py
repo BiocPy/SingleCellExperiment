@@ -280,7 +280,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             row_names=_row_names_copy,
             column_names=_col_names_copy,
             metadata=_metadata_copy,
-            reduced_dims=_red_dim_copy,
+            reduced_dimensions=_red_dim_copy,
             main_experiment_name=_main_expt_name_copy,
             alternative_experiments=_alt_expt_copy,
             row_pairs=_row_pair_copy,
@@ -302,7 +302,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             row_names=self._row_names,
             column_names=self._column_names,
             metadata=self._metadata,
-            reduced_dims=self._reduced_dims,
+            reduced_dimensions=self._reduced_dims,
             main_experiment_name=self._main_experiment_name,
             alternative_experiments=self._alternative_experiments,
             row_pairs=self._row_pairs,
@@ -342,7 +342,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             output += ", alternative_experiments=" + ut.print_truncated_list(self.alternative_experiment_names)
 
         if self._reduced_dims is not None:
-            output += ", reduced_dims=" + ut.print_truncated_list(self.reduced_dim_names)
+            output += ", reduced_dimensions=" + ut.print_truncated_list(self.reduced_dim_names)
 
         if self._main_experiment_name is not None:
             output += ", main_experiment_name=" + self._main_experiment_name
@@ -381,7 +381,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output += f"column_names({0 if self._column_names is None else len(self._column_names)}): {' ' if self._column_names is None else ut.print_truncated_list(self._column_names)}\n"
 
         output += f"main_experiment_name: {' ' if self._main_experiment_name is None else self._main_experiment_name}\n"
-        output += f"reduced_dims({len(self.reduced_dim_names)}): {ut.print_truncated_list(self.reduced_dim_names)}\n"
+        output += (
+            f"reduced_dimensions({len(self.reduced_dim_names)}): {ut.print_truncated_list(self.reduced_dim_names)}\n"
+        )
         output += f"alternative_experiments({len(self.alternative_experiment_names)}): {ut.print_truncated_list(self.alternative_experiment_names)}\n"
         output += f"row_pairs({len(self.row_pair_names)}): {ut.print_truncated_list(self.row_pair_names)}\n"
         output += f"column_pairs({len(self.column_pair_names)}): {ut.print_truncated_list(self.column_pair_names)}\n"
@@ -407,11 +409,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility."""
         return self.get_reduced_dimensions()
 
-    def set_reduced_dimensions(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
+    def set_reduced_dimensions(
+        self, reduced_dimensions: Dict[str, Any], in_place: bool = False
+    ) -> SingleCellExperiment:
         """Set new reduced dimensions.
 
         Args:
-            reduced_dims:
+            reduced_dimensions:
                 New embeddings.
 
             in_place:
@@ -421,15 +425,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object, either as a copy of the original
             or as a reference to the (in-place-modified) original.
         """
-        _validate_reduced_dims(reduced_dims, self.shape)
+        _validate_reduced_dims(reduced_dimensions, self.shape)
 
         output = self._define_output(in_place)
-        output._reduced_dims = reduced_dims
+        output._reduced_dims = reduced_dimensions
         return output
 
-    def set_reduced_dims(self, reduced_dims: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
+    def set_reduced_dims(self, reduced_dimensions: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility."""
-        return self.set_reduced_dimensions(reduced_dims=reduced_dims, in_place=in_place)
+        return self.set_reduced_dimensions(reduced_dimensions=reduced_dimensions, in_place=in_place)
 
     @property
     def reduced_dims(self) -> Dict[str, Any]:
@@ -437,13 +441,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return self.get_reduced_dimensions()
 
     @reduced_dims.setter
-    def reduced_dims(self, reduced_dims: Dict[str, Any]):
+    def reduced_dims(self, reduced_dimensions: Dict[str, Any]):
         """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
             "Setting property 'reduced_dims' is an in-place operation, use 'set_reduced_dimensions' instead",
             UserWarning,
         )
-        self.set_reduced_dimensions(reduced_dims, in_place=True)
+        self.set_reduced_dimensions(reduced_dimensions, in_place=True)
 
     @property
     def reduced_dimensions(self) -> Dict[str, Any]:
@@ -451,13 +455,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return self.get_reduced_dimensions()
 
     @reduced_dimensions.setter
-    def reduced_dimensions(self, reduced_dims: Dict[str, Any]):
+    def reduced_dimensions(self, reduced_dimensions: Dict[str, Any]):
         """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
             "Setting property 'reduced_dimensions' is an in-place operation, use 'set_reduced_dimensions' instead",
             UserWarning,
         )
-        self.set_reduced_dimensions(reduced_dims, in_place=True)
+        self.set_reduced_dimensions(reduced_dimensions, in_place=True)
 
     ####################################
     ######>> reduced_dims_names <<######
@@ -1119,7 +1123,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             column_names=slicer.column_names,
             metadata=self._metadata,
             main_experiment_name=self._main_experiment_name,
-            reduced_dims=new_reduced_dims,
+            reduced_dimensions=new_reduced_dims,
             alternative_experiments=new_alt_expts,
             row_pairs=new_row_pairs,
             column_pairs=new_col_pairs,
@@ -1217,7 +1221,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             row_data=biocframe.BiocFrame.from_pandas(input.var),
             column_data=biocframe.BiocFrame.from_pandas(input.obs),
             metadata=_metadata,
-            reduced_dims=obsm,
+            reduced_dimensions=obsm,
             row_pairs=varp,
             column_pairs=obsp,
         )
