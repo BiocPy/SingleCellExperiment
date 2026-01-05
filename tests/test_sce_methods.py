@@ -5,7 +5,7 @@ from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 import pytest
-from summarizedexperiment import SummarizedExperiment
+from summarizedexperiment import SummarizedExperiment, RangedSummarizedExperiment
 
 from singlecellexperiment import SingleCellExperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
@@ -90,3 +90,45 @@ def test_SCE_props():
 
     assert tse.reduced_dim_names is not None
     assert len(tse.reduced_dim_names) == 1
+
+def test_SCE_to_RSE():
+    tse = SingleCellExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
+    )
+
+    rse = tse.to_rangedsummarizedexperiment()
+    assert isinstance(rse, RangedSummarizedExperiment)
+    assert not isinstance(rse, SingleCellExperiment)
+    assert rse.shape == tse.shape
+    assert rse.row_ranges is not None
+
+def test_RSE_to_SCE():
+    rse = RangedSummarizedExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
+    )
+
+    tse = SingleCellExperiment.from_rangedsummarizedexperiment(rse)
+    assert isinstance(tse, SingleCellExperiment)
+    assert tse.shape == rse.shape
+    assert tse.row_ranges is not None
+
+def test_SCE_to_SE():
+    tse = SingleCellExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
+    )
+
+    se = tse.to_summarizedexperiment()
+    assert isinstance(se, SummarizedExperiment)
+    assert not isinstance(se, SingleCellExperiment)
+    assert se.shape == tse.shape
+    assert se.row_data is not None
+    assert "seqnames" in se.row_data.column_names
+
+def test_SE_to_SCE():
+    se = SummarizedExperiment(
+        assays={"counts": counts}, row_data=row_data, column_data=col_data
+    )
+
+    tse = SingleCellExperiment.from_summarizedexperiment(se)
+    assert isinstance(tse, SingleCellExperiment)
+    assert tse.shape == se.shape
