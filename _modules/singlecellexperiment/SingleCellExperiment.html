@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.6.1 documentation</title>
+        <title>singlecellexperiment.SingleCellExperiment - SingleCellExperiment 0.6.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.6.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">SingleCellExperiment 0.6.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.1 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -250,6 +250,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">biocframe</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">biocutils</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ut</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">summarizedexperiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">SummarizedExperiment</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">summarizedexperiment._combineutils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">check_assays_are_equal</span><span class="p">,</span>
     <span class="n">merge_assays</span><span class="p">,</span>
@@ -1647,6 +1648,104 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Wrapper around :py:func:`~combine_columns`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">combine_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></div>
+
+
+    <span class="c1">#######################</span>
+    <span class="c1">######&gt;&gt; to rse &lt;&lt;#####</span>
+    <span class="c1">#######################</span>
+
+<div class="viewcode-block" id="SingleCellExperiment.to_rangedsummarizedexperiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rangedsummarizedexperiment">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_rangedsummarizedexperiment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RangedSummarizedExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce to :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A ``RangedSummarizedExperiment`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">RangedSummarizedExperiment</span><span class="p">(</span>
+            <span class="n">assays</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_assays</span><span class="p">,</span>
+            <span class="n">row_ranges</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_ranges</span><span class="p">,</span>
+            <span class="n">row_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_rows</span><span class="p">,</span>
+            <span class="n">column_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cols</span><span class="p">,</span>
+            <span class="n">row_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_row_names</span><span class="p">,</span>
+            <span class="n">column_names</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_names</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span><span class="p">,</span>
+            <span class="n">_validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.to_rse">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_rse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RangedSummarizedExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~to_rangedsummarizedexperiment`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_rangedsummarizedexperiment</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.from_rangedsummarizedexperiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.from_rangedsummarizedexperiment">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_rangedsummarizedexperiment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rse</span><span class="p">:</span> <span class="n">RangedSummarizedExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce from :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            rse:</span>
+<span class="sd">                A ``RangedSummarizedExperiment`` object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A ``SingleCellExperiment`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">assays</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">assays</span><span class="p">,</span>
+            <span class="n">row_ranges</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">row_ranges</span><span class="p">,</span>
+            <span class="n">row_data</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">row_data</span><span class="p">,</span>
+            <span class="n">column_data</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">col_data</span><span class="p">,</span>
+            <span class="n">row_names</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">row_names</span><span class="p">,</span>
+            <span class="n">column_names</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">rse</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.from_rse">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.from_rse">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_rse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">rse</span><span class="p">:</span> <span class="n">RangedSummarizedExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~from_rangedsummarizedexperiment`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_rangedsummarizedexperiment</span><span class="p">(</span><span class="n">rse</span><span class="p">)</span></div>
+
+
+    <span class="c1">########################</span>
+    <span class="c1">######&gt;&gt; from se &lt;&lt;#####</span>
+    <span class="c1">########################</span>
+
+<div class="viewcode-block" id="SingleCellExperiment.from_summarizedexperiment">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.from_summarizedexperiment">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_summarizedexperiment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">se</span><span class="p">:</span> <span class="n">SummarizedExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce from :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            se:</span>
+<span class="sd">                A ``SummarizedExperiment`` object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A ``SingleCellExperiment`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">assays</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">assays</span><span class="p">,</span>
+            <span class="n">row_data</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">row_data</span><span class="p">,</span>
+            <span class="n">column_data</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">col_data</span><span class="p">,</span>
+            <span class="n">row_names</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">row_names</span><span class="p">,</span>
+            <span class="n">column_names</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">column_names</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">se</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SingleCellExperiment.from_se">
+<a class="viewcode-back" href="../../api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.from_se">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_se</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">se</span><span class="p">:</span> <span class="n">SummarizedExperiment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SingleCellExperiment</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias for :py:meth:`~from_summarizedexperiment`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_summarizedexperiment</span><span class="p">(</span><span class="n">se</span><span class="p">)</span></div>
 </div>
 
 
@@ -1912,7 +2011,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=2bd037f0"></script>
+</div><script src="../../_static/documentation_options.js?v=1c28bd9a"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
