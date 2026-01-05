@@ -6,6 +6,7 @@ from warnings import warn
 
 import biocframe
 import biocutils as ut
+from summarizedexperiment import SummarizedExperiment
 from summarizedexperiment._combineutils import (
     check_assays_are_equal,
     merge_assays,
@@ -1276,6 +1277,86 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     def combine_columns(self, *other) -> SingleCellExperiment:
         """Wrapper around :py:func:`~combine_columns`."""
         return combine_columns(self, *other)
+
+    #######################
+    ######>> to rse <<#####
+    #######################
+
+    def to_rangedsummarizedexperiment(self) -> RangedSummarizedExperiment:
+        """Coerce to :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
+
+        Returns:
+            A ``RangedSummarizedExperiment`` object.
+        """
+        return RangedSummarizedExperiment(
+            assays=self._assays,
+            row_ranges=self._row_ranges,
+            row_data=self._rows,
+            column_data=self._cols,
+            row_names=self._row_names,
+            column_names=self._column_names,
+            metadata=self._metadata,
+            _validate=False,
+        )
+
+    def to_rse(self) -> RangedSummarizedExperiment:
+        """Alias for :py:meth:`~to_rangedsummarizedexperiment`."""
+        return self.to_rangedsummarizedexperiment()
+
+    @classmethod
+    def from_rangedsummarizedexperiment(cls, rse: RangedSummarizedExperiment) -> SingleCellExperiment:
+        """Coerce from :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment`.
+
+        Args:
+            rse:
+                A ``RangedSummarizedExperiment`` object.
+
+        Returns:
+            A ``SingleCellExperiment`` object.
+        """
+        return cls(
+            assays=rse.assays,
+            row_ranges=rse.row_ranges,
+            row_data=rse.row_data,
+            column_data=rse.col_data,
+            row_names=rse.row_names,
+            column_names=rse.column_names,
+            metadata=rse.metadata,
+        )
+
+    @classmethod
+    def from_rse(cls, rse: RangedSummarizedExperiment) -> SingleCellExperiment:
+        """Alias for :py:meth:`~from_rangedsummarizedexperiment`."""
+        return cls.from_rangedsummarizedexperiment(rse)
+
+    ########################
+    ######>> from se <<#####
+    ########################
+
+    @classmethod
+    def from_summarizedexperiment(cls, se: SummarizedExperiment) -> SingleCellExperiment:
+        """Coerce from :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+
+        Args:
+            se:
+                A ``SummarizedExperiment`` object.
+
+        Returns:
+            A ``SingleCellExperiment`` object.
+        """
+        return cls(
+            assays=se.assays,
+            row_data=se.row_data,
+            column_data=se.col_data,
+            row_names=se.row_names,
+            column_names=se.column_names,
+            metadata=se.metadata,
+        )
+
+    @classmethod
+    def from_se(cls, se: SummarizedExperiment) -> SingleCellExperiment:
+        """Alias for :py:meth:`~from_summarizedexperiment`."""
+        return cls.from_summarizedexperiment(se)
 
 
 ############################
