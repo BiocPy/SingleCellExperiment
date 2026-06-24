@@ -5,11 +5,11 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="singlecellexperiment" href="api/modules.html"><link rel="prev" title="SingleCellExperiment" href="index.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>Represent single-cell experiments - SingleCellExperiment 0.6.2 documentation</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>Represent single-cell experiments - SingleCellExperiment 0.6.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.2 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.2 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -420,7 +420,7 @@ metadata(1): uns
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.12/x64/lib/python3.12/functools.py:912: ImplicitModificationWarning: Transforming to str index.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/functools.py:912: ImplicitModificationWarning: Transforming to str index.
   return dispatch(args[0].__class__)(*args, **kw)
 </pre></div>
 </div>
@@ -459,39 +459,39 @@ metadata(1): uns
 
     <span class="p">[</span><span class="o">...</span> <span class="n">skipping</span> <span class="n">hidden</span> <span class="mi">1</span> <span class="n">frame</span><span class="p">]</span>
 
-<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:252,</span> in <span class="ni">AnnData.__init__</span><span class="nt">(self, X, obs, var, uns, obsm, varm, layers, raw, dtype, shape, filename, filemode, asview, obsp, varp, oidx, vidx)</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_view</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">oidx</span><span class="p">,</span> <span class="n">vidx</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">251</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">252</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_actual</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">253</span>         <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">254</span>         <span class="n">obs</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">255</span>         <span class="n">var</span><span class="o">=</span><span class="n">var</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">256</span>         <span class="n">uns</span><span class="o">=</span><span class="n">uns</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">257</span>         <span class="n">obsm</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">258</span>         <span class="n">varm</span><span class="o">=</span><span class="n">varm</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">259</span>         <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">260</span>         <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">261</span>         <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">262</span>         <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">263</span>         <span class="n">obsp</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="n">varp</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span>         <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">266</span>         <span class="n">filemode</span><span class="o">=</span><span class="n">filemode</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">267</span>     <span class="p">)</span>
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:254,</span> in <span class="ni">AnnData.__init__</span><span class="nt">(self, X, obs, var, uns, obsm, varm, layers, raw, dtype, shape, filename, filemode, asview, obsp, varp, oidx, vidx)</span>
+<span class="g g-Whitespace">    </span><span class="mi">252</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_view</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">oidx</span><span class="p">,</span> <span class="n">vidx</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">254</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_init_as_actual</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>         <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span>         <span class="n">obs</span><span class="o">=</span><span class="n">obs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">257</span>         <span class="n">var</span><span class="o">=</span><span class="n">var</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">258</span>         <span class="n">uns</span><span class="o">=</span><span class="n">uns</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">259</span>         <span class="n">obsm</span><span class="o">=</span><span class="n">obsm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">260</span>         <span class="n">varm</span><span class="o">=</span><span class="n">varm</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">261</span>         <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">262</span>         <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">263</span>         <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span>         <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span>         <span class="n">obsp</span><span class="o">=</span><span class="n">obsp</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span>         <span class="n">varp</span><span class="o">=</span><span class="n">varp</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">267</span>         <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>         <span class="n">filemode</span><span class="o">=</span><span class="n">filemode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>     <span class="p">)</span>
 
-<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:459,</span> in <span class="ni">AnnData._init_as_actual</span><span class="nt">(self, X, obs, var, uns, obsm, varm, varp, obsp, raw, layers, dtype, shape, filename, filemode)</span>
-<span class="g g-Whitespace">    </span><span class="mi">456</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">458</span> <span class="c1"># unstructured annotations</span>
-<span class="ne">--&gt; </span><span class="mi">459</span> <span class="bp">self</span><span class="o">.</span><span class="n">uns</span> <span class="o">=</span> <span class="n">uns</span> <span class="ow">or</span> <span class="n">OrderedDict</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">461</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsm</span> <span class="o">=</span> <span class="n">obsm</span>
-<span class="g g-Whitespace">    </span><span class="mi">462</span> <span class="bp">self</span><span class="o">.</span><span class="n">varm</span> <span class="o">=</span> <span class="n">varm</span>
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:465,</span> in <span class="ni">AnnData._init_as_actual</span><span class="nt">(self, X, obs, var, uns, obsm, varm, varp, obsp, raw, layers, dtype, shape, filename, filemode)</span>
+<span class="g g-Whitespace">    </span><span class="mi">462</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">464</span> <span class="c1"># unstructured annotations</span>
+<span class="ne">--&gt; </span><span class="mi">465</span> <span class="bp">self</span><span class="o">.</span><span class="n">uns</span> <span class="o">=</span> <span class="n">uns</span> <span class="ow">or</span> <span class="n">OrderedDict</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">467</span> <span class="bp">self</span><span class="o">.</span><span class="n">obsm</span> <span class="o">=</span> <span class="n">obsm</span>
+<span class="g g-Whitespace">    </span><span class="mi">468</span> <span class="bp">self</span><span class="o">.</span><span class="n">varm</span> <span class="o">=</span> <span class="n">varm</span>
 
-<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:889,</span> in <span class="ni">AnnData.uns</span><span class="nt">(self, value)</span>
-<span class="g g-Whitespace">    </span><span class="mi">887</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">888</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Only mutable mapping types (e.g. dict) are allowed for `.uns`.&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">889</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">890</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">DictView</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">891</span>     <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/anndata/_core/anndata.py:915,</span> in <span class="ni">AnnData.uns</span><span class="nt">(self, value)</span>
+<span class="g g-Whitespace">    </span><span class="mi">913</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">MutableMapping</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">914</span>     <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Only mutable mapping types (e.g. dict) are allowed for `.uns`.&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">915</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">916</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">DictView</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">917</span>     <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="ne">ValueError</span>: Only mutable mapping types (e.g. dict) are allowed for `.uns`.
 </pre></div>
@@ -758,9 +758,9 @@ metadata(1): uns
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1c28bd9a"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="_static/documentation_options.js?v=b8503983"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>
