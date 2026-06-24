@@ -205,7 +205,7 @@ def test_SCE_randomAnnData():
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
     assert tse.alternative_experiments is not None
-    assert "raw" in tse.alternative_experiments 
+    assert "raw" in tse.alternative_experiments
     assert isinstance(tse.alternative_experiments["raw"], SummarizedExperiment)
     assert tse.alternative_experiments["raw"].shape == (d, n)
 
