@@ -1195,14 +1195,18 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     def from_anndata(cls, input: "anndata.AnnData") -> SingleCellExperiment:
         """Create a ``SingleCellExperiment`` from :py:class:`~anndata.AnnData`.
 
-         Args:
+        If the input contains any data in the ``uns`` attribute, the
+        `metadata` slot of the ``SingleCellExperiment`` will contain a key ``uns``.
+
+        If the input contains ``raw`` data, the ``SingleCellExperiment``
+        will contain an alternative experiment called ``raw``.
+
+        Args:
             input:
                 Input data.
 
         Returns:
-            A ``SingleCellExperiment`` object. If the input contains any data
-            in the ``uns`` attribute, the `metadata` slot of the ``SingleCellExperiment``
-            will contain a key ``uns``.
+            A ``SingleCellExperiment`` object.
         """
 
         layers = OrderedDict()
@@ -1217,6 +1221,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         obsp = _to_normal_dict(input.obsp)
         _metadata = {"uns": input.uns} if input.uns is not None else None
 
+        alt_expts = None
+        if input.raw is not None:
+            raw_se = SummarizedExperiment(
+                assays={"X": input.raw.X.transpose()},
+                row_data=biocframe.BiocFrame.from_pandas(input.raw.var),
+                column_data=biocframe.BiocFrame.from_pandas(input.obs),
+            )
+            alt_expts = {"raw": raw_se}
+
         return cls(
             assays=layers,
             row_data=biocframe.BiocFrame.from_pandas(input.var),
@@ -1225,6 +1238,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             reduced_dimensions=obsm,
             row_pairs=varp,
             column_pairs=obsp,
+            alternative_experiments=alt_expts,
         )
 
     ###############################

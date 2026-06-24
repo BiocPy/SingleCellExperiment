@@ -1,11 +1,12 @@
 # Changelog
 
-## Version 0.6.0 - 0.6.2
+## Version 0.6.0 - 0.6.3
 
 - Changed related to SummarizedExperiment and implementation of `CompressedGenomicRangesList` in the genomic ranges package.
 - Update versions of relevant dependency packages.
 - Rename `reduced_dims` to `reduced_dimensions`.
 - Implement coercions to/from RSE/SE.
+- Access data stored in `raw` (if available) as `alternative_experiments`, when initializing `SingleCellExperiment` objects from anndata/h5ad files.
 
 ## Version 0.5.8 - 0.5.9
 
