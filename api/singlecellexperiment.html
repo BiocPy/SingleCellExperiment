@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="singlecellexperiment.io package" href="singlecellexperiment.io.html"><link rel="prev" title="singlecellexperiment" href="modules.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>singlecellexperiment package - SingleCellExperiment 0.6.3 documentation</title>
+        <title>singlecellexperiment package - SingleCellExperiment 0.6.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.3 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#construction">Construction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#getters-setters">Getters/Setters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html#size-factors">Size Factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#subset-experiments">Subset experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#combining-experiments">Combining experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
@@ -278,7 +279,7 @@
 <span id="singlecellexperiment-singlecellexperiment-module"></span><h2>singlecellexperiment.SingleCellExperiment module<a class="headerlink" href="#module-singlecellexperiment.SingleCellExperiment" title="Link to this heading">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">SingleCellExperiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_experiment_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiment_check_dim_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">singlecellexperiment.SingleCellExperiment.</span></span><span class="sig-name descname"><span class="pre">SingleCellExperiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_experiment_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiment_check_dim_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment" title="(in SummarizedExperiment v0.6.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RangedSummarizedExperiment</span></code></a></p>
 <p>Container class for single-cell experiments, extending
 <a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment" title="(in SummarizedExperiment v0.6.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RangedSummarizedExperiment</span></code></a> to provide slots for
@@ -314,7 +315,7 @@ and cannot be set in alternative experiments!</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_experiment_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiment_check_dim_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__init__" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">assays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduced_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_experiment_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">row_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_pairs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size_factors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_experiment_check_dim_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.__init__" title="Link to this definition">¶</a></dt>
 <dd><p>Initialize a single-cell experiment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -366,6 +367,9 @@ parameter in the R implementation.</p>
 <p>Defaults to None.</p>
 </p></li>
 <li><p><strong>column_pairs</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – <p>Column pairings/relationships between cells.</p>
+<p>Defaults to None.</p>
+</p></li>
+<li><p><strong>size_factors</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – <p>Cell size factors.</p>
 <p>Defaults to None.</p>
 </p></li>
 <li><p><strong>_validate</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Internal use only.</p></li>
@@ -594,6 +598,23 @@ parameter in the R implementation.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair">
+<span class="sig-name descname"><span class="pre">get_column_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_column_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Access a column pair by name or index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – Name or index of the column pair.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The column pair matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair_names">
 <span class="sig-name descname"><span class="pre">get_column_pair_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_column_pair_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair_names" title="Link to this definition">¶</a></dt>
 <dd><p>Access column pair names.</p>
@@ -710,6 +731,23 @@ the embedding.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair">
+<span class="sig-name descname"><span class="pre">get_row_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_row_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Access a row pair by name or index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – Name or index of the row pair.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The row pair matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair_names">
 <span class="sig-name descname"><span class="pre">get_row_pair_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_row_pair_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair_names" title="Link to this definition">¶</a></dt>
 <dd><p>Access row pair names.</p>
@@ -733,6 +771,26 @@ the embedding.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Access row pairs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_size_factors">
+<span class="sig-name descname"><span class="pre">get_size_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on_absence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.get_size_factors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_size_factors" title="Link to this definition">¶</a></dt>
+<dd><p>Access size factors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>on_absence</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Behavior when size factors are absent:
+- “none”: returns None.
+- “warn”: issues a UserWarning and returns None.
+- “error”: raises a ValueError.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A numpy array containing size factors, or None.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -911,6 +969,27 @@ or as a reference to the (in-place-modified) original.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair">
+<span class="sig-name descname"><span class="pre">set_column_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_column_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Add or replace a column pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of the column pair.</p></li>
+<li><p><strong>pair</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – The column pair matrix.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the object in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair_names">
 <span class="sig-name descname"><span class="pre">set_column_pair_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_column_pair_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair_names" title="Link to this definition">¶</a></dt>
 <dd><p>Replace <code class="xref py py-attr docutils literal notranslate"><span class="pre">column_pair</span></code>’s names.</p>
@@ -1060,6 +1139,27 @@ or as a reference to the (in-place-modified) original.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair">
+<span class="sig-name descname"><span class="pre">set_row_pair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_row_pair"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair" title="Link to this definition">¶</a></dt>
+<dd><p>Add or replace a row pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Name of the row pair.</p></li>
+<li><p><strong>pair</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – The row pair matrix.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the object in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair_names">
 <span class="sig-name descname"><span class="pre">set_row_pair_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_row_pair_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair_names" title="Link to this definition">¶</a></dt>
 <dd><p>Replace <code class="xref py py-attr docutils literal notranslate"><span class="pre">row_pair</span></code>’s names.</p>
@@ -1097,6 +1197,80 @@ or as a reference to the (in-place-modified) original.</p>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object, either as a copy of the original
 or as a reference to the (in-place-modified) original.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_size_factors">
+<span class="sig-name descname"><span class="pre">set_size_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size_factors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.set_size_factors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_size_factors" title="Link to this definition">¶</a></dt>
+<dd><p>Set new size factors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size_factors</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.List" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a>], <a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – New size factors.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object, either as a copy of the original
+or as a reference to the (in-place-modified) original.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.size_factors">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">size_factors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.size_factors" title="Link to this definition">¶</a></dt>
+<dd><p>Accessor for size factors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.split_alt_exps">
+<span class="sig-name descname"><span class="pre">split_alt_exps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.split_alt_exps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.split_alt_exps" title="Link to this definition">¶</a></dt>
+<dd><p>Split the main experiment into alternative experiments based on a grouping vector.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>]</span>) – A column name in <code class="docutils literal notranslate"><span class="pre">row_data</span></code> or a sequence of the same length as <code class="docutils literal notranslate"><span class="pre">shape[0]</span></code>
+specifying the group for each feature.</p></li>
+<li><p><strong>ref</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – The group name that should remain in the main experiment.
+If None, the first unique group name in <code class="docutils literal notranslate"><span class="pre">f</span></code> is used.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the object in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.swap_alt_exp">
+<span class="sig-name descname"><span class="pre">swap_alt_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saved</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_col_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.swap_alt_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.swap_alt_exp" title="Link to this definition">¶</a></dt>
+<dd><p>Swap main experiment with an alternative experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Union" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3.12/library/functions.html#int" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>]</span>) – Name or index of the alternative experiment to promote.</p></li>
+<li><p><strong>saved</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>) – Name to save the current main experiment as an alternative experiment.
+If None, the current main experiment is not saved.</p></li>
+<li><p><strong>with_col_data</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to keep the column data, reduced dimensions, column pairs,
+and size factors of the current main experiment.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the object in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1149,6 +1323,27 @@ or as a reference to the (in-place-modified) original.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment" title="(in SummarizedExperiment v0.6.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">RangedSummarizedExperiment</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="singlecellexperiment.SingleCellExperiment.SingleCellExperiment.unsplit_alt_exps">
+<span class="sig-name descname"><span class="pre">unsplit_alt_exps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/singlecellexperiment/SingleCellExperiment.html#SingleCellExperiment.unsplit_alt_exps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.unsplit_alt_exps" title="Link to this definition">¶</a></dt>
+<dd><p>Recombine alternative experiments back into the main experiment by row.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>names</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Optional" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/typing.html#typing.Sequence" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></a>[<a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Names of the alternative experiments to unsplit.
+If None, all alternative experiments are unsplit.</p></li>
+<li><p><strong>in_place</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Whether to modify the object in place.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="singlecellexperiment.SingleCellExperiment.SingleCellExperiment"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A modified <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1319,6 +1514,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiment()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiment_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiments"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiments()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pair()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pair_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pairs()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_main_experiment_name()</span></code></a></li>
@@ -1327,8 +1523,10 @@ with placeholders consisting of Nones or masked NumPy values.</p>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dimension_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimensions"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dimensions()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dims"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dims()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pair()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pair_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pairs()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_size_factors()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_slice"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_slice()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.main_experiment_name</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reduced_dim"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.reduced_dim()</span></code></a></li>
@@ -1344,6 +1542,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiment()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiment_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiments"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiments()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pair()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pair_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pairs()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_main_experiment_name()</span></code></a></li>
@@ -1352,12 +1551,18 @@ with placeholders consisting of Nones or masked NumPy values.</p>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dimension_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dimensions()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dims()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pair()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pair_names()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pairs()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_size_factors()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.size_factors</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.split_alt_exps"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.split_alt_exps()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.swap_alt_exp"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.swap_alt_exp()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_anndata"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_anndata()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_mudata"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_mudata()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rangedsummarizedexperiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_rangedsummarizedexperiment()</span></code></a></li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rse"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_rse()</span></code></a></li>
+<li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.unsplit_alt_exps"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.unsplit_alt_exps()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#singlecellexperiment.SingleCellExperiment.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
@@ -1378,7 +1583,7 @@ with placeholders consisting of Nones or masked NumPy values.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=b8503983"></script>
+</div><script src="../_static/documentation_options.js?v=73d9a94e"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

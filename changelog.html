@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Contributors" href="authors.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Changelog - SingleCellExperiment 0.6.3 documentation</title>
+        <title>Changelog - SingleCellExperiment 0.6.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.3 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#construction">Construction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#getters-setters">Getters/Setters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html#size-factors">Size Factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#subset-experiments">Subset experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#combining-experiments">Combining experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
@@ -250,14 +251,17 @@
         <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
-<section id="version-0-6-0-0-6-3">
-<h2>Version 0.6.0 - 0.6.3<a class="headerlink" href="#version-0-6-0-0-6-3" title="Link to this heading">¶</a></h2>
+<section id="version-0-6-0-0-6-4">
+<h2>Version 0.6.0 - 0.6.4<a class="headerlink" href="#version-0-6-0-0-6-4" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Changed related to SummarizedExperiment and implementation of <code class="docutils literal notranslate"><span class="pre">CompressedGenomicRangesList</span></code> in the genomic ranges package.</p></li>
 <li><p>Update versions of relevant dependency packages.</p></li>
 <li><p>Rename <code class="docutils literal notranslate"><span class="pre">reduced_dims</span></code> to <code class="docutils literal notranslate"><span class="pre">reduced_dimensions</span></code>.</p></li>
 <li><p>Implement coercions to/from RSE/SE.</p></li>
 <li><p>Access data stored in <code class="docutils literal notranslate"><span class="pre">raw</span></code> (if available) as <code class="docutils literal notranslate"><span class="pre">alternative_experiments</span></code>, when initializing <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> objects from anndata/h5ad files.</p></li>
+<li><p>Fix bug when slicing objects containing row or column pairs.</p></li>
+<li><p>Add getters/setters for <code class="docutils literal notranslate"><span class="pre">sizeFactors</span></code>, modifying this in the column_data of the object.</p></li>
+<li><p>Improve test coverage and fix bugs.</p></li>
 </ul>
 </section>
 <section id="version-0-5-8-0-5-9">
@@ -398,7 +402,7 @@ column names of the main experiment and an Exception is raised if they do not ma
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#version-0-6-0-0-6-3">Version 0.6.0 - 0.6.3</a></li>
+<li><a class="reference internal" href="#version-0-6-0-0-6-4">Version 0.6.0 - 0.6.4</a></li>
 <li><a class="reference internal" href="#version-0-5-8-0-5-9">Version 0.5.8 - 0.5.9</a></li>
 <li><a class="reference internal" href="#version-0-5-7">Version 0.5.7</a></li>
 <li><a class="reference internal" href="#version-0-5-6">Version 0.5.6</a></li>
@@ -420,7 +424,7 @@ column names of the main experiment and an Exception is raised if they do not ma
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=b8503983"></script>
+</div><script src="_static/documentation_options.js?v=73d9a94e"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

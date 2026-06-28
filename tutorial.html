@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="singlecellexperiment" href="api/modules.html"><link rel="prev" title="SingleCellExperiment" href="index.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Represent single-cell experiments - SingleCellExperiment 0.6.3 documentation</title>
+        <title>Represent single-cell experiments - SingleCellExperiment 0.6.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.3 documentation</div></a>
+      <a href="index.html"><div class="brand">SingleCellExperiment 0.6.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#construction">Construction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#getters-setters">Getters/Setters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#size-factors">Size Factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#subset-experiments">Subset experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#combining-experiments">Combining experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
@@ -355,6 +356,7 @@ reduced_dimensions(1): [&#39;random_embeds&#39;]
 alternative_experiments(0): []
 row_pairs(0): []
 column_pairs(0): []
+size_factors(0):  
 metadata(0): 
 </pre></div>
 </div>
@@ -406,6 +408,7 @@ reduced_dimensions(0): []
 alternative_experiments(0): []
 row_pairs(0): []
 column_pairs(0): []
+size_factors(0):  
 metadata(1): uns
 </pre></div>
 </div>
@@ -430,21 +433,21 @@ metadata(1): uns
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">adata2</span> <span class="o">=</span> <span class="n">sce_adata</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">adata2</span><span class="p">)</span>
 
-<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1147,</span> in <span class="ni">SingleCellExperiment.to_anndata</span><span class="nt">(self, include_alternative_experiments)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1137</span> <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">1138</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1139</span><span class="sd"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1140</span><span class="sd">     Args:</span>
-<span class="sd">   (...)   1145         A tuple with ``AnnData`` main experiment and a list of alternative experiments.</span>
-<span class="g g-Whitespace">   </span><span class="mi">1146</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1147</span>     <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
-<span class="g g-Whitespace">   </span><span class="mi">1149</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">delayedarray</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1150</span>         <span class="n">DelayedArray</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1151</span>         <span class="n">is_sparse</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1152</span>         <span class="n">to_dense_array</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1153</span>         <span class="n">to_scipy_sparse_matrix</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1154</span>     <span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1156</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/singlecellexperiment/SingleCellExperiment.py:1601,</span> in <span class="ni">SingleCellExperiment.to_anndata</span><span class="nt">(self, include_alternative_experiments)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1591</span> <span class="k">def</span><span class="w"> </span><span class="nf">to_anndata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_alternative_experiments</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1592</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Transform ``SingleCellExperiment``-like into a :py:class:`~anndata.AnnData` representation.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1593</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1594</span><span class="sd">     Args:</span>
+<span class="sd">   (...)   1599         A tuple with ``AnnData`` main experiment and a list of alternative experiments.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1600</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1601</span>     <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_anndata</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1603</span>     <span class="kn">from</span><span class="w"> </span><span class="nn">delayedarray</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1604</span>         <span class="n">DelayedArray</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1605</span>         <span class="n">is_sparse</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1606</span>         <span class="n">to_dense_array</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1607</span>         <span class="n">to_scipy_sparse_matrix</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1608</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1610</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduced_dims</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
 <span class="nn">File ~/work/SingleCellExperiment/SingleCellExperiment/.tox/docs/lib/python3.12/site-packages/summarizedexperiment/base.py:1192,</span> in <span class="ni">BaseSE.to_anndata</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="k">if</span> <span class="n">tcols</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
@@ -546,6 +549,37 @@ metadata(1): uns
 </div>
 </div>
 </section>
+</section>
+<section id="size-factors">
+<h1>Size Factors<a class="headerlink" href="#size-factors" title="Link to this heading">¶</a></h1>
+<p>In Bioconductor, size factors represent scaling factors used to normalize cell-specific biases (such as differences in sequencing depth). Following the Bioconductor design, <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> stores size factors directly inside the column data under the column name <code class="docutils literal notranslate"><span class="pre">&quot;sizeFactors&quot;</span></code>.</p>
+<p>You can set, retrieve, and delete size factors using either functional methods or the <code class="docutils literal notranslate"><span class="pre">size_factors</span></code> property:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate mock size factors (e.g. library size scaling factors)</span>
+<span class="n">cell_depths</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cell_depths</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cell_depths</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">):</span>
+    <span class="n">cell_depths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cell_depths</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Scale factors so that their mean is 1</span>
+<span class="n">size_factors</span> <span class="o">=</span> <span class="n">cell_depths</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">cell_depths</span><span class="p">)</span>
+
+<span class="c1"># Set size factors on the experiment</span>
+<span class="n">sce</span><span class="o">.</span><span class="n">set_size_factors</span><span class="p">(</span><span class="n">size_factors</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Access size factors</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieved size factors:&quot;</span><span class="p">,</span> <span class="n">sce</span><span class="o">.</span><span class="n">get_size_factors</span><span class="p">())</span>
+
+<span class="c1"># They reside directly in the column_data under &quot;sizeFactors&quot;:</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Column data &#39;sizeFactors&#39;:&quot;</span><span class="p">,</span> <span class="n">sce</span><span class="o">.</span><span class="n">column_data</span><span class="p">[</span><span class="s2">&quot;sizeFactors&quot;</span><span class="p">])</span>
+
+<span class="c1"># To delete/remove size factors, set them to None</span>
+<span class="n">sce</span><span class="o">.</span><span class="n">set_size_factors</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After deletion, is &#39;sizeFactors&#39; in column_data?&quot;</span><span class="p">,</span> <span class="s2">&quot;sizeFactors&quot;</span> <span class="ow">in</span> <span class="n">sce</span><span class="o">.</span><span class="n">column_data</span><span class="o">.</span><span class="n">column_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="subset-experiments">
 <h1>Subset experiments<a class="headerlink" href="#subset-experiments" title="Link to this heading">¶</a></h1>
@@ -758,7 +792,7 @@ metadata(1): uns
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=b8503983"></script>
+</div><script src="_static/documentation_options.js?v=73d9a94e"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

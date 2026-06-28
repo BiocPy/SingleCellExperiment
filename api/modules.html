@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="singlecellexperiment package" href="singlecellexperiment.html"><link rel="prev" title="Represent single-cell experiments" href="../tutorial.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>singlecellexperiment - SingleCellExperiment 0.6.3 documentation</title>
+        <title>singlecellexperiment - SingleCellExperiment 0.6.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
@@ -162,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.3 documentation</div></a>
+      <a href="../index.html"><div class="brand">SingleCellExperiment 0.6.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">SingleCellExperiment 0.6.3 documentation</span>
+  <span class="sidebar-brand-text">SingleCellExperiment 0.6.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -196,6 +196,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#construction">Construction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#getters-setters">Getters/Setters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html#size-factors">Size Factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#subset-experiments">Subset experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#combining-experiments">Combining experiments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html#export-as-anndata-or-mudata">Export as <code class="docutils literal notranslate"><span class="pre">AnnData</span></code> or <code class="docutils literal notranslate"><span class="pre">MuData</span></code></a></li>
@@ -286,6 +287,7 @@
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiment_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiment_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_alternative_experiments"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_alternative_experiments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pair()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pair_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_column_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_column_pairs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_main_experiment_name()</span></code></a></li>
@@ -294,8 +296,10 @@
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimension_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dimension_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dimensions"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dimensions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_reduced_dims"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_reduced_dims()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pair()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pair_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_row_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_row_pairs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_size_factors()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.get_slice"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.get_slice()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.main_experiment_name</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.reduced_dim"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.reduced_dim()</span></code></a></li>
@@ -311,6 +315,7 @@
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiment_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiment_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_alternative_experiments"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_alternative_experiments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pair()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pair_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_column_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_column_pairs()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_main_experiment_name"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_main_experiment_name()</span></code></a></li>
@@ -319,12 +324,18 @@
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimension_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dimension_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dimensions"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dimensions()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_reduced_dims"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_reduced_dims()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pair()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pair_names"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pair_names()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_row_pairs"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_row_pairs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.set_size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.set_size_factors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.size_factors"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.size_factors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.split_alt_exps"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.split_alt_exps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.swap_alt_exp"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.swap_alt_exp()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_anndata"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_anndata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_mudata"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_mudata()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rangedsummarizedexperiment"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_rangedsummarizedexperiment()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.to_rse"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.to_rse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment.unsplit_alt_exps"><code class="docutils literal notranslate"><span class="pre">SingleCellExperiment.unsplit_alt_exps()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.combine_columns"><code class="docutils literal notranslate"><span class="pre">combine_columns()</span></code></a></li>
@@ -389,7 +400,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=b8503983"></script>
+</div><script src="../_static/documentation_options.js?v=73d9a94e"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
