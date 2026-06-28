@@ -1501,7 +1501,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             self._column_names = combined.column_names
             self._reduced_dims = combined._reduced_dims
             self._column_pairs = combined._column_pairs
-            self._size_factors = combined._size_factors
             self._alternative_experiments = remaining_alts
             self._shape = combined._shape
 
