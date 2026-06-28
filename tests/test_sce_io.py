@@ -21,32 +21,36 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-row_data = BiocFrame({
-    "seqnames": [
-        "chr1",
-        "chr2",
-        "chr2",
-        "chr2",
-        "chr1",
-        "chr1",
-        "chr3",
-        "chr3",
-        "chr3",
-        "chr3",
-    ]
-    * 20,
-    "starts": range(100, 300),
-    "ends": range(110, 310),
-    "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
-    "score": range(0, 200),
-    "GC": [random() for _ in range(10)] * 20,
-})
+row_data = BiocFrame(
+    {
+        "seqnames": [
+            "chr1",
+            "chr2",
+            "chr2",
+            "chr2",
+            "chr1",
+            "chr1",
+            "chr3",
+            "chr3",
+            "chr3",
+            "chr3",
+        ]
+        * 20,
+        "starts": range(100, 300),
+        "ends": range(110, 310),
+        "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
+        "score": range(0, 200),
+        "GC": [random() for _ in range(10)] * 20,
+    }
+)
 
 gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
-col_data = pd.DataFrame({
-    "treatment": ["ChIP", "Input"] * 3,
-})
+col_data = pd.DataFrame(
+    {
+        "treatment": ["ChIP", "Input"] * 3,
+    }
+)
 
 
 def test_SCE_to_anndata():
