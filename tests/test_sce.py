@@ -192,3 +192,63 @@ def test_SCE_dims():
             reduced_dims={"something": embeds},
             reduced_dimensions={"something": embeds},
         )
+
+
+def test_validation_functions():
+    from singlecellexperiment.SingleCellExperiment import (
+        _validate_alternative_experiments,
+        _validate_pairs,
+        _validate_reduced_dims,
+        _validate_size_factors,
+    )
+
+    shape = (nrows, ncols)
+
+    with pytest.raises(ValueError, match="'reduced_dims' cannot be `None`"):
+        _validate_reduced_dims(None, shape)
+    with pytest.raises(TypeError, match="'reduced_dims' is not a dictionary"):
+        _validate_reduced_dims("not_a_dict", shape)
+    with pytest.raises(TypeError, match="must be a matrix-like object"):
+        _validate_reduced_dims({"umap": "not_matrix"}, shape)
+    with pytest.raises(ValueError, match="does not contain embeddings for all cells"):
+        _validate_reduced_dims({"umap": np.zeros((ncols + 1, 2))}, shape)
+
+    with pytest.raises(ValueError, match="'alternative_experiments' cannot be `None`"):
+        _validate_alternative_experiments(None, shape, ["1", "2", "3", "4", "5", "6"])
+    with pytest.raises(TypeError, match="'alternative_experiments' is not a dictionary"):
+        _validate_alternative_experiments("not_a_dict", shape, ["1", "2", "3", "4", "5", "6"])
+    with pytest.raises(TypeError, match="must be a 2-dimensional object"):
+        _validate_alternative_experiments({"alt": "not_exp"}, shape, ["1", "2", "3", "4", "5", "6"])
+
+    se_wrong_cells = SummarizedExperiment(assays={"counts": np.zeros((nrows, ncols + 1))})
+    with pytest.raises(ValueError, match="does not contain same number of cells"):
+        _validate_alternative_experiments({"alt": se_wrong_cells}, shape, ["1", "2", "3", "4", "5", "6"])
+
+    se_wrong_names = SummarizedExperiment(
+        assays={"counts": np.zeros((nrows, ncols))},
+        column_data=BiocFrame({}, number_of_rows=ncols),
+        column_names=["A", "B", "C", "D", "E", "F"],
+    )
+    with pytest.raises(Exception, match="Column names do not match"):
+        _validate_alternative_experiments(
+            {"alt": se_wrong_names}, shape, ["1", "2", "3", "4", "5", "6"], with_dim_names=True
+        )
+
+    with pytest.warns(UserWarning, match="Column names do not match"):
+        _validate_alternative_experiments(
+            {"alt": se_wrong_names}, shape, ["1", "2", "3", "4", "5", "6"], with_dim_names=False
+        )
+
+    with pytest.raises(TypeError, match="'size_factors' must be a sequence-like object"):
+        _validate_size_factors(5, shape)
+    with pytest.raises(ValueError, match="'size_factors' length must match the number of columns"):
+        _validate_size_factors(np.zeros(ncols - 1), shape)
+
+    with pytest.raises(TypeError, match="'row_pairs' is not a dictionary"):
+        _validate_pairs("not_a_dict", nrows, "row_pairs")
+    with pytest.raises(TypeError, match="must be a matrix-like object"):
+        _validate_pairs({"p1": "not_matrix"}, nrows, "row_pairs")
+    with pytest.raises(ValueError, match="must be 2-dimensional"):
+        _validate_pairs({"p1": np.zeros(nrows)}, nrows, "row_pairs")
+    with pytest.raises(ValueError, match="must be a square matrix"):
+        _validate_pairs({"p1": np.zeros((nrows, nrows + 1))}, nrows, "row_pairs")

@@ -544,9 +544,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if len(names) != len(current_names):
             raise ValueError("Length of 'names' does not match the number of `reduced_dims`.")
 
+        _tmp = self._reduced_dims.copy()
         new_reduced_dims = OrderedDict()
         for idx in range(len(names)):
-            new_reduced_dims[names[idx]] = self._reduced_dims.pop(current_names[idx])
+            new_reduced_dims[names[idx]] = _tmp.pop(current_names[idx])
 
         output = self._define_output(in_place)
         output._reduced_dims = new_reduced_dims
@@ -608,7 +609,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
 
-            if name > len(self.reduced_dim_names):
+            if name >= len(self.reduced_dim_names):
                 raise IndexError("Index greater than the number of reduced dimensions.")
 
             return self._reduced_dims[self.reduced_dim_names[name]]
@@ -798,9 +799,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if len(names) != len(current_names):
             raise ValueError("Length of 'names' does not match the number of `alternative_experiments`.")
 
+        _tmp = self._alternative_experiments.copy()
         new_alt_expts = OrderedDict()
         for idx in range(len(names)):
-            new_alt_expts[names[idx]] = self._alternative_experiments.pop(current_names[idx])
+            new_alt_expts[names[idx]] = _tmp.pop(current_names[idx])
 
         output = self._define_output(in_place)
         output._alternative_experiments = new_alt_expts
@@ -853,7 +855,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
 
-            if name > len(self.alternative_experiment_names):
+            if name >= len(self.alternative_experiment_names):
                 raise IndexError("Index greater than the number of alternative experiments.")
 
             _out = self._alternative_experiments[self.alternative_experiment_names[name]]
@@ -991,9 +993,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if len(names) != len(current_names):
             raise ValueError("Length of 'names' does not match the number of `row_pairs`.")
 
+        _tmp = self._row_pairs.copy()
         new_row_pairs = OrderedDict()
         for idx in range(len(names)):
-            new_row_pairs[names[idx]] = self._row_pairs.pop(current_names[idx])
+            new_row_pairs[names[idx]] = _tmp.pop(current_names[idx])
 
         output = self._define_output(in_place)
         output._row_pairs = new_row_pairs
@@ -1089,9 +1092,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if len(names) != len(current_names):
             raise ValueError("Length of 'names' does not match the number of `column_pairs`.")
 
+        _tmp = self._column_pairs.copy()
         new_column_pairs = OrderedDict()
         for idx in range(len(names)):
-            new_column_pairs[names[idx]] = self._column_pairs.pop(current_names[idx])
+            new_column_pairs[names[idx]] = _tmp.pop(current_names[idx])
 
         output = self._define_output(in_place)
         output._column_pairs = new_column_pairs
@@ -1533,7 +1537,13 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         new_reduced_dims = {}
         for rdim, rmat in self._reduced_dims.items():
             if do_slice_cols:
-                rmat = rmat[slicer.col_indices, :]
+                if hasattr(rmat, "iloc"):
+                    rmat = rmat.iloc[slicer.col_indices, :]
+                else:
+                    try:
+                        rmat = rmat[slicer.col_indices, :]
+                    except Exception:
+                        rmat = rmat[slicer.col_indices]
 
             new_reduced_dims[rdim] = rmat
 

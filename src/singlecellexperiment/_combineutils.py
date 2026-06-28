@@ -57,12 +57,21 @@ def relaxed_merge_numpy_generic(se, by, attr, names_attr):
 
     _all_assays = {}
     for k in _all_keys:
+        dim_size = 2
+        for y in se:
+            if k in getattr(y, names_attr):
+                _mat = getattr(y, attr)[k]
+                if hasattr(_mat, "shape") and len(_mat.shape) > 1:
+                    dim_size = _mat.shape[1]
+
+                break
+
         _all_mats = []
         for x in se:
             _txmat = None
             if k not in getattr(x, names_attr):
                 _txmat = np.ma.array(
-                    np.zeros(shape=x.shape),
+                    np.zeros(shape=(x.shape[1], dim_size)),
                     mask=True,
                 )
             else:
