@@ -1,14 +1,6 @@
-from random import random
-
-import anndata
-import genomicranges
-from biocframe import BiocFrame
 import biocutils
 import numpy as np
-import pandas as pd
-from mudata import MuData
 
-import singlecellexperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import pytest
@@ -19,22 +11,17 @@ __license__ = "MIT"
 
 
 def test_combine_columns(experiments):
-    combined = biocutils.combine_columns(
-        experiments.se_unnamed, experiments.se_unnamed_2
-    )
+    combined = biocutils.combine_columns(experiments.se_unnamed, experiments.se_unnamed_2)
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     assert len(combined.alternative_experiments) == 0
     assert len(combined.column_data["A"]) == 20
 
-    combined2 = experiments.se_unnamed.combine_columns(
-        experiments.se_unnamed_2
-    )
+    combined2 = experiments.se_unnamed.combine_columns(experiments.se_unnamed_2)
     assert combined2 is not None
     assert isinstance(combined2, SingleCellExperiment)
     assert len(combined2.alternative_experiments) == 0
     assert len(combined2.column_data["A"]) == 20
-
 
 
 def test_relaxed_combine_columns(experiments):
@@ -65,9 +52,7 @@ def test_relaxed_combine_columns(experiments):
 
 
 def test_combine_with_alts(experiments):
-    combined = biocutils.combine_columns(
-        experiments.se_with_alts1, experiments.se_with_alts2
-    )
+    combined = biocutils.combine_columns(experiments.se_with_alts1, experiments.se_with_alts2)
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     print(combined)

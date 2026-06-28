@@ -51,18 +51,14 @@ col_data = pd.DataFrame(
 
 
 def test_SCE_creation():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     assert tse is not None
     assert isinstance(tse, sce)
 
 
 def test_SCE_creation_with_alts():
-    tse = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse = SummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     tse = SingleCellExperiment(
         assays={"counts": counts},
@@ -107,9 +103,7 @@ def test_SCE_creation_with_alts_should_fail():
         }
     )
 
-    tse = SummarizedExperiment(
-        assays={"counts": acounts}, row_data=adf_gr, column_data=acol_data
-    )
+    tse = SummarizedExperiment(assays={"counts": acounts}, row_data=adf_gr, column_data=acol_data)
 
     with pytest.raises(Exception):
         tse = SingleCellExperiment(
@@ -119,10 +113,9 @@ def test_SCE_creation_with_alts_should_fail():
             alternative_experiments={"alt": tse},
         )
 
+
 def test_SCE_creation_modifications():
-    rse = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    rse = SummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     tse = SingleCellExperiment(
         assays={"counts": counts},
@@ -144,9 +137,10 @@ def test_SCE_creation_modifications():
     tse.set_reduced_dimension("something", np.random.rand(tse.shape[1], 4), in_place=True)
     assert nassay_tse.get_reduced_dimension_names() == tse.get_reduced_dimension_names()
 
+
 def test_SCE_different_alt_names():
     rse = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=pd.DataFrame(index = ["ChIP"] * 6 )
+        assays={"counts": counts}, row_data=row_data, column_data=pd.DataFrame(index=["ChIP"] * 6)
     )
 
     with pytest.raises(Exception):
@@ -161,7 +155,7 @@ def test_SCE_different_alt_names():
         tse = SingleCellExperiment(
             assays={"counts": counts},
             row_data=row_data,
-            column_data=pd.DataFrame(index = ["ChIP", "Input"] * 3),
+            column_data=pd.DataFrame(index=["ChIP", "Input"] * 3),
             alternative_experiments={"alt": rse},
         )
 
@@ -169,19 +163,15 @@ def test_SCE_different_alt_names():
         tse = SingleCellExperiment(
             assays={"counts": counts},
             row_data=row_data,
-            column_data=pd.DataFrame(index = ["ChIP", "Input", "Input"] * 2),
+            column_data=pd.DataFrame(index=["ChIP", "Input", "Input"] * 2),
             alternative_experiments={"alt": rse},
         )
+
 
 def test_SCE_dims():
     embeds = np.random.rand(counts.shape[1], 4)
     tse = SingleCellExperiment(
-        assays={"counts": counts},
-        row_data=row_data,
-        column_data=col_data,
-        reduced_dimensions={
-            "something": embeds
-        }
+        assays={"counts": counts}, row_data=row_data, column_data=col_data, reduced_dimensions={"something": embeds}
     )
 
     assert tse is not None
@@ -189,12 +179,7 @@ def test_SCE_dims():
     assert tse.get_reduced_dimension_names() == ["something"]
 
     tse2 = SingleCellExperiment(
-        assays={"counts": counts},
-        row_data=row_data,
-        column_data=col_data,
-        reduced_dims={
-            "something": embeds
-        }
+        assays={"counts": counts}, row_data=row_data, column_data=col_data, reduced_dims={"something": embeds}
     )
 
     assert tse2 is not None
@@ -205,15 +190,13 @@ def test_SCE_dims():
 
     assert np.allclose(tse.get_reduced_dimension("something"), tse2.get_reduced_dimension("something"))
 
-    with pytest.raises(Exception, match="Either 'reduced_dims' or 'reduced_dimensions' should be provided, but not both."):
+    with pytest.raises(
+        Exception, match="Either 'reduced_dims' or 'reduced_dimensions' should be provided, but not both."
+    ):
         SingleCellExperiment(
             assays={"counts": counts},
             row_data=row_data,
             column_data=col_data,
-            reduced_dims={
-                "something": embeds
-            },
-            reduced_dimensions={
-                "something": embeds
-            }
+            reduced_dims={"something": embeds},
+            reduced_dimensions={"something": embeds},
         )
