@@ -143,33 +143,33 @@ def test_size_factors():
     tse = SingleCellExperiment(
         assays={"counts": counts}, row_data=row_data, column_data=col_data, size_factors=sf
     )
-    
+
     # 1. Accessors
     assert np.allclose(tse.size_factors, sf)
     assert np.allclose(tse.get_size_factors(), sf)
-    
+
     # 2. Setters
     sf2 = np.random.rand(ncols)
     tse2 = tse.set_size_factors(sf2, in_place=False)
     assert np.allclose(tse2.size_factors, sf2)
     assert np.allclose(tse.size_factors, sf)  # original unchanged
-    
+
     tse.set_size_factors(sf2, in_place=True)
     assert np.allclose(tse.size_factors, sf2)
-    
+
     # 3. Absent handling
     tse_no_sf = SingleCellExperiment(
         assays={"counts": counts}, row_data=row_data, column_data=col_data
     )
     assert tse_no_sf.size_factors is None
     assert tse_no_sf.get_size_factors(on_absence="none") is None
-    
+
     with pytest.warns(UserWarning):
         tse_no_sf.get_size_factors(on_absence="warn")
-        
+
     with pytest.raises(ValueError):
         tse_no_sf.get_size_factors(on_absence="error")
-        
+
     # 4. Validations
     with pytest.raises(Exception):
         tse.set_size_factors(np.random.rand(ncols - 1))
@@ -187,22 +187,22 @@ def test_individual_pair_accessors():
         row_pairs={"rp1": rp},
         column_pairs={"cp1": cp}
     )
-    
+
     # Getters
     assert np.allclose(tse.get_row_pair("rp1"), rp)
     assert np.allclose(tse.get_row_pair(0), rp)
     assert np.allclose(tse.get_column_pair("cp1"), cp)
     assert np.allclose(tse.get_column_pair(0), cp)
-    
+
     # Setters
     rp2 = np.random.rand(nrows, nrows)
     tse2 = tse.set_row_pair("rp2", rp2, in_place=False)
     assert np.allclose(tse2.get_row_pair("rp2"), rp2)
-    
+
     cp2 = np.random.rand(ncols, ncols)
     tse3 = tse.set_column_pair("cp2", cp2, in_place=False)
     assert np.allclose(tse3.get_column_pair("cp2"), cp2)
-    
+
     # Errors
     with pytest.raises(IndexError):
         tse.get_row_pair(-1)
@@ -222,11 +222,11 @@ def test_copy_deepcopy():
         column_data=col_data,
         size_factors=sf
     )
-    
+
     from copy import copy, deepcopy
     tse_copy = copy(tse)
     assert np.allclose(tse_copy.size_factors, sf)
-    
+
     tse_deepcopy = deepcopy(tse)
     assert np.allclose(tse_deepcopy.size_factors, sf)
 
@@ -237,7 +237,7 @@ def test_alt_exp_workflows():
         row_data=row_data,
         column_data=col_data
     )
-    
+
     tse = SingleCellExperiment(
         assays={"counts": counts},
         row_data=row_data,
@@ -245,7 +245,7 @@ def test_alt_exp_workflows():
         alternative_experiments={"alt": rse},
         size_factors=np.random.rand(ncols)
     )
-    
+
     # Swap
     swapped = tse.swap_alt_exp("alt", saved="main")
     assert isinstance(swapped, SingleCellExperiment)
@@ -253,16 +253,15 @@ def test_alt_exp_workflows():
     assert "alt" not in swapped.alternative_experiments
     assert swapped.shape == (nrows, ncols)
     assert np.allclose(swapped.size_factors, tse.size_factors)
-    
+
     # Split
     f = ["groupA"] * (nrows // 2) + ["groupB"] * (nrows // 2)
     split_sce = tse.split_alt_exps(f, ref="groupA")
     assert "groupB" in split_sce.alternative_experiments
     assert split_sce.shape == (nrows // 2, ncols)
     assert split_sce.alternative_experiments["groupB"].shape == (nrows // 2, ncols)
-    
+
     # Unsplit
     unsplit_sce = split_sce.unsplit_alt_exps(names=["groupB"])
     assert "groupB" not in unsplit_sce.alternative_experiments
     assert unsplit_sce.shape == (nrows, ncols)
-
