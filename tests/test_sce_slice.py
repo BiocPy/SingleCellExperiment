@@ -117,3 +117,29 @@ def test_SCE_creation_with_alts_slice():
     assert tsce_slice.assay("counts").shape == (10, 3)
     alt_exp = tsce_slice.alternative_experiments["alt"]
     assert alt_exp.shape == (200, 3)
+
+
+def test_SCE_slice_pairs_and_size_factors():
+    rp = np.random.rand(nrows, nrows)
+    cp = np.random.rand(ncols, ncols)
+    sf = np.random.rand(ncols)
+    
+    tse = SingleCellExperiment(
+        assays={"counts": counts},
+        row_data=row_data,
+        column_data=col_data,
+        row_pairs={"rp1": rp},
+        column_pairs={"cp1": cp},
+        size_factors=sf
+    )
+    
+    tse_slice = tse[0:10, 0:3]
+    
+    assert tse_slice.row_pairs["rp1"].shape == (10, 10)
+    assert tse_slice.column_pairs["cp1"].shape == (3, 3)
+    assert tse_slice.size_factors.shape == (3,)
+    
+    assert np.allclose(tse_slice.row_pairs["rp1"], rp[0:10, :][:, 0:10])
+    assert np.allclose(tse_slice.column_pairs["cp1"], cp[0:3, :][:, 0:3])
+    assert np.allclose(tse_slice.size_factors, sf[0:3])
+
