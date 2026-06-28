@@ -179,6 +179,35 @@ One can access an reduced dimension by index or name:
 sce.reduced_dim(0) # same as se.reduced_dim("random_embeds")
 ```
 
+## Size Factors
+
+In Bioconductor, size factors represent scaling factors used to normalize cell-specific biases (such as differences in sequencing depth). Following the Bioconductor design, `SingleCellExperiment` stores size factors directly inside the column data under the column name `"sizeFactors"`.
+
+You can set, retrieve, and delete size factors using either functional methods or the `size_factors` property:
+
+```{code-cell}
+# Generate mock size factors (e.g. library size scaling factors)
+cell_depths = counts.sum(axis=0)
+if isinstance(cell_depths, np.matrix) or hasattr(cell_depths, "A"):
+    cell_depths = np.array(cell_depths).flatten()
+
+# Scale factors so that their mean is 1
+size_factors = cell_depths / np.mean(cell_depths)
+
+# Set size factors on the experiment
+sce.set_size_factors(size_factors, in_place=True)
+
+# Access size factors
+print("Retrieved size factors:", sce.get_size_factors())
+
+# They reside directly in the column_data under "sizeFactors":
+print("Column data 'sizeFactors':", sce.column_data["sizeFactors"])
+
+# To delete/remove size factors, set them to None
+sce.set_size_factors(None, in_place=True)
+print("After deletion, is 'sizeFactors' in column_data?", "sizeFactors" in sce.column_data.column_names)
+```
+
 ## Subset experiments
 
 You can subset experimental data by using the subset (`[]`) operator. This operation accepts different slice input types, such as a boolean vector, a `slice` object, a list of indices, or names (if available) to subset.
