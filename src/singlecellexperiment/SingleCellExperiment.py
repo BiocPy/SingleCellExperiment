@@ -104,22 +104,6 @@ def _validate_pairs(pairs, expected_dim, name):
                 )
 
 
-def _merge_size_factors(x) -> Optional[np.ndarray]:
-    has_any = any(y._size_factors is not None for y in x)
-    if not has_any:
-        return None
-
-    import numpy as np
-
-    parts = []
-    for y in x:
-        if y._size_factors is not None:
-            parts.append(y._size_factors)
-        else:
-            parts.append(np.full(y.shape[1], np.nan))
-    return np.concatenate(parts)
-
-
 class SingleCellExperiment(RangedSummarizedExperiment):
     """Container class for single-cell experiments, extending
     :py:class:`~summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment` to provide slots for
@@ -281,7 +265,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         self._row_pairs = row_pairs if row_pairs is not None else {}
         self._column_pairs = column_pairs if column_pairs is not None else {}
-        self._size_factors = np.array(size_factors, dtype=np.float64) if size_factors is not None else None
+
+        if size_factors is not None:
+            _new_sf = np.array(size_factors, dtype=np.float64)
+            if _validate:
+                _validate_size_factors(_new_sf, self._shape)
+
+            self._cols = self._cols.set_column("sizeFactors", _new_sf, in_place=True)
+        elif _validate and "sizeFactors" in self._cols.column_names:
+            _validate_size_factors(np.array(self._cols.column("sizeFactors"), dtype=np.float64), self._shape)
 
         if _validate:
             _validate_reduced_dims(self._reduced_dims, self._shape)
@@ -293,7 +285,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             )
             _validate_pairs(self._row_pairs, self._shape[0], "row_pairs")
             _validate_pairs(self._column_pairs, self._shape[1], "column_pairs")
-            _validate_size_factors(self._size_factors, self._shape)
 
     #########################
     ######>> Copying <<######
@@ -318,7 +309,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         _alt_expt_copy = deepcopy(self._alternative_experiments)
         _row_pair_copy = deepcopy(self._row_pairs)
         _col_pair_copy = deepcopy(self._column_pairs)
-        _size_factors_copy = deepcopy(self._size_factors)
 
         current_class_const = type(self)
         return current_class_const(
@@ -334,7 +324,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative_experiments=_alt_expt_copy,
             row_pairs=_row_pair_copy,
             column_pairs=_col_pair_copy,
-            size_factors=_size_factors_copy,
             _validate=False,
         )
 
@@ -357,7 +346,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative_experiments=self._alternative_experiments,
             row_pairs=self._row_pairs,
             column_pairs=self._column_pairs,
-            size_factors=self._size_factors,
             _validate=False,
         )
 
@@ -404,8 +392,9 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if len(self._column_pairs) > 0:
             output += ", column_pairs=" + ut.print_truncated_dict(self._column_pairs)
 
-        if self._size_factors is not None:
-            output += ", size_factors=" + ut.print_truncated_list(self._size_factors)
+        _sf = self.get_size_factors()
+        if _sf is not None:
+            output += ", size_factors=" + ut.print_truncated_list(_sf)
 
         if len(self._metadata) > 0:
             output += ", metadata=" + ut.print_truncated_dict(self._metadata)
@@ -441,7 +430,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output += f"alternative_experiments({len(self.alternative_experiment_names)}): {ut.print_truncated_list(self.alternative_experiment_names)}\n"
         output += f"row_pairs({len(self.row_pair_names)}): {ut.print_truncated_list(self.row_pair_names)}\n"
         output += f"column_pairs({len(self.column_pair_names)}): {ut.print_truncated_list(self.column_pair_names)}\n"
-        output += f"size_factors({0 if self._size_factors is None else len(self._size_factors)}): {' ' if self._size_factors is None else ut.print_truncated_list(self._size_factors)}\n"
+        _sf = self.get_size_factors()
+        output += (
+            f"size_factors({0 if _sf is None else len(_sf)}): {' ' if _sf is None else ut.print_truncated_list(_sf)}\n"
+        )
 
         output += f"metadata({str(len(self.metadata))}): {ut.print_truncated_list(list(self.metadata.keys()), sep=' ', include_brackets=False, transform=lambda y: y)}\n"
 
@@ -1136,14 +1128,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Returns:
             A numpy array containing size factors, or None.
         """
-        if self._size_factors is None:
+        sf = None
+        if "sizeFactors" in self._cols.column_names:
+            sf = np.array(self._cols.column("sizeFactors"), dtype=np.float64)
+
+        if sf is None:
             if on_absence == "error":
                 raise ValueError("Size factors are not set.")
             elif on_absence == "warn":
                 warn("Size factors are not set.", UserWarning)
             elif on_absence != "none":
                 raise ValueError(f"Invalid 'on_absence' value: '{on_absence}'. Must be 'none', 'warn', or 'error'.")
-        return self._size_factors
+
+        return sf
 
     def set_size_factors(
         self,
@@ -1155,6 +1152,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Args:
             size_factors:
                 New size factors.
+
             in_place:
                 Whether to modify the ``SingleCellExperiment`` in place.
 
@@ -1162,11 +1160,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object, either as a copy of the original
             or as a reference to the (in-place-modified) original.
         """
-        _new_sf = np.array(size_factors, dtype=np.float64) if size_factors is not None else None
-        _validate_size_factors(_new_sf, self.shape)
+        if size_factors is not None:
+            _new_sf = np.array(size_factors, dtype=np.float64)
+            _validate_size_factors(_new_sf, self.shape)
+        else:
+            _new_sf = None
 
         output = self._define_output(in_place)
-        output._size_factors = _new_sf
+        if _new_sf is not None:
+            output._cols = output._cols.set_column("sizeFactors", _new_sf, in_place=in_place)
+        else:
+            if "sizeFactors" in output._cols.column_names:
+                output._cols = output._cols.remove_column("sizeFactors", in_place=in_place)
+
         return output
 
     @property
@@ -1200,13 +1206,17 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if isinstance(name, int):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
+
             if name >= len(self.row_pair_names):
                 raise IndexError("Index greater than the number of row pairs.")
+
             return self._row_pairs[self.row_pair_names[name]]
         elif isinstance(name, str):
             if name not in self._row_pairs:
                 raise AttributeError(f"Row pair: '{name}' does not exist.")
+
             return self._row_pairs[name]
+
         raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
 
     def set_row_pair(self, name: str, pair: Any, in_place: bool = False) -> SingleCellExperiment:
@@ -1215,8 +1225,10 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Args:
             name:
                 Name of the row pair.
+
             pair:
                 The row pair matrix.
+
             in_place:
                 Whether to modify the object in place.
 
@@ -1224,10 +1236,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object.
         """
         output = self._define_output(in_place)
+
         _tmp = output._row_pairs
         if not in_place:
             _tmp = _tmp.copy()
         _tmp[name] = pair
+
         _validate_pairs(_tmp, self.shape[0], "row_pairs")
         output._row_pairs = _tmp
         return output
@@ -1245,13 +1259,17 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if isinstance(name, int):
             if name < 0:
                 raise IndexError("Index cannot be negative.")
+
             if name >= len(self.column_pair_names):
                 raise IndexError("Index greater than the number of column pairs.")
+
             return self._column_pairs[self.column_pair_names[name]]
         elif isinstance(name, str):
             if name not in self._column_pairs:
                 raise AttributeError(f"Column pair: '{name}' does not exist.")
+
             return self._column_pairs[name]
+
         raise TypeError(f"'name' must be a string or integer, provided '{type(name)}'.")
 
     def set_column_pair(self, name: str, pair: Any, in_place: bool = False) -> SingleCellExperiment:
@@ -1269,10 +1287,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             A modified ``SingleCellExperiment`` object.
         """
         output = self._define_output(in_place)
+
         _tmp = output._column_pairs
         if not in_place:
             _tmp = _tmp.copy()
         _tmp[name] = pair
+
         _validate_pairs(_tmp, self.shape[1], "column_pairs")
         output._column_pairs = _tmp
         return output
@@ -1293,12 +1313,15 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         Args:
             name:
                 Name or index of the alternative experiment to promote.
+
             saved:
                 Name to save the current main experiment as an alternative experiment.
                 If None, the current main experiment is not saved.
+
             with_col_data:
                 Whether to keep the column data, reduced dimensions, column pairs,
                 and size factors of the current main experiment.
+
             in_place:
                 Whether to modify the object in place.
 
@@ -1328,13 +1351,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             new_col_names = self.column_names
             new_reduced_dims = self._reduced_dims
             new_column_pairs = self._column_pairs
-            new_size_factors = self._size_factors
         else:
             new_col_data = alt_exp.column_data
             new_col_names = alt_exp.column_names
             new_reduced_dims = getattr(alt_exp, "_reduced_dims", None)
             new_column_pairs = getattr(alt_exp, "_column_pairs", None)
-            new_size_factors = getattr(alt_exp, "_size_factors", None)
 
         output = self._define_output(in_place)
         output._assays = new_assays
@@ -1345,7 +1366,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._column_names = new_col_names
         output._reduced_dims = new_reduced_dims if new_reduced_dims is not None else {}
         output._column_pairs = new_column_pairs if new_column_pairs is not None else {}
-        output._size_factors = new_size_factors
         output._alternative_experiments = new_alt_expts
         output._shape = (new_row_data.shape[0], new_col_data.shape[0])
 
@@ -1363,9 +1383,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             f:
                 A column name in ``row_data`` or a sequence of the same length as ``shape[0]``
                 specifying the group for each feature.
+
             ref:
                 The group name that should remain in the main experiment.
                 If None, the first unique group name in ``f`` is used.
+
             in_place:
                 Whether to modify the object in place.
 
@@ -1375,6 +1397,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         if isinstance(f, str):
             if f not in self.row_data.column_names:
                 raise ValueError(f"Column '{f}' not found in row_data.")
+
             groups = list(self.row_data.column(f))
         else:
             groups = list(f)
@@ -1404,6 +1427,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         for g, indices in group_indices.items():
             if g == ref:
                 continue
+
             sub_exp = self[indices, :]
             sub_exp._alternative_experiments = {}
             new_alt_expts[str(g)] = sub_exp
@@ -1418,10 +1442,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             self._row_names = ref_sliced.row_names
             self._shape = ref_sliced._shape
             self._alternative_experiments = new_alt_expts
+
             return self
         else:
             ref_sliced = self[ref_indices, :]
             ref_sliced._alternative_experiments = new_alt_expts
+
             return ref_sliced
 
     def unsplit_alt_exps(
@@ -1451,18 +1477,19 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         for name in names:
             if name not in self.alternative_experiment_names:
                 raise ValueError(f"Alternative experiment '{name}' not found.")
+
             alt = self.get_alternative_experiment(name)
             if not isinstance(alt, SingleCellExperiment):
                 if hasattr(alt, "row_ranges"):
                     alt = SingleCellExperiment.from_rangedsummarizedexperiment(alt)
                 else:
                     alt = SingleCellExperiment.from_summarizedexperiment(alt)
+
             to_combine.append(alt)
 
         import biocutils as ut
 
         combined = ut.relaxed_combine_rows(*to_combine)
-
         remaining_alts = {k: v for k, v in self.alternative_experiments.items() if k not in names}
 
         if in_place:
@@ -1477,6 +1504,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             self._size_factors = combined._size_factors
             self._alternative_experiments = remaining_alts
             self._shape = combined._shape
+
             return self
         else:
             combined._alternative_experiments = remaining_alts
@@ -1531,12 +1559,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
             new_col_pairs[cname] = cpair
 
-        new_size_factors = None
-        if self._size_factors is not None:
-            new_size_factors = self._size_factors
-            if do_slice_cols:
-                new_size_factors = new_size_factors[slicer.col_indices]
-
         current_class_const = type(self)
         return current_class_const(
             assays=slicer.assays,
@@ -1551,7 +1573,6 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             alternative_experiments=new_alt_expts,
             row_pairs=new_row_pairs,
             column_pairs=new_col_pairs,
-            size_factors=new_size_factors,
         )
 
     ################################
@@ -1841,7 +1862,6 @@ def combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
         reduced_dims=first._reduced_dims,
         main_experiment_name=first._main_experiment_name,
         alternative_experiments=first._alternative_experiments,
-        size_factors=first._size_factors,
     )
 
 
@@ -1899,7 +1919,6 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
         reduced_dims=_new_rdim,
         main_experiment_name=first._main_experiment_name,
         alternative_experiments=_new_alt_expt,
-        size_factors=_merge_size_factors(x),
     )
 
 
@@ -1944,7 +1963,6 @@ def relaxed_combine_rows(*x: SingleCellExperiment) -> SingleCellExperiment:
         reduced_dims=first._reduced_dims,
         main_experiment_name=first._main_experiment_name,
         alternative_experiments=first._alternative_experiments,
-        size_factors=first._size_factors,
     )
 
 
@@ -2006,7 +2024,6 @@ def relaxed_combine_columns(
         reduced_dims=_new_rdim,
         main_experiment_name=first._main_experiment_name,
         alternative_experiments=_new_alt_expt,
-        size_factors=_merge_size_factors(x),
     )
 
 

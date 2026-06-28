@@ -1,9 +1,9 @@
 from random import random
 
 import genomicranges
-from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
+from biocframe import BiocFrame
 from summarizedexperiment import SummarizedExperiment
 
 from singlecellexperiment import SingleCellExperiment
@@ -17,36 +17,32 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-row_data = BiocFrame(
-    {
-        "seqnames": [
-            "chr1",
-            "chr2",
-            "chr2",
-            "chr2",
-            "chr1",
-            "chr1",
-            "chr3",
-            "chr3",
-            "chr3",
-            "chr3",
-        ]
-        * 20,
-        "starts": range(100, 300),
-        "ends": range(110, 310),
-        "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
-        "score": range(0, 200),
-        "GC": [random() for _ in range(10)] * 20,
-    }
-)
+row_data = BiocFrame({
+    "seqnames": [
+        "chr1",
+        "chr2",
+        "chr2",
+        "chr2",
+        "chr1",
+        "chr1",
+        "chr3",
+        "chr3",
+        "chr3",
+        "chr3",
+    ]
+    * 20,
+    "starts": range(100, 300),
+    "ends": range(110, 310),
+    "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
+    "score": range(0, 200),
+    "GC": [random() for _ in range(10)] * 20,
+})
 
 gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
-col_data = pd.DataFrame(
-    {
-        "treatment": ["ChIP", "Input"] * 3,
-    }
-)
+col_data = pd.DataFrame({
+    "treatment": ["ChIP", "Input"] * 3,
+})
 
 
 def test_SCE_slice():
@@ -65,6 +61,7 @@ def test_SCE_slice():
     assert len(tse_slice.col_data) == 3
 
     assert tse_slice.assay("counts").shape == (10, 3)
+
 
 def test_SCE_slice_with_numpy():
     tse = SingleCellExperiment(
@@ -91,6 +88,7 @@ def test_SCE_slice_with_numpy():
     assert len(tse_slice.col_data) == 3
 
     assert tse_slice.assay("counts").shape == (10, 3)
+
 
 def test_SCE_creation_with_alts_slice():
     trse = SummarizedExperiment(
@@ -130,7 +128,7 @@ def test_SCE_slice_pairs_and_size_factors():
         column_data=col_data,
         row_pairs={"rp1": rp},
         column_pairs={"cp1": cp},
-        size_factors=sf
+        size_factors=sf,
     )
 
     tse_slice = tse[0:10, 0:3]
@@ -138,6 +136,8 @@ def test_SCE_slice_pairs_and_size_factors():
     assert tse_slice.row_pairs["rp1"].shape == (10, 10)
     assert tse_slice.column_pairs["cp1"].shape == (3, 3)
     assert tse_slice.size_factors.shape == (3,)
+    assert "sizeFactors" in tse_slice.column_data.column_names
+    assert np.allclose(np.array(tse_slice.column_data.column("sizeFactors")), sf[0:3])
 
     assert np.allclose(tse_slice.row_pairs["rp1"], rp[0:10, :][:, 0:10])
     assert np.allclose(tse_slice.column_pairs["cp1"], cp[0:3, :][:, 0:3])

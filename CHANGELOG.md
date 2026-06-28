@@ -8,6 +8,7 @@
 - Implement coercions to/from RSE/SE.
 - Access data stored in `raw` (if available) as `alternative_experiments`, when initializing `SingleCellExperiment` objects from anndata/h5ad files.
 - Fix bug when slicing objects containing row or column pairs.
+- Add getters/setters for `sizeFactors`, modifying this in the column_data of the object.
 
 ## Version 0.5.8 - 0.5.9
 

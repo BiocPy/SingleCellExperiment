@@ -1,11 +1,11 @@
 from random import random
 
 import genomicranges
-from biocframe import BiocFrame
 import numpy as np
 import pandas as pd
 import pytest
-from summarizedexperiment import SummarizedExperiment, RangedSummarizedExperiment
+from biocframe import BiocFrame
+from summarizedexperiment import RangedSummarizedExperiment, SummarizedExperiment
 
 from singlecellexperiment import SingleCellExperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment as sce
@@ -18,50 +18,42 @@ __license__ = "MIT"
 nrows = 200
 ncols = 6
 counts = np.random.rand(nrows, ncols)
-row_data = BiocFrame(
-    {
-        "seqnames": [
-            "chr1",
-            "chr2",
-            "chr2",
-            "chr2",
-            "chr1",
-            "chr1",
-            "chr3",
-            "chr3",
-            "chr3",
-            "chr3",
-        ]
-        * 20,
-        "starts": range(100, 300),
-        "ends": range(110, 310),
-        "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
-        "score": range(0, 200),
-        "GC": [random() for _ in range(10)] * 20,
-    }
-)
+row_data = BiocFrame({
+    "seqnames": [
+        "chr1",
+        "chr2",
+        "chr2",
+        "chr2",
+        "chr1",
+        "chr1",
+        "chr3",
+        "chr3",
+        "chr3",
+        "chr3",
+    ]
+    * 20,
+    "starts": range(100, 300),
+    "ends": range(110, 310),
+    "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
+    "score": range(0, 200),
+    "GC": [random() for _ in range(10)] * 20,
+})
 
 gr = genomicranges.GenomicRanges.from_pandas(row_data.to_pandas())
 
-col_data = pd.DataFrame(
-    {
-        "treatment": ["ChIP", "Input"] * 3,
-    }
-)
+col_data = pd.DataFrame({
+    "treatment": ["ChIP", "Input"] * 3,
+})
 
 
 def test_SCE_props():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     assert tse is not None
     assert isinstance(tse, sce)
 
     assert tse.alternative_experiments == {}
-    alt = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    alt = SummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
     tse.alternative_experiments = {"alt": alt}
     assert tse.alternative_experiments is not None
 
@@ -94,10 +86,9 @@ def test_SCE_props():
     assert tse.reduced_dim_names is not None
     assert len(tse.reduced_dim_names) == 1
 
+
 def test_SCE_to_RSE():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr)
 
     rse = tse.to_rangedsummarizedexperiment()
     assert isinstance(rse, RangedSummarizedExperiment)
@@ -105,20 +96,18 @@ def test_SCE_to_RSE():
     assert rse.shape == tse.shape
     assert rse.row_ranges is not None
 
+
 def test_RSE_to_SCE():
-    rse = RangedSummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
-    )
+    rse = RangedSummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr)
 
     tse = SingleCellExperiment.from_rangedsummarizedexperiment(rse)
     assert isinstance(tse, SingleCellExperiment)
     assert tse.shape == rse.shape
     assert tse.row_ranges is not None
 
+
 def test_SCE_to_SE():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data, row_ranges=gr)
 
     se = tse.to_summarizedexperiment()
     assert isinstance(se, SummarizedExperiment)
@@ -127,10 +116,9 @@ def test_SCE_to_SE():
     assert se.row_data is not None
     assert "seqnames" in se.row_data.column_names
 
+
 def test_SE_to_SCE():
-    se = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    se = SummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     tse = SingleCellExperiment.from_summarizedexperiment(se)
     assert isinstance(tse, SingleCellExperiment)
@@ -138,31 +126,35 @@ def test_SE_to_SCE():
 
 
 def test_size_factors():
-    # Setup
     sf = np.random.rand(ncols)
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data, size_factors=sf
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data, size_factors=sf)
 
-    # 1. Accessors
     assert np.allclose(tse.size_factors, sf)
     assert np.allclose(tse.get_size_factors(), sf)
+    assert "sizeFactors" in tse.column_data.column_names
+    assert np.allclose(np.array(tse.column_data.column("sizeFactors")), sf)
 
-    # 2. Setters
     sf2 = np.random.rand(ncols)
     tse2 = tse.set_size_factors(sf2, in_place=False)
     assert np.allclose(tse2.size_factors, sf2)
+    assert "sizeFactors" in tse2.column_data.column_names
+    assert np.allclose(np.array(tse2.column_data.column("sizeFactors")), sf2)
+
     assert np.allclose(tse.size_factors, sf)  # original unchanged
+    assert np.allclose(np.array(tse.column_data.column("sizeFactors")), sf)
 
     tse.set_size_factors(sf2, in_place=True)
     assert np.allclose(tse.size_factors, sf2)
+    assert np.allclose(np.array(tse.column_data.column("sizeFactors")), sf2)
 
-    # 3. Absent handling
-    tse_no_sf = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse_cleared = tse.set_size_factors(None, in_place=False)
+    assert tse_cleared.size_factors is None
+    assert "sizeFactors" not in tse_cleared.column_data.column_names
+
+    tse_no_sf = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
     assert tse_no_sf.size_factors is None
     assert tse_no_sf.get_size_factors(on_absence="none") is None
+    assert "sizeFactors" not in tse_no_sf.column_data.column_names
 
     with pytest.warns(UserWarning):
         tse_no_sf.get_size_factors(on_absence="warn")
@@ -170,7 +162,6 @@ def test_size_factors():
     with pytest.raises(ValueError):
         tse_no_sf.get_size_factors(on_absence="error")
 
-    # 4. Validations
     with pytest.raises(Exception):
         tse.set_size_factors(np.random.rand(ncols - 1))
     with pytest.raises(Exception):
@@ -185,16 +176,14 @@ def test_individual_pair_accessors():
         row_data=row_data,
         column_data=col_data,
         row_pairs={"rp1": rp},
-        column_pairs={"cp1": cp}
+        column_pairs={"cp1": cp},
     )
 
-    # Getters
     assert np.allclose(tse.get_row_pair("rp1"), rp)
     assert np.allclose(tse.get_row_pair(0), rp)
     assert np.allclose(tse.get_column_pair("cp1"), cp)
     assert np.allclose(tse.get_column_pair(0), cp)
 
-    # Setters
     rp2 = np.random.rand(nrows, nrows)
     tse2 = tse.set_row_pair("rp2", rp2, in_place=False)
     assert np.allclose(tse2.get_row_pair("rp2"), rp2)
@@ -203,7 +192,6 @@ def test_individual_pair_accessors():
     tse3 = tse.set_column_pair("cp2", cp2, in_place=False)
     assert np.allclose(tse3.get_column_pair("cp2"), cp2)
 
-    # Errors
     with pytest.raises(IndexError):
         tse.get_row_pair(-1)
     with pytest.raises(IndexError):
@@ -216,14 +204,10 @@ def test_individual_pair_accessors():
 
 def test_copy_deepcopy():
     sf = np.random.rand(ncols)
-    tse = SingleCellExperiment(
-        assays={"counts": counts},
-        row_data=row_data,
-        column_data=col_data,
-        size_factors=sf
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data, size_factors=sf)
 
     from copy import copy, deepcopy
+
     tse_copy = copy(tse)
     assert np.allclose(tse_copy.size_factors, sf)
 
@@ -232,21 +216,16 @@ def test_copy_deepcopy():
 
 
 def test_alt_exp_workflows():
-    rse = SummarizedExperiment(
-        assays={"counts": np.random.rand(nrows, ncols)},
-        row_data=row_data,
-        column_data=col_data
-    )
+    rse = SummarizedExperiment(assays={"counts": np.random.rand(nrows, ncols)}, row_data=row_data, column_data=col_data)
 
     tse = SingleCellExperiment(
         assays={"counts": counts},
         row_data=row_data,
         column_data=col_data,
         alternative_experiments={"alt": rse},
-        size_factors=np.random.rand(ncols)
+        size_factors=np.random.rand(ncols),
     )
 
-    # Swap
     swapped = tse.swap_alt_exp("alt", saved="main")
     assert isinstance(swapped, SingleCellExperiment)
     assert "main" in swapped.alternative_experiments
@@ -254,14 +233,12 @@ def test_alt_exp_workflows():
     assert swapped.shape == (nrows, ncols)
     assert np.allclose(swapped.size_factors, tse.size_factors)
 
-    # Split
     f = ["groupA"] * (nrows // 2) + ["groupB"] * (nrows // 2)
     split_sce = tse.split_alt_exps(f, ref="groupA")
     assert "groupB" in split_sce.alternative_experiments
     assert split_sce.shape == (nrows // 2, ncols)
     assert split_sce.alternative_experiments["groupB"].shape == (nrows // 2, ncols)
 
-    # Unsplit
     unsplit_sce = split_sce.unsplit_alt_exps(names=["groupB"])
     assert "groupB" not in unsplit_sce.alternative_experiments
     assert unsplit_sce.shape == (nrows, ncols)
