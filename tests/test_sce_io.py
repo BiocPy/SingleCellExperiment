@@ -54,9 +54,7 @@ col_data = pd.DataFrame(
 
 
 def test_SCE_to_anndata():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)
@@ -69,10 +67,9 @@ def test_SCE_to_anndata():
 
     assert adata[1] is None
 
+
 def test_SCE_to_anndata_with_alts():
-    se = SummarizedExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    se = SummarizedExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     tse = SingleCellExperiment(
         assays={"counts": counts},
@@ -166,9 +163,7 @@ def test_SCE_from10xH5():
 
     assert sliced.shape == (10, 4)
 
-    tse = singlecellexperiment.read_tenx_h5(
-        "tests/data/tenx.sub.h5", realize_assays=True
-    )
+    tse = singlecellexperiment.read_tenx_h5("tests/data/tenx.sub.h5", realize_assays=True)
     assert isinstance(tse.assay(0), sparse.spmatrix)
 
 
@@ -182,8 +177,8 @@ def test_SCE_randomAnnData():
     y = np.dot(z, w.T)
 
     adata = anndata.AnnData(y)
-    adata.obs_names = [f"obs_{i+1}" for i in range(n)]
-    adata.var_names = [f"var_{j+1}" for j in range(d)]
+    adata.obs_names = [f"obs_{i + 1}" for i in range(n)]
+    adata.var_names = [f"var_{j + 1}" for j in range(d)]
 
     tse = singlecellexperiment.SingleCellExperiment.from_anndata(adata)
 
@@ -192,7 +187,7 @@ def test_SCE_randomAnnData():
 
     # to avoid unknown mapping types;
     # ran into an issue with anndata.compat._overloaded_dict.OverloadedDict when loading a h5ad
-    adata.uns = {".internal": [f"obs_{i+1}" for i in range(n)]}
+    adata.uns = {".internal": [f"obs_{i + 1}" for i in range(n)]}
     tse = singlecellexperiment.SingleCellExperiment.from_anndata(adata)
 
     assert tse is not None
@@ -209,10 +204,9 @@ def test_SCE_randomAnnData():
     assert isinstance(tse.alternative_experiments["raw"], SummarizedExperiment)
     assert tse.alternative_experiments["raw"].shape == (d, n)
 
+
 def test_SCE_to_mudata():
-    tse = SingleCellExperiment(
-        assays={"counts": counts}, row_data=row_data, column_data=col_data
-    )
+    tse = SingleCellExperiment(assays={"counts": counts}, row_data=row_data, column_data=col_data)
 
     assert tse is not None
     assert isinstance(tse, SingleCellExperiment)

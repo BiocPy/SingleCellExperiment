@@ -1,14 +1,6 @@
-from random import random
-
-import anndata
-import genomicranges
-from biocframe import BiocFrame
 import biocutils
 import numpy as np
-import pandas as pd
-from mudata import MuData
 
-import singlecellexperiment
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
 
 import pytest
@@ -30,6 +22,7 @@ def test_combine_rows(experiments):
     assert isinstance(combined2, SingleCellExperiment)
     assert len(combined2.alternative_experiments) == 0
     assert len(combined2.row_data["A"]) == 200
+
 
 def test_relaxed_combine_rows(experiments):
     ncols = 10
@@ -59,9 +52,7 @@ def test_relaxed_combine_rows(experiments):
 
 
 def test_combine_with_alts(experiments):
-    combined = biocutils.combine_rows(
-        experiments.se_with_alts1, experiments.se_with_alts2
-    )
+    combined = biocutils.combine_rows(experiments.se_with_alts1, experiments.se_with_alts2)
     assert combined is not None
     assert isinstance(combined, SingleCellExperiment)
     assert len(combined.alternative_experiments) == 1
