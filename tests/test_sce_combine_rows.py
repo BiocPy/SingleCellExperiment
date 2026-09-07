@@ -1,9 +1,8 @@
 import biocutils
 import numpy as np
+import pytest
 
 from singlecellexperiment.SingleCellExperiment import SingleCellExperiment
-
-import pytest
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"

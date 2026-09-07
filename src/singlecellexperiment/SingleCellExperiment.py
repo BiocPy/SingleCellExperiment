@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import Any, Dict, List, Optional, Sequence, Union
+from collections.abc import Sequence
+from typing import Any
 from warnings import warn
 
 import biocframe
@@ -125,20 +126,20 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def __init__(
         self,
-        assays: Dict[str, Any] = None,
-        row_ranges: Optional[GRangesOrGRangesList] = None,
-        row_data: Optional[biocframe.BiocFrame] = None,
-        column_data: Optional[biocframe.BiocFrame] = None,
-        row_names: Optional[List[str]] = None,
-        column_names: Optional[List[str]] = None,
-        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
-        reduced_dimensions: Optional[Dict[str, Any]] = None,
-        reduced_dims: Optional[Dict[str, Any]] = None,  # deprecated name
-        main_experiment_name: Optional[str] = None,
-        alternative_experiments: Optional[Dict[str, Any]] = None,
-        row_pairs: Optional[Any] = None,
-        column_pairs: Optional[Any] = None,
-        size_factors: Optional[Union[np.ndarray, List[float], Sequence[float]]] = None,
+        assays: dict[str, Any] = None,
+        row_ranges: GRangesOrGRangesList | None = None,
+        row_data: biocframe.BiocFrame | None = None,
+        column_data: biocframe.BiocFrame | None = None,
+        row_names: list[str] | None = None,
+        column_names: list[str] | None = None,
+        metadata: dict[str, Any] | ut.NamedList | None = None,
+        reduced_dimensions: dict[str, Any] | None = None,
+        reduced_dims: dict[str, Any] | None = None,  # deprecated name
+        main_experiment_name: str | None = None,
+        alternative_experiments: dict[str, Any] | None = None,
+        row_pairs: Any | None = None,
+        column_pairs: Any | None = None,
+        size_factors: np.ndarray | list[float] | Sequence[float] | None = None,
         alternative_experiment_check_dim_names: bool = True,
         _validate: bool = True,
         **kwargs,
@@ -435,7 +436,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
             f"size_factors({0 if _sf is None else len(_sf)}): {' ' if _sf is None else ut.print_truncated_list(_sf)}\n"
         )
 
-        output += f"metadata({str(len(self.metadata))}): {ut.print_truncated_list(list(self.metadata.keys()), sep=' ', include_brackets=False, transform=lambda y: y)}\n"
+        output += f"metadata({len(self.metadata)!s}): {ut.print_truncated_list(list(self.metadata.keys()), sep=' ', include_brackets=False, transform=lambda y: y)}\n"
 
         return output
 
@@ -443,7 +444,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> reduced_dims <<######
     ##############################
 
-    def get_reduced_dimensions(self) -> Dict[str, Any]:
+    def get_reduced_dimensions(self) -> dict[str, Any]:
         """Access dimensionality embeddings.
 
         Returns:
@@ -452,12 +453,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._reduced_dims
 
-    def get_reduced_dims(self) -> Dict[str, Any]:
+    def get_reduced_dims(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_reduced_dimensions`, for back-compatibility."""
         return self.get_reduced_dimensions()
 
     def set_reduced_dimensions(
-        self, reduced_dimensions: Dict[str, Any], in_place: bool = False
+        self, reduced_dimensions: dict[str, Any], in_place: bool = False
     ) -> SingleCellExperiment:
         """Set new reduced dimensions.
 
@@ -478,17 +479,17 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = reduced_dimensions
         return output
 
-    def set_reduced_dims(self, reduced_dimensions: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
+    def set_reduced_dims(self, reduced_dimensions: dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Alias for :py:meth:`~set_reduced_dimensions`, for back-compatibility."""
         return self.set_reduced_dimensions(reduced_dimensions=reduced_dimensions, in_place=in_place)
 
     @property
-    def reduced_dims(self) -> Dict[str, Any]:
+    def reduced_dims(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_reduced_dimensions`."""
         return self.get_reduced_dimensions()
 
     @reduced_dims.setter
-    def reduced_dims(self, reduced_dimensions: Dict[str, Any]):
+    def reduced_dims(self, reduced_dimensions: dict[str, Any]):
         """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
             "Setting property 'reduced_dims' is an in-place operation, use 'set_reduced_dimensions' instead",
@@ -497,12 +498,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self.set_reduced_dimensions(reduced_dimensions, in_place=True)
 
     @property
-    def reduced_dimensions(self) -> Dict[str, Any]:
+    def reduced_dimensions(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_reduced_dimensions`."""
         return self.get_reduced_dimensions()
 
     @reduced_dimensions.setter
-    def reduced_dimensions(self, reduced_dimensions: Dict[str, Any]):
+    def reduced_dimensions(self, reduced_dimensions: dict[str, Any]):
         """Alias for :py:meth:`~set_reduced_dimensions`."""
         warn(
             "Setting property 'reduced_dimensions' is an in-place operation, use 'set_reduced_dimensions' instead",
@@ -514,7 +515,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> reduced_dims_names <<######
     ####################################
 
-    def get_reduced_dimension_names(self) -> List[str]:
+    def get_reduced_dimension_names(self) -> list[str]:
         """Access reduced dimension names.
 
         Returns:
@@ -522,11 +523,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._reduced_dims.keys())
 
-    def get_reduced_dim_names(self) -> Dict[str, Any]:
+    def get_reduced_dim_names(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_reduced_dimension_names`, for back-compatibility."""
         return self.get_reduced_dimension_names()
 
-    def set_reduced_dimension_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_reduced_dimension_names(self, names: list[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.reduced_dims`'s names.
 
         Args:
@@ -553,17 +554,17 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._reduced_dims = new_reduced_dims
         return output
 
-    def set_reduced_dim_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_reduced_dim_names(self, names: list[str], in_place: bool = False) -> SingleCellExperiment:
         """Alias for :py:meth:`~set_reduced_dimension_names`, for back-compatibility."""
         return self.set_reduced_dimension_names(names=names, in_place=in_place)
 
     @property
-    def reduced_dim_names(self) -> List[str]:
+    def reduced_dim_names(self) -> list[str]:
         """Alias for :py:meth:`~get_reduced_dimension_names`."""
         return self.get_reduced_dimension_names()
 
     @reduced_dim_names.setter
-    def reduced_dim_names(self, names: List[str]):
+    def reduced_dim_names(self, names: list[str]):
         """Alias for :py:meth:`~set_reduced_dimension_names`."""
         warn(
             "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dimension_names' instead",
@@ -572,12 +573,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         self.set_reduced_dimension_names(names, in_place=True)
 
     @property
-    def reduced_dimension_names(self) -> List[str]:
+    def reduced_dimension_names(self) -> list[str]:
         """Alias for :py:meth:`~get_reduced_dimension_names`."""
         return self.get_reduced_dimension_names()
 
     @reduced_dimension_names.setter
-    def reduced_dimension_names(self, names: List[str]):
+    def reduced_dimension_names(self, names: list[str]):
         """Alias for :py:meth:`~set_reduced_dimension_names`."""
         warn(
             "Renaming names of property 'reduced_dims' is an in-place operation, use 'set_reduced_dimension_names' instead",
@@ -589,7 +590,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> reduced_dim getter <<######
     ####################################
 
-    def get_reduced_dimension(self, name: Union[str, int]) -> Any:
+    def get_reduced_dimension(self, name: str | int) -> Any:
         """Access an embedding by name.
 
         Args:
@@ -621,11 +622,11 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         raise TypeError(f"'dimension' must be a string or integer, provided '{type(name)}'.")
 
-    def reduced_dim(self, name: Union[str, int]) -> Any:
+    def reduced_dim(self, name: str | int) -> Any:
         """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
         return self.get_reduced_dimension(name=name)
 
-    def reduced_dimension(self, name: Union[str, int]) -> Any:
+    def reduced_dimension(self, name: str | int) -> Any:
         """Alias for :py:meth:`~get_reduced_dimension`, for back-compatibility."""
         return self.get_reduced_dimension(name=name)
 
@@ -661,7 +662,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> main_expt_name <<######
     ################################
 
-    def get_main_experiment_name(self) -> Optional[str]:
+    def get_main_experiment_name(self) -> str | None:
         """Access main experiment name.
 
         Returns:
@@ -669,7 +670,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._main_experiment_name
 
-    def set_main_experiment_name(self, name: Optional[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_main_experiment_name(self, name: str | None, in_place: bool = False) -> SingleCellExperiment:
         """Set new experiment data (assays).
 
         Args:
@@ -688,12 +689,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def main_experiment_name(self) -> Optional[str]:
+    def main_experiment_name(self) -> str | None:
         """Alias for :py:meth:`~get_main_experiment_name`."""
         return self.get_main_experiment_name()
 
     @main_experiment_name.setter
-    def main_experiment_name(self, name: Optional[str]):
+    def main_experiment_name(self, name: str | None):
         """Alias for :py:meth:`~set_main_experiment_name`."""
         warn(
             "Setting property 'main_experiment_name' is an in-place operation, use 'set_main_experiment_name' instead",
@@ -705,7 +706,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiments <<######
     #########################################
 
-    def get_alternative_experiments(self, with_dim_names: bool = True) -> Dict[str, Any]:
+    def get_alternative_experiments(self, with_dim_names: bool = True) -> dict[str, Any]:
         """Access alternative experiments.
 
         Args:
@@ -726,7 +727,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return _out
 
     def set_alternative_experiments(
-        self, alternative_experiments: Dict[str, Any], with_dim_names: bool = True, in_place: bool = False
+        self, alternative_experiments: dict[str, Any], with_dim_names: bool = True, in_place: bool = False
     ) -> SingleCellExperiment:
         """Set new alternative experiments.
 
@@ -756,12 +757,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def alternative_experiments(self) -> Dict[str, Any]:
+    def alternative_experiments(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_alternative_experiments`."""
         return self.get_alternative_experiments()
 
     @alternative_experiments.setter
-    def alternative_experiments(self, alternative_experiments: Dict[str, Any]):
+    def alternative_experiments(self, alternative_experiments: dict[str, Any]):
         """Alias for :py:meth:`~set_alternative_experiments`."""
         warn(
             "Setting property 'alternative_experiments' is an in-place operation, use 'set_alternative_experiments' instead",
@@ -773,7 +774,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiment_names <<######
     ###############################################
 
-    def get_alternative_experiment_names(self) -> List[str]:
+    def get_alternative_experiment_names(self) -> list[str]:
         """Access alternative experiment names.
 
         Returns:
@@ -781,7 +782,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._alternative_experiments.keys())
 
-    def set_alternative_experiment_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_alternative_experiment_names(self, names: list[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.alternative_experiment`'s names.
 
         Args:
@@ -809,12 +810,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def alternative_experiment_names(self) -> List[str]:
+    def alternative_experiment_names(self) -> list[str]:
         """Alias for :py:meth:`~get_alternative_experiment_names`."""
         return self.get_alternative_experiment_names()
 
     @alternative_experiment_names.setter
-    def alternative_experiment_names(self, names: List[str]):
+    def alternative_experiment_names(self, names: list[str]):
         """Alias for :py:meth:`~set_alternative_experiment_names`."""
         warn(
             "Renaming names of property 'alternative_experiments' is an in-place operation, use 'set_alternative_experiment_names' instead",
@@ -826,7 +827,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> alternative_experiment getter <<######
     ###############################################
 
-    def get_alternative_experiment(self, name: Union[str, int], with_dim_names: bool = True) -> Any:
+    def get_alternative_experiment(self, name: str | int, with_dim_names: bool = True) -> Any:
         """Access alternative experiment by name.
 
         Args:
@@ -872,7 +873,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
         return _out
 
-    def alternative_experiment(self, name: Union[str, int]) -> Any:
+    def alternative_experiment(self, name: str | int) -> Any:
         """Alias for :py:meth:`~get_alternative_experiment`, for back-compatibility."""
         return self.get_alternative_experiment(name=name)
 
@@ -921,7 +922,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> row_pairs <<######
     ###########################
 
-    def get_row_pairs(self) -> Dict[str, Any]:
+    def get_row_pairs(self) -> dict[str, Any]:
         """Access row pairings/relationships between features.
 
         Returns:
@@ -929,7 +930,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._row_pairs
 
-    def set_row_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
+    def set_row_pairs(self, pairs: dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.row_pairs`'s names.
 
         Args:
@@ -950,12 +951,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def row_pairs(self) -> Dict[str, Any]:
+    def row_pairs(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_row_pairs`."""
         return self.get_row_pairs()
 
     @row_pairs.setter
-    def row_pairs(self, pairs: Dict[str, Any]):
+    def row_pairs(self, pairs: dict[str, Any]):
         """Alias for :py:meth:`~set_row_pairs`."""
         warn(
             "Setting property 'row_pairs' is an in-place operation, use 'set_row_pairs' instead",
@@ -967,7 +968,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> row_pairs_names <<######
     ####################################
 
-    def get_row_pair_names(self) -> List[str]:
+    def get_row_pair_names(self) -> list[str]:
         """Access row pair names.
 
         Returns:
@@ -975,7 +976,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._row_pairs.keys())
 
-    def set_row_pair_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_row_pair_names(self, names: list[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.row_pair`'s names.
 
         Args:
@@ -1003,12 +1004,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def row_pair_names(self) -> List[str]:
+    def row_pair_names(self) -> list[str]:
         """Alias for :py:meth:`~get_row_pair_names`."""
         return self.get_row_pair_names()
 
     @row_pair_names.setter
-    def row_pair_names(self, names: List[str]):
+    def row_pair_names(self, names: list[str]):
         """Alias for :py:meth:`~set_row_pair_names`."""
         warn(
             "Renaming names of property 'row_pairs' is an in-place operation, use 'set_row_pair_names' instead",
@@ -1020,7 +1021,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> column_pairs <<######
     ##############################
 
-    def get_column_pairs(self) -> Dict[str, Any]:
+    def get_column_pairs(self) -> dict[str, Any]:
         """Access column pairings/relationships between cells.
 
         Returns:
@@ -1028,7 +1029,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return self._column_pairs
 
-    def set_column_pairs(self, pairs: Dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
+    def set_column_pairs(self, pairs: dict[str, Any], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.column_pairs`'s names.
 
         Args:
@@ -1049,12 +1050,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def column_pairs(self) -> Dict[str, Any]:
+    def column_pairs(self) -> dict[str, Any]:
         """Alias for :py:meth:`~get_column_pairs`."""
         return self.get_column_pairs()
 
     @column_pairs.setter
-    def column_pairs(self, pairs: Dict[str, Any]):
+    def column_pairs(self, pairs: dict[str, Any]):
         """Alias for :py:meth:`~set_column_pairs`."""
         warn(
             "Setting property 'column_pairs' is an in-place operation, use 'set_column_pairs' instead",
@@ -1066,7 +1067,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> column_pairs_names <<######
     ####################################
 
-    def get_column_pair_names(self) -> List[str]:
+    def get_column_pair_names(self) -> list[str]:
         """Access column pair names.
 
         Returns:
@@ -1074,7 +1075,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         """
         return list(self._column_pairs.keys())
 
-    def set_column_pair_names(self, names: List[str], in_place: bool = False) -> SingleCellExperiment:
+    def set_column_pair_names(self, names: list[str], in_place: bool = False) -> SingleCellExperiment:
         """Replace :py:attr:`~.column_pair`'s names.
 
         Args:
@@ -1102,12 +1103,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def column_pair_names(self) -> List[str]:
+    def column_pair_names(self) -> list[str]:
         """Alias for :py:meth:`~get_column_pair_names`."""
         return self.get_column_pair_names()
 
     @column_pair_names.setter
-    def column_pair_names(self, names: List[str]):
+    def column_pair_names(self, names: list[str]):
         """Alias for :py:meth:`~set_column_pair_names`."""
         warn(
             "Renaming names of property 'column_pairs' is an in-place operation, use 'set_column_pair_names' instead",
@@ -1119,7 +1120,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> size_factors <<##########
     ##################################
 
-    def get_size_factors(self, on_absence: str = "none") -> Optional[np.ndarray]:
+    def get_size_factors(self, on_absence: str = "none") -> np.ndarray | None:
         """Access size factors.
 
         Args:
@@ -1148,7 +1149,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def set_size_factors(
         self,
-        size_factors: Optional[Union[np.ndarray, List[float], Sequence[float]]],
+        size_factors: np.ndarray | list[float] | Sequence[float] | None,
         in_place: bool = False,
     ) -> SingleCellExperiment:
         """Set new size factors.
@@ -1180,12 +1181,12 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return output
 
     @property
-    def size_factors(self) -> Optional[np.ndarray]:
+    def size_factors(self) -> np.ndarray | None:
         """Accessor for size factors."""
         return self.get_size_factors()
 
     @size_factors.setter
-    def size_factors(self, size_factors: Optional[Union[np.ndarray, List[float], Sequence[float]]]):
+    def size_factors(self, size_factors: np.ndarray | list[float] | Sequence[float] | None):
         """Set size factors in-place."""
         warn(
             "Setting property 'size_factors' is an in-place operation, use 'set_size_factors' instead",
@@ -1197,7 +1198,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
     ######>> row_pair / col_pair <<#####
     ####################################
 
-    def get_row_pair(self, name: Union[str, int]) -> Any:
+    def get_row_pair(self, name: str | int) -> Any:
         """Access a row pair by name or index.
 
         Args:
@@ -1250,7 +1251,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         output._row_pairs = _tmp
         return output
 
-    def get_column_pair(self, name: Union[str, int]) -> Any:
+    def get_column_pair(self, name: str | int) -> Any:
         """Access a column pair by name or index.
 
         Args:
@@ -1307,8 +1308,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def swap_alt_exp(
         self,
-        name: Union[str, int],
-        saved: Optional[str] = None,
+        name: str | int,
+        saved: str | None = None,
         with_col_data: bool = True,
         in_place: bool = False,
     ) -> SingleCellExperiment:
@@ -1377,8 +1378,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def split_alt_exps(
         self,
-        f: Union[str, Sequence],
-        ref: Optional[str] = None,
+        f: str | Sequence,
+        ref: str | None = None,
         in_place: bool = False,
     ) -> SingleCellExperiment:
         """Split the main experiment into alternative experiments based on a grouping vector.
@@ -1456,7 +1457,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def unsplit_alt_exps(
         self,
-        names: Optional[Sequence[str]] = None,
+        names: Sequence[str] | None = None,
         in_place: bool = False,
     ) -> SingleCellExperiment:
         """Recombine alternative experiments back into the main experiment by row.
@@ -1521,8 +1522,8 @@ class SingleCellExperiment(RangedSummarizedExperiment):
 
     def get_slice(
         self,
-        rows: Optional[Union[str, int, bool, Sequence]],
-        columns: Optional[Union[str, int, bool, Sequence]],
+        rows: str | int | bool | Sequence | None,
+        columns: str | int | bool | Sequence | None,
     ) -> SingleCellExperiment:
         """Alias for :py:attr:`~__getitem__`."""
 
@@ -1646,7 +1647,7 @@ class SingleCellExperiment(RangedSummarizedExperiment):
         return obj, adatas
 
     @classmethod
-    def from_anndata(cls, input: "anndata.AnnData") -> SingleCellExperiment:
+    def from_anndata(cls, input: anndata.AnnData) -> SingleCellExperiment:
         """Create a ``SingleCellExperiment`` from :py:class:`~anndata.AnnData`.
 
         If the input contains any data in the ``uns`` attribute, the
@@ -1903,7 +1904,7 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
         _new_rdim = merge_generic(x, by="row", attr="reduced_dims")
     except Exception as e:
         warn(
-            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            f"Cannot combine 'reduced_dimensions' across experiments, {e!s}",
             UserWarning,
         )
 
@@ -1912,7 +1913,7 @@ def combine_columns(*x: SingleCellExperiment) -> SingleCellExperiment:
         _new_alt_expt = merge_generic(x, by="column", attr="alternative_experiments")
     except Exception as e:
         warn(
-            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            f"Cannot combine 'alternative_experiments' across experiments, {e!s}",
             UserWarning,
         )
 
@@ -2008,7 +2009,7 @@ def relaxed_combine_columns(
         _new_rdim = relaxed_merge_numpy_generic(x, by="row", attr="reduced_dims", names_attr="reduced_dim_names")
     except Exception as e:
         warn(
-            f"Cannot combine 'reduced_dimensions' across experiments, {str(e)}",
+            f"Cannot combine 'reduced_dimensions' across experiments, {e!s}",
             UserWarning,
         )
 
@@ -2017,7 +2018,7 @@ def relaxed_combine_columns(
         _new_alt_expt = relaxed_merge_generic(x, by="column", attr="alternative_experiments")
     except Exception as e:
         warn(
-            f"Cannot combine 'alternative_experiments' across experiments, {str(e)}",
+            f"Cannot combine 'alternative_experiments' across experiments, {e!s}",
             UserWarning,
         )
 

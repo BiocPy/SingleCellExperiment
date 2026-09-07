@@ -138,6 +138,7 @@ Similarly, one can load a h5ad file:
 
 ```python
 from singlecellexperiment import read_h5ad
+
 sce_h5 = read_h5ad("../../assets/data/adata.h5ad")
 print(sce_h5)
 ```
@@ -148,6 +149,7 @@ In addition, we also provide convenient methods to load a [10X Genomics HDF5 Fea
 
 ```python
 from singlecellexperiment import read_tenx_h5
+
 sce_h5 = read_tenx_h5("../../assets/data/tenx.sub.h5")
 print(sce_h5)
 ```
