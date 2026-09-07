@@ -36,7 +36,7 @@ row_data = BiocFrame(
         "starts": range(100, 300),
         "ends": range(110, 310),
         "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
-        "score": range(0, 200),
+        "score": range(200),
         "GC": [random() for _ in range(10)] * 20,
     }
 )
@@ -93,7 +93,7 @@ def test_SCE_creation_with_alts_should_fail():
             "starts": range(100, 300),
             "ends": range(110, 310),
             "strand": ["-", "+", "+", "*", "*", "+", "+", "+", "-", "-"] * 20,
-            "score": range(0, 200),
+            "score": range(200),
             "GC": [random() for _ in range(10)] * 20,
         }
     )

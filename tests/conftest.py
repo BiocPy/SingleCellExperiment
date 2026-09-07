@@ -6,8 +6,8 @@ Read more about conftest.py under:
 - https://docs.pytest.org/en/stable/writing_plugins.html
 """
 
-import pytest
 import data.mocks as sce
+import pytest
 
 
 @pytest.fixture
